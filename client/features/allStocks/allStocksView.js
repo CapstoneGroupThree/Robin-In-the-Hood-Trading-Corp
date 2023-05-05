@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Pagination from "./paginationTest";
+import SearchBar from "../searchBar";
 
 const AllStocksView = () => {
   const dummyData = [
@@ -37,6 +38,7 @@ const AllStocksView = () => {
   // Needs pagination functionality
   return (
     <div>
+      <SearchBar />
       <h2>All Stocks</h2>
       <h3>Top 100 Most Popular</h3>
       <table>
