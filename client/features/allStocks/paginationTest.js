@@ -14,21 +14,21 @@ export default function Pagination({ totalPages, currentPage, onPageChange }) {
 
   return (
     <nav>
-      <ul className="pagination">
-        <li className={`page-item${canGoBack ? "" : " disabled"}`}>
-          <button className="page-link" onClick={handlePreviousPage}>
-            &laquo;
-          </button>
-        </li>
-        <li className="page-item active">
-          <span className="page-link">{currentPage}</span>
-        </li>
-        <li className={`page-item${canGoForward ? "" : " disabled"}`}>
-          <button className="page-link" onClick={handleNextPage}>
-            &raquo;
-          </button>
-        </li>
-      </ul>
+      <div className="pagination">
+        <button
+          className={`page-link${canGoBack ? "" : " disabled"}`}
+          onClick={handlePreviousPage}
+        >
+          Prev
+        </button>
+        <span className="page-link current-page">Page: {currentPage}</span>
+        <button
+          className={`page-link${canGoForward ? "" : " disabled"}`}
+          onClick={handleNextPage}
+        >
+          Next
+        </button>
+      </div>
     </nav>
   );
 }
