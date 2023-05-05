@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Pagination from "./paginationTest";
+import "./styles.css";
 
 const AllStocksView = () => {
   const dummyData = [
@@ -52,8 +54,16 @@ const AllStocksView = () => {
         <tbody>
           {dummyData.map((stock, index) => (
             <tr key={index}>
-              <td>{stock.name}</td>
-              <td>{stock.symbol}</td>
+              <td>
+                <Link to="/singleStock" className="stock-link">
+                  {stock.name}
+                </Link>
+              </td>
+              <td>
+                <Link to="/singleStock" className="stock-link">
+                  {stock.symbol}
+                </Link>
+              </td>
               <td>${stock.price.toFixed(2)}</td>
               <td>{stock.change.toFixed(2)}%</td>
               <td>{formatMarketCap(stock.marketCap)}</td>

@@ -1,0 +1,9 @@
+.stock-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.stock-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}

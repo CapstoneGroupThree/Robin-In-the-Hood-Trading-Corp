@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import AuthForm from "../features/auth/AuthForm";
 import Home from "../features/home/Home";
 import AllStocksView from "../features/allStocks/allStocksView";
+import SingleStockView from "../features/singleStock/singleStockView";
 import { me } from "./store";
 
 /**
@@ -25,6 +26,7 @@ const AppRoutes = () => {
           <Route path="/*" element={<Home />} />
           <Route to="/home" element={<Home />} />
           <Route path="/allStocks" element={<AllStocksView />} />
+          <Route path="/singleStock" element={<SingleStockView />} />
         </Routes>
       ) : (
         <Routes>
