@@ -1,1 +1,10 @@
 node_modules
+.env
+node_modules
+public/bundle.js
+public/bundle.js.map
+.DS_Store
+npm-debug.log
+yarn-error.log
+package-lock.json
+.env.database
