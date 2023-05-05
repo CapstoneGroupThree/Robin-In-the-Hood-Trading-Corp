@@ -65,15 +65,12 @@ const AuthForm = ({ name, displayName }) => {
   };
 
   return (
-    <div className="card mt-5 mb-5 m-auto p-4" style={{ width: "25rem" }}>
+    <div>
       {error && <div className="alert alert-danger">{error}</div>}
       <form className="text-center" onSubmit={handleSubmit} name={name}>
-        <img className="mb-4" src="/images/Maverick.svg" alt="" width="72" />
         {name === "login" ? <Login /> : <SignUp />}
 
-        <button className="w-100 btn btn-lg btn-primary mb-3" type="submit">
-          {displayName}
-        </button>
+        <button type="submit">{displayName}</button>
         {handleNoAccount()}
       </form>
     </div>
