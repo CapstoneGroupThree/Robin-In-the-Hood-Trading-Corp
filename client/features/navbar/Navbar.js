@@ -14,7 +14,13 @@ const Navbar = () => {
 
   return (
     <div>
-      <h1>FS-App-Template</h1>
+      <img
+        src="/RITHLogo.png"
+        alt="logo"
+        style={{ width: "5rem", height: "5rem" }}
+      ></img>
+
+      <h1>Robin In the Hood {"(RITH)"}</h1>
       <nav>
         {isLoggedIn ? (
           <div>
