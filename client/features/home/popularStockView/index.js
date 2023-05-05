@@ -79,7 +79,7 @@ const PopularStocksHomeView = () => {
     //todo do thunk calls to get the item for the 4 tickers one to tickerdetails one to aggregates per minute
   }, [dispatch]);
 
-  return <div>pop stocks here</div>;
+  return <div>pop stocks here yay</div>;
 };
 
 export default PopularStocksHomeView;

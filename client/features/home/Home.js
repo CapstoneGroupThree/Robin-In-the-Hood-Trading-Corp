@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import SearchBar from "../searchBar";
 import WatchListView from "./watchListView";
-import PopularStocksHomeView from "./popularStocksView";
+import PopularStocksHomeView from "./popularStockView";
 
 const Home = () => {
   const username = useSelector((state) => state.auth.me.first_name);
