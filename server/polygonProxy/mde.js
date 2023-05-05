@@ -9,11 +9,14 @@ const api_key = process.env.API_KEY;
 //Front End Queries Example -> /open-close?ticker=their_value&date=their_value
 
 //Aggregates (Bars)
-app.get("/aggregates/:ticker", async (req, res) => {
+app.get("/aggregates", async (req, res) => {
   try {
-    const ticker = req.params.ticker;
+    //limit was hardcoded to 120, tested at 1
+    //from and to are dates in YYYY-MM-DD Format
+    const { ticker, from, to } = req.query;
+    // const ticker = req.params.ticker;
     const response = await axios.get(
-      `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/2023-01-09/2023-01-09?adjusted=true&sort=asc&limit=120&apiKey=${api_key}`
+      `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/minute/${from}/${to}?adjusted=true&sort=asc&limit=1&apiKey=${api_key}`
     );
     res.send(response.data);
   } catch (error) {
