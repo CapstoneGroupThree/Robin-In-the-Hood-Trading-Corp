@@ -10,7 +10,7 @@ const api_key = process.env.API_KEY;
 //   res.send("Dev mode, working on stuff.");
 // });
 
-//front end needs to provide queries, such as    /opening?ticker=something&date=something
+//front end needs to provide queries, such as    /open-close?ticker=someticker&date=YYYY-MM-DD
 app.get("/open-close", async (req, res) => {
   try {
     console.log(req.query);
