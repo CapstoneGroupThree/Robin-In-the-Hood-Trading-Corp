@@ -17,8 +17,6 @@ const PopularStocksHomeView = () => {
     "AMZN",
     "AAPL",
     "BAC",
-    "BRK-A",
-    "FB",
     "GE",
     "GS",
     "JNJ",
@@ -39,28 +37,20 @@ const PopularStocksHomeView = () => {
     "XOM",
     "F",
     "INTC",
-    "JCI",
     "NKE",
     "PYPL",
-    "HD",
     "ADBE",
-    "ALPFF",
     "GOOG",
     "AXP",
     "T",
     "BA",
     "CVX",
-    "CCEP",
     "DAL",
-    "XOM",
     "GM",
-    "HD",
     "IBM",
-    "JPM",
     "MA",
     "MRK",
     "PEP",
-    "PG",
     "VZ",
     "WMT",
   ];
@@ -81,10 +71,10 @@ const PopularStocksHomeView = () => {
             holiday.name !== "Veterans Day" && holiday.name !== "Columbus Day"
         )
         .map((holiday) => holiday.date);
-      console.log(
-        "🚀 ~ file: index.js:102 ~ fetchHolidays ~ filteredHolidays:",
-        filteredHolidays
-      );
+      // console.log(
+      //   "🚀 ~ file: index.js:102 ~ fetchHolidays ~ filteredHolidays:",
+      //   filteredHolidays
+      // );
       return filteredHolidays;
     } catch (error) {
       console.error("Error fetching holidays:", error);
@@ -92,7 +82,7 @@ const PopularStocksHomeView = () => {
     }
   };
 
-  async function getStockInfo() {
+  const getStockInfo = async (ticker) => {
     const holidays = await fetchHolidays();
     const estOffset = -5 * 60; // Eastern Time is UTC-5
     const utcOffset = -now.getTimezoneOffset();
@@ -130,18 +120,18 @@ const PopularStocksHomeView = () => {
 
     const from = marketOpen ? to : getMostRecentTradingDay(now);
     to = marketOpen ? to : from;
-    console.log(marketOpen);
-    console.log(from, to);
+    // console.log(marketOpen);
+    // console.log(from, to);
     // Pass marketOpen and from, to to the thunk
-    const getTickerPrice = async () => {
+    const getTickerPrice = async (ticker) => {
       let tickerPriceInfo = await dispatch(
-        fetchSingleStockTickerInfo({ ticker: "TSLA", marketOpen, from, to })
+        fetchSingleStockTickerInfo({ ticker, marketOpen, from, to })
       );
-      await console.log(tickerPriceInfo);
-      return tickerPriceInfo;
+      // await console.log(tickerPriceInfo);
+      return tickerPriceInfo.payload.close;
     };
-    getTickerPrice();
-  }
+    return getTickerPrice(ticker);
+  };
 
   const getRandomTickers = () => {
     const selectedTickers = [];
@@ -157,10 +147,23 @@ const PopularStocksHomeView = () => {
     return selectedTickers;
   };
 
+  let popularStocks = {};
+
   useEffect(() => {
     const selectedTickers = getRandomTickers();
     console.log(selectedTickers);
-    getStockInfo();
+    const popularStocksCall = async () => {
+      for (let ticker of selectedTickers) {
+        console.log(ticker);
+        let tickerInfo = await getStockInfo(ticker);
+        await console.log(tickerInfo);
+        popularStocks[`${ticker}`] = {};
+        popularStocks[`${ticker}`].close = tickerInfo;
+        console.log(popularStocks);
+      }
+    };
+    popularStocksCall();
+
     // const getName = async () => {
     //   let tickerInfo = await dispatch(fetchSingleStockName("TSLA"));
     //   await console.log(tickerInfo.payload.results.name);

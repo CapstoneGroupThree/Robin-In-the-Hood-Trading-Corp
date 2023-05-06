@@ -19,8 +19,8 @@ export const fetchSingleStockName = createAsyncThunk(
 export const fetchSingleStockTickerInfo = createAsyncThunk(
   "fetchStockTickerInfo",
   async ({ ticker, marketOpen, from, to }) => {
-    console.log(ticker, marketOpen, from, to);
-    console.log(typeof marketOpen);
+    // console.log(ticker, marketOpen, from, to);
+    // console.log(typeof marketOpen);
     try {
       if (marketOpen) {
         const response = await axios.get(
