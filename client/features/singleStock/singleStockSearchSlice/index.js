@@ -54,6 +54,6 @@ export const singleStockViewSlice = createSlice({
   },
 });
 
-export const selectSingleStock = (state) => state.stock;
+export const selectSingleStock = (state) => state.singleStock;
 
 export default singleStockViewSlice.reducer;

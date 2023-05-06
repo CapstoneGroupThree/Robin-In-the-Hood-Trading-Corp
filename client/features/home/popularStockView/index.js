@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { fetchSingleStockName } from "../../singleStock/singleStockSearchSlice";
-import { fetchSingleStockTickerInfo } from "../../singleStock/singleStockSearchSlice";
+import {
+  fetchSinglePopularStockName,
+  fetchSinglePopularStockTickerPrice,
+} from "./popularStockViewSlice";
 
 const PopularStocksHomeView = () => {
   const dispatch = useDispatch();
 
+  const [isLoading, setIsLoading] = useState(true);
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -125,7 +128,7 @@ const PopularStocksHomeView = () => {
     // Pass marketOpen and from, to to the thunk
     const getTickerPrice = async (ticker) => {
       let tickerPriceInfo = await dispatch(
-        fetchSingleStockTickerInfo({ ticker, marketOpen, from, to })
+        fetchSinglePopularStockTickerPrice({ ticker, marketOpen, from, to })
       );
       // await console.log(tickerPriceInfo);
       return tickerPriceInfo.payload.close;
@@ -147,6 +150,11 @@ const PopularStocksHomeView = () => {
     return selectedTickers;
   };
 
+  const getTickerName = async (ticker) => {
+    let tickerInfo = await dispatch(fetchSinglePopularStockName(ticker));
+    return tickerInfo.payload.results.name;
+  };
+
   let popularStocks = {};
 
   useEffect(() => {
@@ -154,34 +162,30 @@ const PopularStocksHomeView = () => {
     console.log(selectedTickers);
     const popularStocksCall = async () => {
       for (let ticker of selectedTickers) {
+        let numberOfKeys = Object.keys(popularStocks).length + 1;
         console.log(ticker);
         let tickerInfo = await getStockInfo(ticker);
+        let tickerName = await getTickerName(ticker);
         await console.log(tickerInfo);
+        await console.log(tickerName);
         popularStocks[`${ticker}`] = {};
         popularStocks[`${ticker}`].close = tickerInfo;
+        popularStocks[`${ticker}`].name = tickerName;
         console.log(popularStocks);
+        console.log(numberOfKeys);
+        if (numberOfKeys === 4) {
+          setIsLoading(false);
+        }
       }
     };
     popularStocksCall();
 
-    // const getName = async () => {
-    //   let tickerInfo = await dispatch(fetchSingleStockName("TSLA"));
-    //   await console.log(tickerInfo.payload.results.name);
-    //   return tickerInfo.payload.results.name;
-    // };
-
-    // getName();
-
-    // const tickers = getRandomTickers();
-    // console.log(tickers);
-    // const popularStocks = {};
-    // for (let i = 0; i < tickers.length; i++) {
-    //   let ticker = tickers[i];
-    //   popularStocks.ticker = [dispatch(fetchSingleStockName(ticker))];
-    // }
-
     //todo do thunk calls to get the item for the 4 tickers one to tickerdetails one to aggregates per minute
   }, [dispatch]);
+
+  if (isLoading) {
+    return <div>Yeah its loading woooooooo nice graphics here please</div>;
+  }
 
   return <div>pop stocks here yay</div>;
 };
