@@ -7,13 +7,17 @@ const Watchlist = db.define("watchlist", {
     primaryKey: true,
     autoIncrement: true,
   },
-  ticker: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
+  // ticker: {
+  //   type: Sequelize.STRING,
+  //   allowNull: true,
+  //   unique: true,
+  // },
+  tickers: {
+    type: Sequelize.ARRAY(Sequelize.DataTypes.STRING),
+    defaultValue: [],
   },
 });
 
-Watchlist.belongsTo(User, { foreignKey: "user_id" });
+// Watchlist.belongsTo(User, { foreignKey: "user_id" });
 // console.log(Watchlist.prototype);
 module.exports = Watchlist;
