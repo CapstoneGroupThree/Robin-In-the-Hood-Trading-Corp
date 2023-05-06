@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchEntireWatchList,
@@ -12,6 +12,7 @@ const WatchListView = () => {
   const id = useSelector((state) => state.auth.me.id);
   const watchlist = useSelector(selectWatchList);
   const [isLoading, setIsLoading] = useState(true);
+  const hasRunRef = useRef(false);
 
   const now = new Date();
   const year = now.getFullYear();
@@ -120,9 +121,10 @@ const WatchListView = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (watchlist.list) {
+    if (watchlist.list && !hasRunRef.current) {
       console.log(watchlist.list);
       let list = watchlist.list;
+
       const runWLStocksFetch = async (list) => {
         await Promise.all(
           list.map(async (ticker) => {
@@ -131,8 +133,12 @@ const WatchListView = () => {
           })
         );
       };
+
       runWLStocksFetch(list);
+
       setIsLoading(false);
+
+      hasRunRef.current = true;
     }
   }, [watchlist]);
 
@@ -140,7 +146,25 @@ const WatchListView = () => {
     return <div> Watchlist Loading wooooo</div>;
   }
 
-  return <div>WatchList done loading</div>;
+  return (
+    <div>
+      WatchList
+      <div>
+        {Object.entries(watchlist)
+          .filter(([key]) => key !== "list")
+          .map(([ticker, stockInfo]) => {
+            const trimmedName = trimName(stockInfo.name);
+            return (
+              <div key={ticker} className="Watchlist">
+                <h2>Name: {trimmedName}</h2>
+                <p>Ticker: {ticker}</p>
+                <p>Price: {stockInfo.close}</p>
+              </div>
+            );
+          })}
+      </div>
+    </div>
+  );
 };
 
 export default WatchListView;
