@@ -5,14 +5,31 @@ import {
   fetchWLSingleStockName,
   fetchWLSingleStockTickerPrice,
   selectWatchList,
+  removeWatchListItem,
 } from "./watchListViewSlice";
+import "./WatchListView.css";
 
 const WatchListView = () => {
   const dispatch = useDispatch();
   const id = useSelector((state) => state.auth.me.id);
   const watchlist = useSelector(selectWatchList);
   const [isLoading, setIsLoading] = useState(true);
+  const [popupVisible, setPopupVisible] = useState(false);
   const hasRunRef = useRef(false);
+
+  const handleRemove = (e) => {
+    e.preventDefault();
+    let ticker = e.target.value;
+    dispatch(removeWatchListItem({ id, ticker }));
+  };
+
+  const handlePopUpClick = () => {
+    setPopupVisible(!popupVisible);
+  };
+
+  const handleOverlayClick = () => {
+    setPopupVisible(false);
+  };
 
   const now = new Date();
   const year = now.getFullYear();
@@ -148,7 +165,32 @@ const WatchListView = () => {
 
   return (
     <div>
-      WatchList
+      <h2 style={{ color: "red" }} onClick={handlePopUpClick}>
+        WatchList
+      </h2>
+      {popupVisible && (
+        <>
+          <div className="overlay" onClick={handleOverlayClick}></div>
+          <div className="popup">
+            {Object.entries(watchlist)
+              .filter(([key]) => key !== "list")
+              .map(([ticker, stockInfo]) => {
+                const trimmedName = trimName(stockInfo.name);
+                return (
+                  <div key={ticker} className="Watchlist">
+                    <h2>Name: {trimmedName}</h2>
+                    <p>Ticker: {ticker}</p>
+                    <p>Price: {stockInfo.close}</p>
+                    <button value={ticker} onClick={handleRemove}>
+                      Remove
+                    </button>
+                  </div>
+                );
+              })}
+          </div>
+          ;
+        </>
+      )}
       <div>
         {Object.entries(watchlist)
           .filter(([key]) => key !== "list")

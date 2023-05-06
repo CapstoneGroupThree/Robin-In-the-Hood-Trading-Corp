@@ -26,9 +26,7 @@ const Home = () => {
         </div>
       </div>
       <div className="watchlist">
-        <h2>
-          <WatchListView />
-        </h2>
+        <WatchListView />
       </div>
       <div className="aibot">
         <img
