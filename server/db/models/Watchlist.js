@@ -14,7 +14,7 @@ const Watchlist = db.define("watchlist", {
   // },
   tickers: {
     type: Sequelize.ARRAY(Sequelize.DataTypes.STRING),
-    defaultValue: [],
+    defaultValue: ["HOOD", "TSLA", "AAPL"],
   },
 });
 

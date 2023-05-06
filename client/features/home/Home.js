@@ -15,20 +15,28 @@ const Home = () => {
   return (
     <div>
       <SearchBar name={displayedName} />
-      <h2>Asset</h2>
-      <h2> Total Balance: {balance}</h2>
-      <h2> Popular Stocks</h2>
-      <div className="popularStocksHomeView">
-        <PopularStocksHomeView />
+      <div className="assets">
+        <h2>Asset</h2>
+        <h2> Total Balance: {balance}</h2>
       </div>
-      <h2>
-        <WatchListView />
-      </h2>
-      <img
-        src="/aiChatRB.png"
-        alt="your AI chat assistant "
-        style={{ width: "5rem", height: "5rem" }}
-      ></img>
+      <div className="popularStocks">
+        <h2> Popular Stocks</h2>
+        <div className="popularStocksHomeView">
+          <PopularStocksHomeView />
+        </div>
+      </div>
+      <div className="watchlist">
+        <h2>
+          <WatchListView />
+        </h2>
+      </div>
+      <div className="aibot">
+        <img
+          src="/aiChatRB.png"
+          alt="your AI chat assistant "
+          style={{ width: "5rem", height: "5rem" }}
+        ></img>
+      </div>
     </div>
   );
 };

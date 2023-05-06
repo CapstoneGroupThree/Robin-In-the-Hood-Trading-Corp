@@ -217,7 +217,7 @@ const PopularStocksHomeView = () => {
           <div key={ticker} className="stock">
             <h2>Name: {trimmedName}</h2>
             <p>Ticker: {ticker}</p>
-            <p>Close: {stockInfo.close}</p>
+            <p>Price: {stockInfo.close}</p>
           </div>
         );
       })}
