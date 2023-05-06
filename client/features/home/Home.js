@@ -24,6 +24,11 @@ const Home = () => {
       <h2>
         <WatchListView />
       </h2>
+      <img
+        src="/aiChatRB.png"
+        alt="your AI chat assistant "
+        style={{ width: "5rem", height: "5rem" }}
+      ></img>
     </div>
   );
 };

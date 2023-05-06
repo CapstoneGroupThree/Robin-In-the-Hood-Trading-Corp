@@ -190,10 +190,19 @@ const PopularStocksHomeView = () => {
     //todo do thunk calls to get the item for the 4 tickers one to tickerdetails one to aggregates per minute
   }, [dispatch]);
 
+  useEffect(() => {
+    if (numOfPopStocksInfoInState >= 4) {
+      setIsLoading(false);
+    }
+  }, [popularStocks]);
+
   if (isLoading) {
     return <div>Yeah its loading woooooooo nice graphics here please</div>;
   }
   const trimName = (name, maxLength = 30) => {
+    if (!name) {
+      return "";
+    }
     if (name.length > maxLength) {
       return name.slice(0, maxLength) + "...";
     }
