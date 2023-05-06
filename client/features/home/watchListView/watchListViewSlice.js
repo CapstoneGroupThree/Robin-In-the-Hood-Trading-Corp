@@ -17,7 +17,7 @@ export const fetchWLSingleStockName = createAsyncThunk(
 );
 
 export const fetchWLSingleStockTickerPrice = createAsyncThunk(
-  "fetchPopStockTickerPrice",
+  "fetchWLStockTickerPrice",
   async ({ ticker, marketOpen, from, to }) => {
     try {
       if (marketOpen) {
