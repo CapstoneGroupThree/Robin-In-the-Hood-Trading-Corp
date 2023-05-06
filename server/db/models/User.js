@@ -2,6 +2,7 @@ const db = require("../db");
 const Sequelize = require("sequelize");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const Watchlist = require("./Watchlist");
 require("dotenv").config();
 
 const SALT_ROUNDS = 10;
@@ -83,5 +84,5 @@ const hashPassword = async (user) => {
 User.beforeCreate(hashPassword);
 User.beforeUpdate(hashPassword);
 User.beforeBulkCreate((users) => Promise.all(users.map(hashPassword)));
-
+// User.hasOne(Watchlist);
 module.exports = User;
