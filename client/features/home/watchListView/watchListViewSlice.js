@@ -1,6 +1,22 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+export const fetchEntireWatchList = createAsyncThunk(
+  "fetchEntireWatchList",
+  async (id) => {
+    try {
+      const watchlist = await axios.get(
+        `http://localhost:8080/proxy/watchlist/${id}`
+      );
+      return watchlist.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+//todo post and put routes for add delete feature
+
 export const fetchWLSingleStockName = createAsyncThunk(
   "fetchWLStockNameByTicker",
   async (ticker) => {
