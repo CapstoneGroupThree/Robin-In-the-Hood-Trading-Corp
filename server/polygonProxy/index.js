@@ -5,6 +5,8 @@ module.exports = router;
 router.use("/mde", require("./mde"));
 //Reference Data Endpoints
 router.use("/rde", require("./rde"));
+//Watchlist
+router.use("/watchlist", require("./watchlist"));
 
 router.use((req, res, next) => {
   const error = new Error("Not Found");
