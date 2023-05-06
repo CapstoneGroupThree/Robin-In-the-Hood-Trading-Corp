@@ -135,7 +135,7 @@ const PopularStocksHomeView = () => {
     // Pass marketOpen and from, to to the thunk
     const getTickerPrice = async () => {
       let tickerPriceInfo = await dispatch(
-        fetchSingleStockTickerInfo("TSLA", marketOpen, from, to)
+        fetchSingleStockTickerInfo({ ticker: "TSLA", marketOpen, from, to })
       );
       await console.log(tickerPriceInfo);
       return tickerPriceInfo;

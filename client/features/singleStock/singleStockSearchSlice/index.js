@@ -18,16 +18,16 @@ export const fetchSingleStockName = createAsyncThunk(
 
 export const fetchSingleStockTickerInfo = createAsyncThunk(
   "fetchStockTickerInfo",
-  async (ticker, marketOpen, from, to) => {
+  async ({ ticker, marketOpen, from, to }) => {
     console.log(ticker, marketOpen, from, to);
     console.log(typeof marketOpen);
     try {
-      if (marketOpen === "true") {
+      if (marketOpen) {
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/aggregates?ticker=${ticker}&from=${from}&to=${to}`
         );
         return response.data;
-      } else if (marketOpen === "false") {
+      } else if (!marketOpen) {
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/open-close?ticker=${ticker}&date=${to}`
         );
