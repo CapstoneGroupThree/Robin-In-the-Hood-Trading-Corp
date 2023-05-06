@@ -14,12 +14,6 @@ const PopularStocksHomeView = () => {
   const popularStocks = useSelector(selectSinglePopularStock);
   // console.log(popularStocks);
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  let to = `${year}-${month}-${day}`;
-
   const tickerNames = [
     "GOOGL",
     "AMZN",
@@ -62,6 +56,12 @@ const PopularStocksHomeView = () => {
     "VZ",
     "WMT",
   ];
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  let to = `${year}-${month}-${day}`;
 
   const fetchHolidays = async () => {
     try {
@@ -141,6 +141,21 @@ const PopularStocksHomeView = () => {
     return getTickerPrice(ticker);
   };
 
+  const getTickerName = async (ticker) => {
+    let tickerInfo = await dispatch(fetchSinglePopularStockName(ticker));
+    return tickerInfo.payload.results.name;
+  };
+
+  const trimName = (name, maxLength = 30) => {
+    if (!name) {
+      return "";
+    }
+    if (name.length > maxLength) {
+      return name.slice(0, maxLength) + "...";
+    }
+    return name;
+  };
+
   const getRandomTickers = () => {
     const selectedTickers = [];
     const numToSelect = 4;
@@ -153,11 +168,6 @@ const PopularStocksHomeView = () => {
     }
     // todo put thunk logic on front end instead to make sure that we are making valid calls, also make sure that the thing isnt going to make a call on weekends/holidays where the stock exchange isnt open
     return selectedTickers;
-  };
-
-  const getTickerName = async (ticker) => {
-    let tickerInfo = await dispatch(fetchSinglePopularStockName(ticker));
-    return tickerInfo.payload.results.name;
   };
 
   let numOfPopStocksInfoInState = Object.keys(popularStocks).length;
@@ -186,8 +196,6 @@ const PopularStocksHomeView = () => {
           console.error("Error fetching stocks:", error);
         });
     } //else everything we need should be in the state via (popularStocks)
-
-    //todo do thunk calls to get the item for the 4 tickers one to tickerdetails one to aggregates per minute
   }, [dispatch]);
 
   useEffect(() => {
@@ -199,15 +207,6 @@ const PopularStocksHomeView = () => {
   if (isLoading) {
     return <div>Yeah its loading woooooooo nice graphics here please</div>;
   }
-  const trimName = (name, maxLength = 30) => {
-    if (!name) {
-      return "";
-    }
-    if (name.length > maxLength) {
-      return name.slice(0, maxLength) + "...";
-    }
-    return name;
-  };
 
   return (
     <div className="popularStocksView">

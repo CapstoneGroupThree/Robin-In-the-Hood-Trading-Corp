@@ -61,6 +61,9 @@ export const watchlistStocksViewSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(fetchEntireWatchList.fulfilled, (state, action) => {
+      state.watchlist.list = action.payload.tickers;
+    });
     builder.addCase(fetchWLSingleStockName.fulfilled, (state, action) => {
       const ticker = action.payload.ticker;
       if (!state.watchlist[ticker]) {
