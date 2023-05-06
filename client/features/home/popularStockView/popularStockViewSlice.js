@@ -50,7 +50,11 @@ export const popularStocksViewSlice = createSlice({
       if (!state.stocks[ticker]) {
         state.stocks[ticker] = {};
       }
+      //make sure its loaded or things can look wonky
       state.stocks[ticker].name = action.payload.results.name;
+      if (state.stocks[ticker].close !== undefined) {
+        state.stocks[ticker].isLoaded = true;
+      }
     });
     builder.addCase(
       fetchSinglePopularStockTickerPrice.fulfilled,
@@ -60,11 +64,15 @@ export const popularStocksViewSlice = createSlice({
           state.stocks[ticker] = {};
         }
         state.stocks[ticker].close = action.payload.close;
+        if (state.stocks[ticker].name !== undefined) {
+          state.stocks[ticker].isLoaded = true;
+        }
       }
     );
   },
 });
 
-export const selectSingleStock = (state) => state.popularStocksView.stocks;
+export const selectSinglePopularStock = (state) =>
+  state.popularStocksView.stocks;
 
 export default popularStocksViewSlice.reducer;

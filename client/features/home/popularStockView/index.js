@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchSinglePopularStockName,
   fetchSinglePopularStockTickerPrice,
+  selectSinglePopularStock,
 } from "./popularStockViewSlice";
 
 const PopularStocksHomeView = () => {
   const dispatch = useDispatch();
 
   const [isLoading, setIsLoading] = useState(true);
+  //this is where we have the things in the state
+  const popularStocks = useSelector(selectSinglePopularStock);
+  // console.log(popularStocks);
+
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -155,30 +160,32 @@ const PopularStocksHomeView = () => {
     return tickerInfo.payload.results.name;
   };
 
-  let popularStocks = {};
+  let numOfPopStocksInfoInState = Object.keys(popularStocks).length;
+  console.log(numOfPopStocksInfoInState);
 
   useEffect(() => {
     const selectedTickers = getRandomTickers();
     console.log(selectedTickers);
-    const popularStocksCall = async () => {
-      for (let ticker of selectedTickers) {
-        let numberOfKeys = Object.keys(popularStocks).length + 1;
-        console.log(ticker);
-        let tickerInfo = await getStockInfo(ticker);
-        let tickerName = await getTickerName(ticker);
-        await console.log(tickerInfo);
-        await console.log(tickerName);
-        popularStocks[`${ticker}`] = {};
-        popularStocks[`${ticker}`].close = tickerInfo;
-        popularStocks[`${ticker}`].name = tickerName;
-        console.log(popularStocks);
-        console.log(numberOfKeys);
-        if (numberOfKeys === 4) {
-          setIsLoading(false);
-        }
-      }
+    const runPopStocksFetch = async (arrTickers) => {
+      await Promise.all(
+        arrTickers.map(async (ticker) => {
+          await getStockInfo(ticker);
+          await getTickerName(ticker);
+        })
+      );
     };
-    popularStocksCall();
+
+    if (numOfPopStocksInfoInState < 4) {
+      console.log("running fetch");
+      runPopStocksFetch(selectedTickers)
+        .then(() => {
+          console.log("done loading");
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching stocks:", error);
+        });
+    } //else everything we need should be in the state via (popularStocks)
 
     //todo do thunk calls to get the item for the 4 tickers one to tickerdetails one to aggregates per minute
   }, [dispatch]);
@@ -186,8 +193,27 @@ const PopularStocksHomeView = () => {
   if (isLoading) {
     return <div>Yeah its loading woooooooo nice graphics here please</div>;
   }
+  const trimName = (name, maxLength = 30) => {
+    if (name.length > maxLength) {
+      return name.slice(0, maxLength) + "...";
+    }
+    return name;
+  };
 
-  return <div>pop stocks here yay</div>;
+  return (
+    <div className="popularStocksView">
+      {Object.entries(popularStocks).map(([ticker, stockInfo]) => {
+        const trimmedName = trimName(stockInfo.name);
+        return (
+          <div key={ticker} className="stock">
+            <h2>Name: {trimmedName}</h2>
+            <p>Ticker: {ticker}</p>
+            <p>Close: {stockInfo.close}</p>
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 export default PopularStocksHomeView;
