@@ -33,16 +33,24 @@ export default function SingleStockView(props) {
     return <div> Loading wooooo</div>;
   }
 
+  // todo maybe make the news section a little smaller 4 ~ etc
+  // ! uses clearbit Logo API to get logos
   return (
     <div>
-      <h2>Stock Name</h2>
+      {console.log(tickerInfo)}
+      <h2>{tickerInfo.name}</h2>
       <div>
         <h3></h3>
+        <p>{tickerInfo.ticker}</p>
+        <img
+          src={`https://logo.clearbit.com/${tickerInfo.homepage_url}`}
+          alt="Company Logo"
+        />
         <p>Price: </p>
         <p>High:</p>
         <p>Low: </p>
         <p>Close: </p>
-        <div>News</div>
+        <h2>News</h2>
         <div>
           {console.log("here", tickerNews)}
           {tickerNews.map((news) => {

@@ -63,6 +63,8 @@ const PopularStocksHomeView = () => {
   const day = String(now.getDate()).padStart(2, "0");
   let to = `${year}-${month}-${day}`;
 
+  //! used nager date api to get public holidays
+
   const fetchHolidays = async () => {
     try {
       const response = await fetch(
