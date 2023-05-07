@@ -163,47 +163,57 @@ const WatchListView = () => {
     return <div> Watchlist Loading wooooo</div>;
   }
 
+  let lengthOfWatchlist = Object.keys(watchlist).length - 1;
+
   return (
     <div>
       <h2 style={{ color: "red" }} onClick={handlePopUpClick}>
         WatchList
       </h2>
       {popupVisible && (
-        <>
+        <div>
           <div className="overlay" onClick={handleOverlayClick}></div>
           <div className="popup">
-            {Object.entries(watchlist)
-              .filter(([key]) => key !== "list")
-              .map(([ticker, stockInfo]) => {
-                const trimmedName = trimName(stockInfo.name);
-                return (
-                  <div key={ticker} className="Watchlist">
-                    <h2>Name: {trimmedName}</h2>
-                    <p>Ticker: {ticker}</p>
-                    <p>Price: {stockInfo.close}</p>
-                    <button value={ticker} onClick={handleRemove}>
-                      Remove
-                    </button>
-                  </div>
-                );
-              })}
+            {lengthOfWatchlist ? (
+              Object.entries(watchlist)
+                .filter(([key]) => key !== "list")
+                .map(([ticker, stockInfo]) => {
+                  const trimmedName = trimName(stockInfo.name);
+                  return (
+                    <div key={ticker} className="Watchlist">
+                      <h2>Name: {trimmedName}</h2>
+                      <p>Ticker: {ticker}</p>
+                      <p>Price: {stockInfo.close}</p>
+                      <button value={ticker} onClick={handleRemove}>
+                        Remove
+                      </button>
+                    </div>
+                  );
+                })
+            ) : (
+              <div className="popup">Watchlist is empty</div>
+            )}
           </div>
-          ;
-        </>
+        </div>
       )}
+
       <div>
-        {Object.entries(watchlist)
-          .filter(([key]) => key !== "list")
-          .map(([ticker, stockInfo]) => {
-            const trimmedName = trimName(stockInfo.name);
-            return (
-              <div key={ticker} className="Watchlist">
-                <h2>Name: {trimmedName}</h2>
-                <p>Ticker: {ticker}</p>
-                <p>Price: {stockInfo.close}</p>
-              </div>
-            );
-          })}
+        {lengthOfWatchlist ? (
+          Object.entries(watchlist)
+            .filter(([key]) => key !== "list")
+            .map(([ticker, stockInfo]) => {
+              const trimmedName = trimName(stockInfo.name);
+              return (
+                <div key={ticker} className="Watchlist">
+                  <h2>Name: {trimmedName}</h2>
+                  <p>Ticker: {ticker}</p>
+                  <p>Price: {stockInfo.close}</p>
+                </div>
+              );
+            })
+        ) : (
+          <div>Please add stocks to your watchlist</div>
+        )}
       </div>
     </div>
   );
