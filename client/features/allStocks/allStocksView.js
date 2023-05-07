@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom";
 import Pagination from "./paginationTest";
 import "./styles.css";
+import SearchBar from "../searchBar";
 
 const AllStocksView = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,6 @@ const AllStocksView = () => {
 
   const allStocks = useSelector(selectAllStocks);
   const allStockDetails = useSelector((state) => state.allStocks.stockDetails);
-  const totalPages = 10;
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -92,6 +92,7 @@ const AllStocksView = () => {
 
   return (
     <div>
+      <SearchBar />
       {console.log(currentPageNameCapInfo)}
       <h2>All Stocks</h2>
       <h3>Top 100 Most Popular</h3>
@@ -143,11 +144,7 @@ const AllStocksView = () => {
           </tbody>
         </table>
       )}
-      <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
+      <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
     </div>
   );
 };

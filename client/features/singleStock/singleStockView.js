@@ -6,6 +6,7 @@ import {
   fetchSingleStockTickerPriceInfo,
 } from "./singleStockViewSlice.js";
 import { addWatchListItem } from "../home/watchListView/watchListViewSlice.js";
+import SearchBar from "../searchBar/index.js";
 
 export default function SingleStockView(props) {
   const dispatch = useDispatch();
@@ -153,6 +154,7 @@ export default function SingleStockView(props) {
     <div>
       {console.log(tickerInfo)}
       {console.log(tickerPriceInfo)}
+      <SearchBar />
       <h2>{tickerInfo.name}</h2>
       <div>
         <h3></h3>
