@@ -130,14 +130,18 @@ const WatchListView = () => {
     return name;
   };
 
-  useEffect(() => {
-    const fetchWatchlist = async () => {
-      await dispatch(fetchEntireWatchList(id));
-    };
-    if (!watchlist.list) {
-      fetchWatchlist();
-    }
-  }, [dispatch]);
+  useEffect(
+    () => {
+      const fetchWatchlist = async () => {
+        await dispatch(fetchEntireWatchList(id));
+      };
+      if (!watchlist.list) {
+        fetchWatchlist();
+      }
+    },
+    [dispatch],
+    watchlist
+  );
 
   useEffect(() => {
     if (watchlist.list && !hasRunRef.current) {

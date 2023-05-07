@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchSingleStockInfo,
   fetchSingleStockNews,
   fetchSingleStockTickerPriceInfo,
 } from "./singleStockViewSlice.js";
+import { addWatchListItem } from "../home/watchListView/watchListViewSlice.js";
 
 export default function SingleStockView(props) {
   const dispatch = useDispatch();
   const { ticker } = props;
+  const id = useSelector((state) => state.auth.me.id);
+  console.log(id);
 
   //! tesla is currently hardcoded in until all stocks is working
 
@@ -136,6 +139,13 @@ export default function SingleStockView(props) {
     return <div> Loading wooooo</div>;
   }
 
+  const handleAddToWatchList = async (e) => {
+    e.preventDefault();
+    let ticker = e.target.value;
+    console.log(ticker);
+    await dispatch(addWatchListItem({ id, ticker }));
+  };
+
   // todo maybe make the news section a little smaller 4 ~ etc
   // ! uses clearbit Logo API to get logos
   //! potentially might break during weekdays based on different api calls
@@ -178,7 +188,7 @@ export default function SingleStockView(props) {
       <div>
         <button onClick={() => console.log("Buy functionality")}>Buy</button>
         <button onClick={() => console.log("Sell functionality")}>Sell</button>
-        <button onClick={() => console.log("Add to watchlist functionality")}>
+        <button value={tickerInfo.ticker} onClick={handleAddToWatchList}>
           Add to Watchlist
         </button>
         <div>You already own: XXX shares:</div>
