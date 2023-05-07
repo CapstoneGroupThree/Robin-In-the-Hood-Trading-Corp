@@ -7,7 +7,7 @@ import {
   selectWatchList,
   removeWatchListItem,
 } from "./watchListViewSlice";
-import "./WatchListView.css";
+import "./watchlistView.css";
 
 const WatchListView = () => {
   const dispatch = useDispatch();
@@ -134,14 +134,16 @@ const WatchListView = () => {
     const fetchWatchlist = async () => {
       await dispatch(fetchEntireWatchList(id));
     };
-    fetchWatchlist();
+    if (!watchlist.list) {
+      fetchWatchlist();
+    }
   }, [dispatch]);
 
   useEffect(() => {
     if (watchlist.list && !hasRunRef.current) {
       console.log(watchlist.list);
-      let list = watchlist.list;
-
+      let list = watchlist.list.filter((ticker) => !watchlist[ticker]);
+      //todo once realtime(fake) is implemented we need to change this so that it potentially updates every minute etc.
       const runWLStocksFetch = async (list) => {
         await Promise.all(
           list.map(async (ticker) => {
@@ -220,3 +222,4 @@ const WatchListView = () => {
 };
 
 export default WatchListView;
+//todo make its pulling from the state if info is available in the state
