@@ -6,7 +6,6 @@ import {
   selectAllStocks,
 } from "../allStocks/allStocksSlice";
 import { Link } from "react-router-dom";
-import Pagination from "./paginationTest";
 import "./styles.css";
 import SearchBar from "../searchBar";
 
@@ -20,23 +19,38 @@ const AllStocksView = () => {
   const allStocks = useSelector(selectAllStocks);
   const allStockDetails = useSelector((state) => state.allStocks.stockDetails);
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    console.log("Selected page:", page);
+  const handlePageChange = (e) => {
+    e.preventDefault();
+    if (e.target.value === "prev") {
+      setCurrentPage(currentPage - 1);
+    }
+    if (e.target.value === "next") {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const trimName = (name, maxLength = 30) => {
+    if (!name) {
+      return "";
+    }
+    if (name.length > maxLength) {
+      return name.slice(0, maxLength) + "...";
+    }
+    return name;
   };
 
   useEffect(() => {
     const x = async () => {
       const date = "2023-05-05";
-      const page = 1;
+      const page = currentPage;
       //todo import date functionality and pass it to the fetchAllStocks
       //todo links to singlestock that work
       console.log("Date:", date, "Page:", page);
-      const currentPage = await dispatch(
+      const currentPageInfo = await dispatch(
         fetchAllStocks({ date: date, page: page })
       );
-      await console.log(currentPage.payload.results);
-      const fetchedInfo = currentPage.payload.results;
+      await console.log(currentPageInfo.payload.results);
+      const fetchedInfo = currentPageInfo.payload.results;
       // const fetchedInfoNameCap = fetchedInfo.map((info) => {info = {T: info.T}});
       //
       const updateNameCapState = () => {
@@ -62,7 +76,7 @@ const AllStocksView = () => {
       setIsLoading(false);
     };
     x();
-  }, [dispatch]);
+  }, [dispatch, currentPage]);
 
   // useEffect(() => {
   //   allStocks.forEach((stock) => {
@@ -116,7 +130,7 @@ const AllStocksView = () => {
                   <td>
                     <Link to="/singleStock" className="stock-link">
                       {currentPageNameCapInfo[stock.T]
-                        ? currentPageNameCapInfo[stock.T].name
+                        ? trimName(currentPageNameCapInfo[stock.T].name)
                         : "loading"}
                     </Link>
                   </td>
@@ -144,11 +158,21 @@ const AllStocksView = () => {
           </tbody>
         </table>
       )}
-      <Pagination currentPage={currentPage} onPageChange={handlePageChange} />
+      <div>
+        {currentPage > 1 ? (
+          <button value="prev" onClick={handlePageChange}>
+            Prev
+          </button>
+        ) : (
+          ""
+        )}
+        Page: {currentPage}
+        <button value="next" onClick={handlePageChange}>
+          Next
+        </button>
+      </div>
     </div>
   );
 };
 
 export default AllStocksView;
-
-//todo page functionality, add market data , name
