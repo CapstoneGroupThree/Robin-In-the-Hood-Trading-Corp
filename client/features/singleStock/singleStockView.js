@@ -7,14 +7,20 @@ import {
 } from "./singleStockViewSlice.js";
 import { addWatchListItem } from "../home/watchListView/watchListViewSlice.js";
 import SearchBar from "../searchBar/index.js";
+import { useParams } from "react-router-dom";
 
-export default function SingleStockView(props) {
+export default function SingleStockView() {
   const dispatch = useDispatch();
-  const { ticker } = props;
+  const { ticker } = useParams();
   const id = useSelector((state) => state.auth.me.id);
   console.log(id);
 
   //! tesla is currently hardcoded in until all stocks is working
+
+  const handleImageError = (e) => {
+    e.target.onerror = null; // Prevents infinite loop if the default image URL is also broken
+    e.target.src = "/404sorryCat.avif";
+  };
 
   const [isLoading, setIsLoading] = useState(true);
   const [tickerNews, setTickerNews] = useState([]);
@@ -118,9 +124,9 @@ export default function SingleStockView(props) {
   };
   useEffect(() => {
     const fetchInfoToRender = async () => {
-      const priceInfo = await getStockInfo("TSLA");
-      const info = await dispatch(fetchSingleStockInfo({ ticker: "TSLA" }));
-      const news = await dispatch(fetchSingleStockNews({ ticker: "TSLA" }));
+      const priceInfo = await getStockInfo(ticker);
+      const info = await dispatch(fetchSingleStockInfo({ ticker }));
+      const news = await dispatch(fetchSingleStockNews({ ticker }));
 
       // await console.log(info.payload);
       // await console.log(news.payload);
@@ -162,6 +168,8 @@ export default function SingleStockView(props) {
         <img
           src={`https://logo.clearbit.com/${tickerInfo.homepage_url}`}
           alt="Company Logo"
+          onError={handleImageError}
+          style={{ width: "10rem", height: "10rem" }}
         />
         <p>Price: {tickerPriceInfo.close} </p>
         <p>High:{tickerPriceInfo.high}</p>
@@ -171,20 +179,23 @@ export default function SingleStockView(props) {
         <h2>News</h2>
         <div>
           {console.log("here", tickerNews)}
-          {tickerNews.map((news) => {
-            return (
+          {tickerNews && tickerNews.length > 0 ? (
+            tickerNews.map((news) => (
               <div key={news.id}>
                 <div>{news.title}</div>
                 <img
                   src={news.image_url}
-                  alt="image"
+                  alt="company image"
                   style={{ width: "10rem", height: "10rem" }}
+                  onError={handleImageError}
                 ></img>
                 <div>Author: {news.author}</div>
                 <div>Date Published: {news.published_utc.slice(0, 10)}</div>
               </div>
-            );
-          })}
+            ))
+          ) : (
+            <div>Currently no news</div>
+          )}
         </div>
       </div>
       <div>

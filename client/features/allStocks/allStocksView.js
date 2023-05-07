@@ -128,7 +128,7 @@ const AllStocksView = () => {
               return (
                 <tr key={stock.T}>
                   <td>
-                    <Link to="/singleStock" className="stock-link">
+                    <Link to={`/singleStock/${stock.T}`} className="stock-link">
                       {currentPageNameCapInfo[stock.T]
                         ? trimName(currentPageNameCapInfo[stock.T].name)
                         : "loading"}
