@@ -34,8 +34,8 @@ export const fetchSingleStockNews = createAsyncThunk(
 );
 
 //todo this needs date check
-export const fetchSingleStockTickerInfo = createAsyncThunk(
-  "fetchSingleStockTickerInfo",
+export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
+  "fetchSingleStockTickerPriceInfo",
   async ({ ticker, marketOpen, from, to }) => {
     // console.log(ticker, marketOpen, from, to);
     // console.log(typeof marketOpen);
@@ -66,9 +66,12 @@ export const singleStockViewSlice = createSlice({
     builder.addCase(fetchSingleStockInfo.fulfilled, (state, action) => {
       return action.payload;
     });
-    builder.addCase(fetchSingleStockTickerInfo.fulfilled, (state, action) => {
-      return action.payload;
-    });
+    builder.addCase(
+      fetchSingleStockTickerPriceInfo.fulfilled,
+      (state, action) => {
+        return action.payload;
+      }
+    );
     builder.addCase(fetchSingleStockNews.fulfilled, (state, action) => {
       return action.payload;
     });
