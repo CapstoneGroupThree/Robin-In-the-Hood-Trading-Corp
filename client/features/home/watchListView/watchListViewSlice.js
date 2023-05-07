@@ -15,7 +15,20 @@ export const fetchEntireWatchList = createAsyncThunk(
   }
 );
 
-//todo post and put routes for add delete feature
+export const addWatchListItem = createAsyncThunk(
+  "addWatchListItem",
+  async ({ id, ticker }) => {
+    try {
+      const updatedWatchlist = await axios.post(
+        `http://localhost:8080/proxy/watchlist/${id}`,
+        { ticker: ticker }
+      );
+      return updatedWatchlist.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
 
 export const removeWatchListItem = createAsyncThunk(
   "removeWatchListItem",
@@ -110,6 +123,9 @@ export const watchlistStocksViewSlice = createSlice({
         //remove it
         delete state.watchlist[ticker];
       }
+    });
+    builder.addCase(addWatchListItem.fulfilled, (state, action) => {
+      state.watchlist.list = action.payload.tickers;
     });
   },
 });

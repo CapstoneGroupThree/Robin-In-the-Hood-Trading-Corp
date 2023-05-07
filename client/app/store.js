@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import logger from "redux-logger";
 import authReducer from "../features/auth/authSlice";
-import singleStockViewSliceReducer from "../features/singleStock/singleStockSearchSlice";
+import singleStockViewSliceReducer from "../features/singleStock/singleStockViewSlice.js";
 import popularStocksViewSliceReducer from "../features/home/popularStockView/popularStockViewSlice";
 import watchlistStocksViewSliceReducer from "../features/home/watchListView/watchListViewSlice";
 

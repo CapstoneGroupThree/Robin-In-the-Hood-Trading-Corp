@@ -1,14 +1,16 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchSingleStockName = createAsyncThunk(
-  "fetchStockNameByTicker",
-  async (ticker) => {
+//works without date check
+export const fetchSingleStockInfo = createAsyncThunk(
+  "fetchSingleStockInfoByTicker",
+  async ({ ticker }) => {
     try {
       const response = await axios.get(
         `http://localhost:8080/proxy/rde/ticker-details?ticker=${ticker}`
       );
-      return response.data;
+      console.log(response);
+      return response.data.results;
     } catch (error) {
       console.log(error);
       return error;
@@ -16,8 +18,24 @@ export const fetchSingleStockName = createAsyncThunk(
   }
 );
 
-export const fetchSingleStockTickerInfo = createAsyncThunk(
-  "fetchStockTickerInfo",
+// works without date check
+export const fetchSingleStockNews = createAsyncThunk(
+  "fetchSingleStockNews",
+  async ({ ticker }) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/proxy/rde//ticker-news?ticker=${ticker}`
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+//todo this needs date check
+export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
+  "fetchSingleStockTickerPriceInfo",
   async ({ ticker, marketOpen, from, to }) => {
     // console.log(ticker, marketOpen, from, to);
     // console.log(typeof marketOpen);
@@ -45,10 +63,16 @@ export const singleStockViewSlice = createSlice({
   initialState: {},
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchSingleStockName.fulfilled, (state, action) => {
+    builder.addCase(fetchSingleStockInfo.fulfilled, (state, action) => {
       return action.payload;
     });
-    builder.addCase(fetchSingleStockTickerInfo.fulfilled, (state, action) => {
+    builder.addCase(
+      fetchSingleStockTickerPriceInfo.fulfilled,
+      (state, action) => {
+        return action.payload;
+      }
+    );
+    builder.addCase(fetchSingleStockNews.fulfilled, (state, action) => {
       return action.payload;
     });
   },
