@@ -1,30 +1,65 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import {
+  fetchSingleStockInfo,
+  fetchSingleStockNews,
+  fetchSingleStockTickerInfo,
+} from "./singleStockViewSlice.js";
 
-export default function SingleStockView() {
-  const dummyData = [
-    {
-      name: "Apple Inc.",
-      symbol: "AAPL",
-      price: 150.0,
-      high: 152.0,
-      low: 148.0,
-      close: 150.0,
-      change: 2.15,
-      marketCap: Math.random() * 3e12,
-    },
-  ];
+export default function SingleStockView(props) {
+  const dispatch = useDispatch();
+  const { ticker } = props;
 
-  const stock = dummyData[0];
+  const [isLoading, setIsLoading] = useState(true);
+  const [tickerNews, setTickerNews] = useState([]);
+  const [tickerInfo, setTickerInfo] = useState({});
+
+  useEffect(() => {
+    const fetchInfoToRender = async () => {
+      const info = await dispatch(fetchSingleStockInfo({ ticker: "TSLA" }));
+      const news = await dispatch(fetchSingleStockNews({ ticker: "TSLA" }));
+      // await console.log(info.payload);
+      // await console.log(news.payload);
+      setTickerInfo(info.payload);
+      setTickerNews(news.payload.results);
+      // console.log(tickerInfo);
+      // console.log(tickerNews);
+      setIsLoading(false);
+    };
+    fetchInfoToRender();
+  }, [dispatch]);
+
+  if (isLoading) {
+    return <div> Loading wooooo</div>;
+  }
 
   return (
     <div>
-      <h2>{stock.name}</h2>
+      <h2>Stock Name</h2>
       <div>
-        <h3>{stock.symbol}</h3>
-        <p>Price: ${stock.price.toFixed(2)}</p>
-        <p>High: ${stock.high.toFixed(2)}</p>
-        <p>Low: ${stock.low.toFixed(2)}</p>
-        <p>Close: ${stock.close.toFixed(2)}</p>
+        <h3></h3>
+        <p>Price: </p>
+        <p>High:</p>
+        <p>Low: </p>
+        <p>Close: </p>
+        <div>News</div>
+        <div>
+          {console.log("here", tickerNews)}
+          {tickerNews.map((news) => {
+            return (
+              <div key={news.id}>
+                <div>{news.title}</div>
+                <img
+                  src={news.image_url}
+                  alt="image"
+                  style={{ width: "10rem", height: "10rem" }}
+                ></img>
+                <div>Author: {news.author}</div>
+                <div>Date Published: {news.published_utc.slice(0, 10)}</div>
+              </div>
+            );
+          })}
+        </div>
       </div>
       <div>
         <button onClick={() => console.log("Buy functionality")}>Buy</button>
@@ -32,7 +67,15 @@ export default function SingleStockView() {
         <button onClick={() => console.log("Add to watchlist functionality")}>
           Add to Watchlist
         </button>
+        <div>You already own: XXX shares:</div>
+        <img
+          src="/aiChatRB.png"
+          alt="your AI chat assistant "
+          style={{ width: "5rem", height: "5rem" }}
+        ></img>
       </div>
     </div>
   );
 }
+
+//todo add to watchlist func, stock other info

@@ -143,7 +143,7 @@ const WatchListView = () => {
     if (watchlist.list && !hasRunRef.current) {
       console.log(watchlist.list);
       let list = watchlist.list.filter((ticker) => !watchlist[ticker]);
-      //todo once realtime(fake) is implemented we need to change this so that it potentially updates every minute etc.
+      //todo once realtime(fake) chart is implemented we need to change this so that it potentially updates every minute etc.
       const runWLStocksFetch = async (list) => {
         await Promise.all(
           list.map(async (ticker) => {
