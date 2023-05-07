@@ -39,12 +39,91 @@ const AllStocksView = () => {
     return name;
   };
 
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  let to = `${year}-${month}-${day}`;
+
+  //! used nager date api to get public holidays
+
+  const fetchHolidays = async () => {
+    try {
+      const response = await fetch(
+        `https://date.nager.at/api/v3/PublicHolidays/${year}/US`
+      );
+
+      //filter holidays because veterans day and comlumbus dont count for stock exchanges, there's only 13 so should be relatively quick
+      //got market holiday info from https://www.aarp.org/money/investing/info-2023/stock-market-holidays.html#:~:text=They%20will%20close%20early%2C%20at,after%20Thanksgiving%20and%20Christmas%20Eve.
+      //api using: https://date.nager.at/swagger/index.html
+      const holidays = await response.json();
+      const filteredHolidays = holidays
+        .filter(
+          (holiday) =>
+            holiday.name !== "Veterans Day" && holiday.name !== "Columbus Day"
+        )
+        .map((holiday) => holiday.date);
+      // console.log(
+      //   "🚀 ~ file: index.js:102 ~ fetchHolidays ~ filteredHolidays:",
+      //   filteredHolidays
+      // );
+      return filteredHolidays;
+    } catch (error) {
+      console.error("Error fetching holidays:", error);
+      return [];
+    }
+  };
+
+  const getStockDate = async () => {
+    const holidays = await fetchHolidays();
+    const estOffset = -5 * 60; // Eastern Time is UTC-5
+    const utcOffset = -now.getTimezoneOffset();
+    now.setMinutes(now.getMinutes() + estOffset - utcOffset);
+
+    const dayOfWeek = now.getDay(); // 0 is Sunday, 6 is Saturday
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+
+    // Check if the current date is a holiday
+    const isHoliday = holidays.includes(to);
+
+    // Market is open on weekdays between 9:30 AM and 4:00 PM Eastern Time and not a holiday
+    const marketOpen =
+      dayOfWeek >= 1 &&
+      dayOfWeek <= 5 &&
+      (hour > 9 || (hour === 9 && minute >= 30)) &&
+      hour < 16 &&
+      !isHoliday;
+
+    const getMostRecentTradingDay = (date) => {
+      let newDate = new Date(date);
+      let currentMarketOpen = marketOpen;
+
+      while (!currentMarketOpen) {
+        newDate.setDate(newDate.getDate() - 1);
+
+        // Update the marketOpen condition inside the loop
+        const dayOfWeek = newDate.getDay();
+        const isHoliday = holidays.includes(newDate.toISOString().slice(0, 10));
+        currentMarketOpen = dayOfWeek >= 1 && dayOfWeek <= 5 && !isHoliday;
+      }
+      return newDate.toISOString().slice(0, 10);
+    };
+
+    const from = marketOpen ? to : getMostRecentTradingDay(now);
+    to = marketOpen ? to : from;
+    // console.log(marketOpen);
+    // console.log(from, to);
+    // Pass marketOpen and from, to to the thunk
+    return from;
+  };
+
   useEffect(() => {
     const x = async () => {
-      const date = "2023-05-05";
+      const date = await getStockDate();
       const page = currentPage;
       //todo import date functionality and pass it to the fetchAllStocks
-      //todo links to singlestock that work
+
       console.log("Date:", date, "Page:", page);
       const currentPageInfo = await dispatch(
         fetchAllStocks({ date: date, page: page })
@@ -109,7 +188,7 @@ const AllStocksView = () => {
       <SearchBar />
       {console.log(currentPageNameCapInfo)}
       <h2>All Stocks</h2>
-      <h3>Top 100 Most Popular</h3>
+      <h3>Popular Stocks</h3>
       {Object.keys(allStocks).length === 0 && <div>Loading stocks...</div>}
       {Object.keys(allStocks).length > 0 && (
         <table>

@@ -8,6 +8,7 @@ import {
   removeWatchListItem,
 } from "./watchListViewSlice";
 import "./watchlistView.css";
+import { Link } from "react-router-dom";
 
 const WatchListView = () => {
   const dispatch = useDispatch();
@@ -187,7 +188,9 @@ const WatchListView = () => {
                   const trimmedName = trimName(stockInfo.name);
                   return (
                     <div key={ticker} className="Watchlist">
-                      <h2>Name: {trimmedName}</h2>
+                      <Link to={`/singleStock/${ticker}`}>
+                        <h2>{trimmedName}</h2>
+                      </Link>
                       <p>Ticker: {ticker}</p>
                       <p>Price: {stockInfo.close}</p>
                       <button value={ticker} onClick={handleRemove}>
@@ -211,7 +214,9 @@ const WatchListView = () => {
               const trimmedName = trimName(stockInfo.name);
               return (
                 <div key={ticker} className="Watchlist">
-                  <h2>Name: {trimmedName}</h2>
+                  <Link to={`/singleStock/${ticker}`}>
+                    <h2>{trimmedName}</h2>
+                  </Link>
                   <p>Ticker: {ticker}</p>
                   <p>Price: {stockInfo.close}</p>
                 </div>

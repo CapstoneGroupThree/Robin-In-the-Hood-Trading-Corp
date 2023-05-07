@@ -5,6 +5,7 @@ import {
   fetchSinglePopularStockTickerPrice,
   selectSinglePopularStock,
 } from "./popularStockViewSlice";
+import { Link } from "react-router-dom";
 
 const PopularStocksHomeView = () => {
   const dispatch = useDispatch();
@@ -216,7 +217,10 @@ const PopularStocksHomeView = () => {
         const trimmedName = trimName(stockInfo.name);
         return (
           <div key={ticker} className="stock">
-            <h2>Name: {trimmedName}</h2>
+            <Link to={`/singleStock/${ticker}`}>
+              <h2> {trimmedName}</h2>
+            </Link>
+
             <p>Ticker: {ticker}</p>
             <p>Price: {stockInfo.close}</p>
           </div>
