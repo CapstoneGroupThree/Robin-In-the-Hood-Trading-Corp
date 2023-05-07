@@ -1,35 +1,61 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  fetchEntireWatchList,
-  fetchWLSingleStockName,
-  fetchWLSingleStockTickerPrice,
-  selectWatchList,
-  removeWatchListItem,
-} from "./watchListViewSlice";
-import "./WatchListView.css";
+  fetchSinglePopularStockName,
+  fetchSinglePopularStockTickerPrice,
+  selectSinglePopularStock,
+} from "./popularStockViewSlice";
 
-const WatchListView = () => {
+const PopularStocksHomeView = () => {
   const dispatch = useDispatch();
-  const id = useSelector((state) => state.auth.me.id);
-  const watchlist = useSelector(selectWatchList);
+
   const [isLoading, setIsLoading] = useState(true);
-  const [popupVisible, setPopupVisible] = useState(false);
-  const hasRunRef = useRef(false);
+  //this is where we have the things in the state
+  const popularStocks = useSelector(selectSinglePopularStock);
+  // console.log(popularStocks);
 
-  const handleRemove = (e) => {
-    e.preventDefault();
-    let ticker = e.target.value;
-    dispatch(removeWatchListItem({ id, ticker }));
-  };
-
-  const handlePopUpClick = () => {
-    setPopupVisible(!popupVisible);
-  };
-
-  const handleOverlayClick = () => {
-    setPopupVisible(false);
-  };
+  const tickerNames = [
+    "GOOGL",
+    "AMZN",
+    "AAPL",
+    "BAC",
+    "GE",
+    "GS",
+    "JNJ",
+    "JPM",
+    "MCD",
+    "MSFT",
+    "NFLX",
+    "NVDA",
+    "PFE",
+    "PG",
+    "TSLA",
+    "KO",
+    "DIS",
+    "V",
+    "BABA",
+    "AMD",
+    "CSCO",
+    "XOM",
+    "F",
+    "INTC",
+    "NKE",
+    "PYPL",
+    "ADBE",
+    "GOOG",
+    "AXP",
+    "T",
+    "BA",
+    "CVX",
+    "DAL",
+    "GM",
+    "IBM",
+    "MA",
+    "MRK",
+    "PEP",
+    "VZ",
+    "WMT",
+  ];
 
   const now = new Date();
   const year = now.getFullYear();
@@ -64,7 +90,7 @@ const WatchListView = () => {
     }
   };
 
-  const getWLStockInfo = async (ticker) => {
+  const getStockInfo = async (ticker) => {
     const holidays = await fetchHolidays();
     const estOffset = -5 * 60; // Eastern Time is UTC-5
     const utcOffset = -now.getTimezoneOffset();
@@ -107,7 +133,7 @@ const WatchListView = () => {
     // Pass marketOpen and from, to to the thunk
     const getTickerPrice = async (ticker) => {
       let tickerPriceInfo = await dispatch(
-        fetchWLSingleStockTickerPrice({ ticker, marketOpen, from, to })
+        fetchSinglePopularStockTickerPrice({ ticker, marketOpen, from, to })
       );
       // await console.log(tickerPriceInfo);
       return tickerPriceInfo.payload.close;
@@ -115,8 +141,8 @@ const WatchListView = () => {
     return getTickerPrice(ticker);
   };
 
-  const getWLTickerName = async (ticker) => {
-    let tickerInfo = await dispatch(fetchWLSingleStockName(ticker));
+  const getTickerName = async (ticker) => {
+    let tickerInfo = await dispatch(fetchSinglePopularStockName(ticker));
     return tickerInfo.payload.results.name;
   };
 
@@ -130,93 +156,72 @@ const WatchListView = () => {
     return name;
   };
 
+  const getRandomTickers = () => {
+    const selectedTickers = [];
+    const numToSelect = 4;
+    while (selectedTickers.length < numToSelect) {
+      const randomIndex = Math.floor(Math.random() * tickerNames.length);
+      const randomTicker = tickerNames[randomIndex];
+      if (!selectedTickers.includes(randomTicker)) {
+        selectedTickers.push(randomTicker);
+      }
+    }
+    // todo put thunk logic on front end instead to make sure that we are making valid calls, also make sure that the thing isnt going to make a call on weekends/holidays where the stock exchange isnt open
+    return selectedTickers;
+  };
+
+  let numOfPopStocksInfoInState = Object.keys(popularStocks).length;
+  console.log(numOfPopStocksInfoInState);
+
   useEffect(() => {
-    const fetchWatchlist = async () => {
-      await dispatch(fetchEntireWatchList(id));
+    const selectedTickers = getRandomTickers();
+    console.log(selectedTickers);
+    const runPopStocksFetch = async (arrTickers) => {
+      await Promise.all(
+        arrTickers.map(async (ticker) => {
+          await getStockInfo(ticker);
+          await getTickerName(ticker);
+        })
+      );
     };
-    fetchWatchlist();
+
+    if (numOfPopStocksInfoInState < 4) {
+      console.log("running fetch");
+      runPopStocksFetch(selectedTickers)
+        .then(() => {
+          console.log("done loading");
+          setIsLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching stocks:", error);
+        });
+    } //else everything we need should be in the state via (popularStocks)
   }, [dispatch]);
 
   useEffect(() => {
-    if (watchlist.list && !hasRunRef.current) {
-      console.log(watchlist.list);
-      let list = watchlist.list;
-
-      const runWLStocksFetch = async (list) => {
-        await Promise.all(
-          list.map(async (ticker) => {
-            await getWLStockInfo(ticker);
-            await getWLTickerName(ticker);
-          })
-        );
-      };
-
-      runWLStocksFetch(list);
-
+    if (numOfPopStocksInfoInState >= 4) {
       setIsLoading(false);
-
-      hasRunRef.current = true;
     }
-  }, [watchlist]);
+  }, [popularStocks]);
 
   if (isLoading) {
-    return <div> Watchlist Loading wooooo</div>;
+    return <div>Yeah its loading woooooooo nice graphics here please</div>;
   }
 
-  let lengthOfWatchlist = Object.keys(watchlist).length - 1;
-
   return (
-    <div>
-      <h2 style={{ color: "red" }} onClick={handlePopUpClick}>
-        WatchList
-      </h2>
-      {popupVisible && (
-        <div>
-          <div className="overlay" onClick={handleOverlayClick}></div>
-          <div className="popup">
-            {lengthOfWatchlist ? (
-              Object.entries(watchlist)
-                .filter(([key]) => key !== "list")
-                .map(([ticker, stockInfo]) => {
-                  const trimmedName = trimName(stockInfo.name);
-                  return (
-                    <div key={ticker} className="Watchlist">
-                      <h2>Name: {trimmedName}</h2>
-                      <p>Ticker: {ticker}</p>
-                      <p>Price: {stockInfo.close}</p>
-                      <button value={ticker} onClick={handleRemove}>
-                        Remove
-                      </button>
-                    </div>
-                  );
-                })
-            ) : (
-              <div className="popup">Watchlist is empty</div>
-            )}
+    <div className="popularStocksView">
+      {Object.entries(popularStocks).map(([ticker, stockInfo]) => {
+        const trimmedName = trimName(stockInfo.name);
+        return (
+          <div key={ticker} className="stock">
+            <h2>Name: {trimmedName}</h2>
+            <p>Ticker: {ticker}</p>
+            <p>Price: {stockInfo.close}</p>
           </div>
-        </div>
-      )}
-
-      <div>
-        {lengthOfWatchlist ? (
-          Object.entries(watchlist)
-            .filter(([key]) => key !== "list")
-            .map(([ticker, stockInfo]) => {
-              const trimmedName = trimName(stockInfo.name);
-              return (
-                <div key={ticker} className="Watchlist">
-                  <h2>Name: {trimmedName}</h2>
-                  <p>Ticker: {ticker}</p>
-                  <p>Price: {stockInfo.close}</p>
-                </div>
-              );
-            })
-        ) : (
-          <div>Please add stocks to your watchlist</div>
-        )}
-      </div>
+        );
+      })}
     </div>
   );
 };
 
-export default WatchListView;
+export default PopularStocksHomeView;
