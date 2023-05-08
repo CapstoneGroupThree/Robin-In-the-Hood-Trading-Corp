@@ -4,6 +4,8 @@ import {
   fetchSingleStockInfo,
   fetchSingleStockNews,
   fetchSingleStockTickerPriceInfo,
+  fetchSingleStockOpenCloseInfo,
+  selectSingleStock,
 } from "./singleStockViewSlice.js";
 import { addWatchListItem } from "../home/watchListView/watchListViewSlice.js";
 import SearchBar from "../searchBar/index.js";
@@ -13,6 +15,10 @@ export default function SingleStockView() {
   const dispatch = useDispatch();
   const { ticker } = useParams();
   const id = useSelector((state) => state.auth.me.id);
+  const singleStockInfo = useSelector(selectSingleStock);
+  // const allState = useSelector((state) => state);
+  // console.log("All state:", allState);
+
   console.log(id);
 
   //! tesla is currently hardcoded in until all stocks is working
@@ -107,6 +113,11 @@ export default function SingleStockView() {
       let tickerPriceInfo = await dispatch(
         fetchSingleStockTickerPriceInfo({ ticker, marketOpen, from, to })
       );
+      //save misc info into state
+      const response = await dispatch(
+        fetchSingleStockOpenCloseInfo({ ticker, to })
+      ).unwrap();
+      console.log("Response from fetchSingleStockOpenCloseInfo:", response);
       // await console.log(tickerPriceInfo);
       return tickerPriceInfo.payload;
     };
@@ -158,6 +169,7 @@ export default function SingleStockView() {
   //! potentially might break during weekdays based on different api calls
   return (
     <div>
+      {console.log("singleStockInfoOpenCLose", singleStockInfo.openClose.high)}
       {console.log(tickerInfo)}
       {console.log(tickerPriceInfo)}
       <SearchBar />
@@ -172,9 +184,11 @@ export default function SingleStockView() {
           style={{ width: "10rem", height: "10rem" }}
         />
         <p>Price: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
-        <p>High:{tickerPriceInfo.high || tickerPriceInfo.results[0].h}</p>
-        <p>Low: {tickerPriceInfo.low || tickerPriceInfo.results[0].l}</p>
-        <p>Close: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
+        <p>High:{tickerPriceInfo.high || singleStockInfo.openClose.high}</p>
+        <p>Low: {tickerPriceInfo.low || singleStockInfo.openClose.low}</p>
+        <p>
+          Close: {tickerPriceInfo.close || singleStockInfo.openClose.close}{" "}
+        </p>
         <p>Description: {tickerInfo.description} </p>
         <h2>News</h2>
         <div>

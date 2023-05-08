@@ -33,6 +33,20 @@ export const fetchSingleStockNews = createAsyncThunk(
   }
 );
 
+export const fetchSingleStockOpenCloseInfo = createAsyncThunk(
+  "fetchSingleStockOpenCloseInfo",
+  async ({ ticker, to }) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/proxy/mde/open-close?ticker=${ticker}&date=${to}`
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 //todo this needs date check
 export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
   "fetchSingleStockTickerPriceInfo",
@@ -60,24 +74,33 @@ export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
 
 export const singleStockViewSlice = createSlice({
   name: "singleStock",
-  initialState: {},
+  initialState: {
+    singleStock: {},
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchSingleStockInfo.fulfilled, (state, action) => {
-      return action.payload;
+      state.singleStock.info = action.payload;
     });
     builder.addCase(
       fetchSingleStockTickerPriceInfo.fulfilled,
       (state, action) => {
-        return action.payload;
+        state.singleStock.tickerPriceInfo = action.payload;
       }
     );
     builder.addCase(fetchSingleStockNews.fulfilled, (state, action) => {
-      return action.payload;
+      state.singleStock.news = action.payload;
     });
+    builder.addCase(
+      fetchSingleStockOpenCloseInfo.fulfilled,
+      (state, action) => {
+        console.log("Action payload:", action.payload);
+        state.singleStock.openClose = action.payload;
+      }
+    );
   },
 });
 
-export const selectSingleStock = (state) => state.singleStock;
+export const selectSingleStock = (state) => state.singleStockView.singleStock;
 
 export default singleStockViewSlice.reducer;
