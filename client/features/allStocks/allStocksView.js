@@ -1,93 +1,257 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  fetchAllStocks,
+  fetchAllStockDetails,
+  selectAllStocks,
+} from "../allStocks/allStocksSlice";
 import { Link } from "react-router-dom";
-import Pagination from "./paginationTest";
 import "./styles.css";
+import SearchBar from "../searchBar";
 
 const AllStocksView = () => {
-  const dummyData = [
-    {
-      name: "Apple Inc.",
-      symbol: "AAPL",
-      price: 150.0,
-      change: 2.15,
-      marketCap: Math.random() * 3e12,
-    },
-    {
-      name: "Microsoft Corporation",
-      symbol: "MSFT",
-      price: 275.3,
-      change: 1.85,
-      marketCap: Math.random() * 3e12,
-    },
-    {
-      name: "Amazon.com, Inc.",
-      symbol: "AMZN",
-      price: 3400.5,
-      change: -0.75,
-      marketCap: Math.random() * 3e12,
-    },
-  ];
-
-  const totalPages = 10;
+  const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentPageInfo, setCurrentPageInfo] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPageNameCapInfo, setCurrentPageNameCapInfo] = useState({});
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    console.log("Selected page:", page);
+  const allStocks = useSelector(selectAllStocks);
+  const allStockDetails = useSelector((state) => state.allStocks.stockDetails);
+
+  const handlePageChange = (e) => {
+    e.preventDefault();
+    if (e.target.value === "prev") {
+      setCurrentPage(currentPage - 1);
+    }
+    if (e.target.value === "next") {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
-  // Needs pagination functionality
+  const trimName = (name, maxLength = 30) => {
+    if (!name) {
+      return "";
+    }
+    if (name.length > maxLength) {
+      return name.slice(0, maxLength) + "...";
+    }
+    return name;
+  };
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  let to = `${year}-${month}-${day}`;
+
+  //! used nager date api to get public holidays
+
+  const fetchHolidays = async () => {
+    try {
+      const response = await fetch(
+        `https://date.nager.at/api/v3/PublicHolidays/${year}/US`
+      );
+
+      //filter holidays because veterans day and comlumbus dont count for stock exchanges, there's only 13 so should be relatively quick
+      //got market holiday info from https://www.aarp.org/money/investing/info-2023/stock-market-holidays.html#:~:text=They%20will%20close%20early%2C%20at,after%20Thanksgiving%20and%20Christmas%20Eve.
+      //api using: https://date.nager.at/swagger/index.html
+      const holidays = await response.json();
+      const filteredHolidays = holidays
+        .filter(
+          (holiday) =>
+            holiday.name !== "Veterans Day" && holiday.name !== "Columbus Day"
+        )
+        .map((holiday) => holiday.date);
+      // console.log(
+      //   "🚀 ~ file: index.js:102 ~ fetchHolidays ~ filteredHolidays:",
+      //   filteredHolidays
+      // );
+      return filteredHolidays;
+    } catch (error) {
+      console.error("Error fetching holidays:", error);
+      return [];
+    }
+  };
+
+  const getStockDate = async () => {
+    const holidays = await fetchHolidays();
+    const estOffset = -5 * 60; // Eastern Time is UTC-5
+    const utcOffset = -now.getTimezoneOffset();
+    now.setMinutes(now.getMinutes() + estOffset - utcOffset);
+
+    const dayOfWeek = now.getDay(); // 0 is Sunday, 6 is Saturday
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+
+    // Check if the current date is a holiday
+    const isHoliday = holidays.includes(to);
+
+    // Market is open on weekdays between 9:30 AM and 4:00 PM Eastern Time and not a holiday
+    const marketOpen =
+      dayOfWeek >= 1 &&
+      dayOfWeek <= 5 &&
+      (hour > 9 || (hour === 9 && minute >= 30)) &&
+      hour < 16 &&
+      !isHoliday;
+
+    const getMostRecentTradingDay = (date) => {
+      let newDate = new Date(date);
+      let currentMarketOpen = marketOpen;
+
+      while (!currentMarketOpen) {
+        newDate.setDate(newDate.getDate() - 1);
+
+        // Update the marketOpen condition inside the loop
+        const dayOfWeek = newDate.getDay();
+        const isHoliday = holidays.includes(newDate.toISOString().slice(0, 10));
+        currentMarketOpen = dayOfWeek >= 1 && dayOfWeek <= 5 && !isHoliday;
+      }
+      return newDate.toISOString().slice(0, 10);
+    };
+
+    const from = marketOpen ? to : getMostRecentTradingDay(now);
+    to = marketOpen ? to : from;
+    // console.log(marketOpen);
+    // console.log(from, to);
+    // Pass marketOpen and from, to to the thunk
+    return from;
+  };
+
+  useEffect(() => {
+    const x = async () => {
+      const date = await getStockDate();
+      const page = currentPage;
+      //todo import date functionality and pass it to the fetchAllStocks
+
+      console.log("Date:", date, "Page:", page);
+      const currentPageInfo = await dispatch(
+        fetchAllStocks({ date: date, page: page })
+      );
+      await console.log(currentPageInfo.payload.results);
+      const fetchedInfo = currentPageInfo.payload.results;
+      // const fetchedInfoNameCap = fetchedInfo.map((info) => {info = {T: info.T}});
+      //
+      const updateNameCapState = () => {
+        const objInfo = {};
+        fetchedInfo.forEach(async (stock) => {
+          const fetchedNameCap = await dispatch(
+            fetchAllStockDetails({ ticker: stock.T })
+          );
+          await console.log(fetchedNameCap.payload.results);
+          objInfo[stock.T] = fetchedNameCap.payload.results;
+          console.log(objInfo);
+          if (Object.keys(objInfo).length >= 10) {
+            setCurrentPageNameCapInfo(objInfo);
+          }
+        });
+      };
+      updateNameCapState();
+
+      // for (let ticker of fetchedInfo) {
+      //   objInfo[ticker.T] =
+      // }
+      await setCurrentPageInfo(fetchedInfo);
+      setIsLoading(false);
+    };
+    x();
+  }, [dispatch, currentPage]);
+
+  // useEffect(() => {
+  //   allStocks.forEach((stock) => {
+  //     dispatch(fetchAllStockDetails({ ticker: stock.T }));
+  //   });
+  // }, [allStockDetails, dispatch]);
+
+  const changePercentageFunc = (open, close) => {
+    const change = close - open;
+    const percentageChange = (change / open) * 100;
+    return percentageChange.toFixed(2);
+  };
+
+  const formatMarketCap = (number) => {
+    if (number >= 1e12) {
+      return (number / 1e12).toFixed(2) + "T";
+    } else if (number >= 1e9) {
+      return (number / 1e9).toFixed(2) + "B";
+    } else {
+      return number.toFixed(2);
+    }
+  };
+
+  if (isLoading) {
+    return <div>is Loading</div>;
+  }
+
   return (
     <div>
+      <SearchBar />
+      {console.log(currentPageNameCapInfo)}
       <h2>All Stocks</h2>
-      <h3>Top 100 Most Popular</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Symbol</th>
-            <th>Price</th>
-            <th>Today's Change (%)</th>
-            <th>Market Cap</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dummyData.map((stock, index) => (
-            <tr key={index}>
-              <td>
-                <Link to="/singleStock" className="stock-link">
-                  {stock.name}
-                </Link>
-              </td>
-              <td>
-                <Link to="/singleStock" className="stock-link">
-                  {stock.symbol}
-                </Link>
-              </td>
-              <td>${stock.price.toFixed(2)}</td>
-              <td>{stock.change.toFixed(2)}%</td>
-              <td>{formatMarketCap(stock.marketCap)}</td>
+      <h3>Popular Stocks</h3>
+      {Object.keys(allStocks).length === 0 && <div>Loading stocks...</div>}
+      {Object.keys(allStocks).length > 0 && (
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Symbol</th>
+              <th>Price</th>
+              <th>Today's Change (%)</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination
-        totalPages={totalPages}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
-      />
+          </thead>
+          <tbody>
+            {currentPageInfo.map((stock) => {
+              // const stockDetail = allStockDetails[stock.T];
+              // const marketCap = stockDetail ? stockDetail.marketCap : "N/A";
+              return (
+                <tr key={stock.T}>
+                  <td>
+                    <Link to={`/singleStock/${stock.T}`} className="stock-link">
+                      {currentPageNameCapInfo[stock.T]
+                        ? trimName(currentPageNameCapInfo[stock.T].name)
+                        : "loading"}
+                    </Link>
+                  </td>
+                  <td>{stock.T}</td>
+                  <td>${stock.c.toFixed(2)}</td>
+                  <td>{changePercentageFunc(stock.o, stock.c)}%</td>
+                </tr>
+                // <tr key={index}>
+                //   <td>
+                //     <Link to="/singleStock" className="stock-link">
+                //       {stockDetail ? stockDetail.name : "N/A"}
+                //     </Link>
+                //   </td>
+                //   <td>
+                //     <Link to="/singleStock" className="stock-link">
+                //       {stock.T}
+                //     </Link>
+                //   </td>
+                //   <td>${stock.c.toFixed(2)}</td>
+                //   <td>{changePercentageFunc(stock.o, stock.c)}%</td>
+                //   <td>{marketCap}</td>
+                // </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+      <div>
+        {currentPage > 1 ? (
+          <button value="prev" onClick={handlePageChange}>
+            Prev
+          </button>
+        ) : (
+          ""
+        )}
+        Page: {currentPage}
+        <button value="next" onClick={handlePageChange}>
+          Next
+        </button>
+      </div>
     </div>
   );
 };
-
-function formatMarketCap(number) {
-  if (number >= 1e12) {
-    return (number / 1e12).toFixed(2) + "T";
-  } else if (number >= 1e9) {
-    return (number / 1e9).toFixed(2) + "B";
-  } else {
-    return number.toFixed(2);
-  }
-}
 
 export default AllStocksView;

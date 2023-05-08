@@ -26,7 +26,7 @@ const AppRoutes = () => {
           <Route path="/*" element={<Home />} />
           <Route to="/home" element={<Home />} />
           <Route path="/allStocks" element={<AllStocksView />} />
-          <Route path="/singleStock" element={<SingleStockView />} />
+          <Route path="/singleStock/:ticker" element={<SingleStockView />} />
         </Routes>
       ) : (
         <Routes>
