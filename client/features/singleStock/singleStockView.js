@@ -171,10 +171,10 @@ export default function SingleStockView() {
           onError={handleImageError}
           style={{ width: "10rem", height: "10rem" }}
         />
-        <p>Price: {tickerPriceInfo.close} </p>
-        <p>High:{tickerPriceInfo.high}</p>
-        <p>Low: {tickerPriceInfo.low}</p>
-        <p>Close: {tickerPriceInfo.close} </p>
+        <p>Price: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
+        <p>High:{tickerPriceInfo.high || tickerPriceInfo.results[0].h}</p>
+        <p>Low: {tickerPriceInfo.low || tickerPriceInfo.results[0].l}</p>
+        <p>Close: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
         <p>Description: {tickerInfo.description} </p>
         <h2>News</h2>
         <div>
