@@ -100,12 +100,31 @@ const AllStocksView = () => {
       let currentMarketOpen = marketOpen;
 
       while (!currentMarketOpen) {
-        newDate.setDate(newDate.getDate() - 1);
-
-        // Update the marketOpen condition inside the loop
         const dayOfWeek = newDate.getDay();
+        const hour = newDate.getHours();
+        const minute = newDate.getMinutes();
         const isHoliday = holidays.includes(newDate.toISOString().slice(0, 10));
-        currentMarketOpen = dayOfWeek >= 1 && dayOfWeek <= 5 && !isHoliday;
+
+        if (
+          hour > 16 ||
+          (hour === 16 && minute >= 1) ||
+          dayOfWeek === 0 ||
+          dayOfWeek === 6 ||
+          isHoliday
+        ) {
+          if (hour > 16 || (hour === 16 && minute >= 1)) {
+            // If the hour is past 4 PM, set the newDate to 16:00 (market close)
+            newDate.setHours(16);
+            newDate.setMinutes(0);
+            newDate.setSeconds(0);
+            newDate.setMilliseconds(0);
+          } else {
+            // Move to the previous day
+            newDate.setDate(newDate.getDate() - 1);
+          }
+        } else {
+          currentMarketOpen = true;
+        }
       }
       return newDate.toISOString().slice(0, 10);
     };
@@ -167,16 +186,6 @@ const AllStocksView = () => {
     const change = close - open;
     const percentageChange = (change / open) * 100;
     return percentageChange.toFixed(2);
-  };
-
-  const formatMarketCap = (number) => {
-    if (number >= 1e12) {
-      return (number / 1e12).toFixed(2) + "T";
-    } else if (number >= 1e9) {
-      return (number / 1e9).toFixed(2) + "B";
-    } else {
-      return number.toFixed(2);
-    }
   };
 
   if (isLoading) {

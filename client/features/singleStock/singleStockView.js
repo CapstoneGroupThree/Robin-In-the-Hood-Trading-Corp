@@ -94,12 +94,31 @@ export default function SingleStockView() {
       let currentMarketOpen = marketOpen;
 
       while (!currentMarketOpen) {
-        newDate.setDate(newDate.getDate() - 1);
-
-        // Update the marketOpen condition inside the loop
         const dayOfWeek = newDate.getDay();
+        const hour = newDate.getHours();
+        const minute = newDate.getMinutes();
         const isHoliday = holidays.includes(newDate.toISOString().slice(0, 10));
-        currentMarketOpen = dayOfWeek >= 1 && dayOfWeek <= 5 && !isHoliday;
+
+        if (
+          hour > 16 ||
+          (hour === 16 && minute >= 1) ||
+          dayOfWeek === 0 ||
+          dayOfWeek === 6 ||
+          isHoliday
+        ) {
+          if (hour > 16 || (hour === 16 && minute >= 1)) {
+            // If the hour is past 4 PM, set the newDate to 16:00 (market close)
+            newDate.setHours(16);
+            newDate.setMinutes(0);
+            newDate.setSeconds(0);
+            newDate.setMilliseconds(0);
+          } else {
+            // Move to the previous day
+            newDate.setDate(newDate.getDate() - 1);
+          }
+        } else {
+          currentMarketOpen = true;
+        }
       }
       return newDate.toISOString().slice(0, 10);
     };
@@ -186,9 +205,8 @@ export default function SingleStockView() {
         <p>Price: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
         <p>High:{tickerPriceInfo.high || singleStockInfo.openClose.high}</p>
         <p>Low: {tickerPriceInfo.low || singleStockInfo.openClose.low}</p>
-        <p>
-          Close: {tickerPriceInfo.close || singleStockInfo.openClose.close}{" "}
-        </p>
+        <p>Open: {tickerPriceInfo.open || singleStockInfo.openClose.open}</p>
+        <p>Close: {tickerPriceInfo.close || singleStockInfo.openClose.close}</p>
         <p>Description: {tickerInfo.description} </p>
         <h2>News</h2>
         <div>
