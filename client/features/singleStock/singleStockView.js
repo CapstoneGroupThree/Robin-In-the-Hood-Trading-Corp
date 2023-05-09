@@ -76,6 +76,8 @@ export default function SingleStockView() {
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
 
+    //todo might need to add a check for 15 min delayed data??
+
     const dayOfWeek = now.getDay(); // 0 is Sunday, 6 is Saturday
     const hour = now.getHours();
     const minute = now.getMinutes();
@@ -226,7 +228,12 @@ export default function SingleStockView() {
           onError={handleImageError}
           style={{ width: "10rem", height: "10rem" }}
         />
-        <p>Price: {tickerPriceInfo.close || tickerPriceInfo.results[0].c}</p>
+        <p>
+          Price:{" "}
+          {tickerPriceInfo.close ||
+            tickerPriceInfo.results?.[0]?.c ||
+            tickerPriceInfo.preMarket}
+        </p>
         <p>High:{tickerPriceInfo.high || singleStockInfo.openClose.high}</p>
         <p>Low: {tickerPriceInfo.low || singleStockInfo.openClose.low}</p>
         <p>Open: {tickerPriceInfo.open || singleStockInfo.openClose.open}</p>
@@ -241,7 +248,9 @@ export default function SingleStockView() {
                 tickerPriceInfo.close || singleStockInfo.openClose.close
               }`
             : `Premarket: ${
-                tickerPriceInfo.open || singleStockInfo.openClose.open
+                tickerPriceInfo.preMarket ||
+                tickerPriceInfo.open ||
+                singleStockInfo.openClose.open
               }`}
         </p>
         <p>Description: {tickerInfo.description} </p>

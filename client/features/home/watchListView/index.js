@@ -156,10 +156,12 @@ const WatchListView = () => {
           to,
         })
       );
-      // await console.log(tickerPriceInfo);
-      return tickerPriceInfo.payload.close;
+      await console.log(tickerPriceInfo);
+      return tickerPriceInfo.payload.close || tickerPriceInfo.payload.preMarket;
     };
-    return getTickerPrice(ticker);
+    const tickerPrice = await getTickerPrice(ticker);
+    console.log(`[getStockInfo] Ticker: ${ticker}, Price: ${tickerPrice}`);
+    return tickerPrice;
   };
 
   const getWLTickerName = async (ticker) => {
@@ -264,7 +266,7 @@ const WatchListView = () => {
                     <h2>{trimmedName}</h2>
                   </Link>
                   <p>Ticker: {ticker}</p>
-                  <p>Price: {stockInfo.close}</p>
+                  <p>Price: {stockInfo.close || stockInfo.preMarket}</p>
                 </div>
               );
             })

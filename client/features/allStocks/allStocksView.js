@@ -86,6 +86,7 @@ const AllStocksView = () => {
     const dayOfWeek = now.getDay(); // 0 is Sunday, 6 is Saturday
     const hour = now.getHours();
     const minute = now.getMinutes();
+    console.log(hour, minute);
 
     // Check if the current date is a holiday
     const isHoliday = holidays.includes(to);
@@ -171,7 +172,8 @@ const AllStocksView = () => {
       })
     );
     // await console.log(tickerPriceInfo);
-    return tickerPriceInfo.payload.close;
+    console.log(tickerPriceInfo.payload);
+    return tickerPriceInfo.payload.close || tickerPriceInfo.payload.preMarket;
   };
 
   useEffect(() => {

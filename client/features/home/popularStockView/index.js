@@ -186,7 +186,7 @@ const PopularStocksHomeView = () => {
         })
       );
       // await console.log(tickerPriceInfo);
-      return tickerPriceInfo.payload.close;
+      return tickerPriceInfo.payload.close || tickerPriceInfo.payload.preMarket;
     };
     const tickerPrice = await getTickerPrice(ticker);
     console.log(`[getStockInfo] Ticker: ${ticker}, Price: ${tickerPrice}`);
@@ -272,7 +272,7 @@ const PopularStocksHomeView = () => {
             </Link>
 
             <p>Ticker: {ticker}</p>
-            <p>Price: {stockInfo.close}</p>
+            <p>Price: {stockInfo.close || stockInfo.preMarket}</p>
           </div>
         );
       })}

@@ -33,7 +33,11 @@ export const fetchSinglePopularStockTickerPrice = createAsyncThunk(
           `http://localhost:8080/proxy/mde/open-close?ticker=${ticker}&date=${to}`
         );
         console.log(response.data);
-        return { ticker, close: response.data.close };
+        return {
+          ticker,
+          close: response.data.close,
+          preMarket: response.data.preMarket,
+        };
       }
     } catch (error) {
       console.log(error);
@@ -68,6 +72,10 @@ export const popularStocksViewSlice = createSlice({
           state.stocks[ticker] = {};
         }
         state.stocks[ticker].close = action.payload.close;
+        if (state.stocks[ticker].name !== undefined) {
+          state.stocks[ticker].isLoaded = true;
+        }
+        state.stocks[ticker].preMarket = action.payload.preMarket;
         if (state.stocks[ticker].name !== undefined) {
           state.stocks[ticker].isLoaded = true;
         }

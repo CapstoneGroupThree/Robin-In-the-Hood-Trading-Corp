@@ -55,6 +55,7 @@ export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
     // console.log(typeof marketOpen);
     try {
       console.log(marketOpen);
+      console.log(from, to);
       if (marketOpen) {
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/aggregates?ticker=${ticker}&from=${from}&to=${to}`
@@ -67,6 +68,16 @@ export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
         );
         console.log(response.data);
         return response.data;
+        // {
+        //   status: 'OK',
+        //   from: '2023-05-09',
+        //   symbol: 'ZSL',
+        //   open: 16.53,
+        //   high: 16.5464,
+        //   low: 16.29,
+        //   volume: 138300,
+        //   preMarket: 16.55
+        // }
       }
     } catch (error) {
       console.log(error);
