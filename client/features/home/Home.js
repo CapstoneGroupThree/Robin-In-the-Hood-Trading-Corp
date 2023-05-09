@@ -13,26 +13,35 @@ const Home = () => {
   // console.log(displayedName);
   //todo create a search bar feature for pages that need it
   return (
-    <div>
-      <SearchBar name={displayedName} />
-      <div className="assets">
-        <h2>Asset</h2>
-        <h2> Total Balance: {balance}</h2>
+    <div className="font-semibold flex  flex-col h-screen box-content overflow-hidden">
+      <div className="flex justify-between items-center mb-4">
+        <h1>Home</h1>
+        <SearchBar name={displayedName} />
       </div>
-      <div className="popularStocks">
-        <h2> Popular Stocks</h2>
-        <div className="popularStocksHomeView">
-          <PopularStocksHomeView />
+      <div className="flex flex-grow h-3/5  overflow-hidden border  ">
+        <div className="w-1/2 h-full flex flex-col box-content">
+          <div className="assets h-1/2  border border-gray-400 p-4">
+            <h2>Asset</h2>
+            <h2> Total Balance: {balance}</h2>
+          </div>
+          <div className="watchlist h-1/2  border border-gray-400 p-4">
+            <WatchListView />
+          </div>
+        </div>
+
+        <div className="popularStocks  w-1/2 flex flex-col border border-gray-400 p-4 ">
+          <h2> Popular Stocks</h2>
+
+          <div className="popularStocksHomeView  flex-grow border border-gray-400 p-4">
+            <PopularStocksHomeView />
+          </div>
         </div>
       </div>
-      <div className="watchlist">
-        <WatchListView />
-      </div>
-      <div className="aibot">
+      <div className="aibot absolute bottom-0 right-0">
         <img
           src="/aiChatRB.png"
           alt="your AI chat assistant "
-          style={{ width: "5rem", height: "5rem" }}
+          className="w-20 h-20"
         ></img>
       </div>
     </div>

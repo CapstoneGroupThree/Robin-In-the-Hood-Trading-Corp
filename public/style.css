@@ -19,3 +19,15 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.component-spacing {
+  margin: 16px;
+}
+
+.home-padding {
+  padding-left: 25rem;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

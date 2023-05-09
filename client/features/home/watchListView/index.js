@@ -7,7 +7,7 @@ import {
   selectWatchList,
   removeWatchListItem,
 } from "./watchListViewSlice";
-import "./watchlistView.css";
+// import "./watchlistView.css";
 import { Link } from "react-router-dom";
 
 const WatchListView = () => {
@@ -172,15 +172,25 @@ const WatchListView = () => {
 
   let lengthOfWatchlist = Object.keys(watchlist).length - 1;
 
+  {
+    /* Tailwind classes for .popup */
+  }
+  const popupClasses = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-white p-5 border border-gray-300 shadow-md rounded-md w-72 max-w-full`;
+
+  {
+    /* Tailwind classes for .overlay */
+  }
+  const overlayClasses = `fixed inset-0 bg-black bg-opacity-50 z-5`;
+
   return (
     <div>
-      <h2 style={{ color: "red" }} onClick={handlePopUpClick}>
+      <h2 className="text-red-500 cursor-pointer" onClick={handlePopUpClick}>
         WatchList
       </h2>
       {popupVisible && (
         <div>
-          <div className="overlay" onClick={handleOverlayClick}></div>
-          <div className="popup">
+          <div className={overlayClasses} onClick={handleOverlayClick}></div>
+          <div className={popupClasses}>
             {lengthOfWatchlist ? (
               Object.entries(watchlist)
                 .filter(([key]) => key !== "list")

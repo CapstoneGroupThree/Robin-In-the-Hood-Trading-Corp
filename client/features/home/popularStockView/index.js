@@ -212,17 +212,23 @@ const PopularStocksHomeView = () => {
   }
 
   return (
-    <div className="popularStocksView">
+    <div className="popularStocksView grid grid-cols-1 gap-4">
       {Object.entries(popularStocks).map(([ticker, stockInfo]) => {
         const trimmedName = trimName(stockInfo.name);
         return (
-          <div key={ticker} className="stock">
-            <Link to={`/singleStock/${ticker}`}>
+          <div
+            key={ticker}
+            className="stock bg-white rounded-lg shadow-lg p-4 border-1-4 border-purple-600"
+          >
+            <Link
+              to={`/singleStock/${ticker}`}
+              className="text-purple-600 hover:text-purple-900 font-semibold"
+            >
               <h2> {trimmedName}</h2>
             </Link>
 
-            <p>Ticker: {ticker}</p>
-            <p>Price: {stockInfo.close}</p>
+            <p className="text-gray-500">Ticker: {ticker}</p>
+            <p className="text-gray-500">Price: {stockInfo.close}</p>
           </div>
         );
       })}

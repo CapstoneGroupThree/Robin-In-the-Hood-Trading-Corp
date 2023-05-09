@@ -13,33 +13,43 @@ const Navbar = () => {
   };
 
   return (
-    <div>
-      <img
-        src="/RITHLogo.png"
-        alt="logo"
-        style={{ width: "5rem", height: "5rem" }}
-      ></img>
+    <div className="flex flex-col items-center space-y-4 text-white font-semibold">
+      <div className="flex items-center border-b w-full border-purple-500 pb-4">
+        <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
 
-      <h1>Robin In the Hood {"(RITH)"}</h1>
-      <nav>
+        <h1 className="ml-4">Robin In the Hood {"(RITH)"}</h1>
+      </div>
+      <nav space-y-2>
         {isLoggedIn ? (
-          <div>
+          <div className="flex flex-col items-center ">
             {/* The navbar will show these links after you log in */}
-            <Link to="/home">Home</Link>
-            <Link to="/allStocks">All Stocks</Link>
-            <button type="button" onClick={logoutAndRedirectHome}>
+            <Link to="/home" className="hover:text-blue-500 block">
+              Home
+            </Link>
+            <Link to="/allStocks" className="hover:text-blue-500 block">
+              All Stocks
+            </Link>
+            <button
+              type="button"
+              className="hover:text-blue-500 "
+              onClick={logoutAndRedirectHome}
+            >
               Logout
             </button>
           </div>
         ) : (
-          <div>
+          <div className="flex flex-col items-center space-y-2">
             {/* The navbar will show these links before you log in */}
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Sign Up</Link>
+            <Link to="/login" className="hover:text-blue-500 block">
+              Login
+            </Link>
+            <Link to="/signup" className="hover:text-blue-500 block">
+              Sign Up
+            </Link>
           </div>
         )}
       </nav>
-      <hr />
+      <hr className="w-full mt-4 border-purple-500" />
     </div>
   );
 };
