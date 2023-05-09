@@ -103,7 +103,7 @@ const AllStocksView = () => {
     const isPreMarket =
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
-      hour >= 8 &&
+      hour >= 0 &&
       (hour < 9 || (hour === 9 && minute < 30)) &&
       !isHoliday;
 
@@ -269,7 +269,7 @@ const AllStocksView = () => {
                   <td>
                     $
                     {currentPageNameCapInfo[stock.T]
-                      ? currentPageNameCapInfo[stock.T].price
+                      ? currentPageNameCapInfo[stock.T].price.toFixed(2)
                       : "loading"}
                   </td>
                   <td>{changePercentageFunc(stock.o, stock.c)}%</td>

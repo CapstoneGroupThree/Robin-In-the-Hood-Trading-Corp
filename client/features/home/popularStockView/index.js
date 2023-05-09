@@ -120,7 +120,7 @@ const PopularStocksHomeView = () => {
     const isPreMarket =
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
-      hour >= 8 &&
+      hour >= 0 &&
       (hour < 9 || (hour === 9 && minute < 30)) &&
       !isHoliday;
 
@@ -271,7 +271,10 @@ const PopularStocksHomeView = () => {
             </Link>
 
             <p>Ticker: {ticker}</p>
-            <p>Price: {stockInfo.close || stockInfo.preMarket}</p>
+            <p>
+              Price:{" "}
+              {stockInfo.close.toFixed(2) || stockInfo.preMarket.toFixed(2)}
+            </p>
           </div>
         );
       })}
