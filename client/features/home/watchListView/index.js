@@ -240,7 +240,11 @@ const WatchListView = () => {
                         <h2>{trimmedName}</h2>
                       </Link>
                       <p>Ticker: {ticker}</p>
-                      <p>Price: {stockInfo.close.toFixed(2)}</p>
+                      <p>
+                        Price:{" "}
+                        {stockInfo.close.toFixed(2) ||
+                          stockInfo.preMarket.toFixed(2)}
+                      </p>
                       <button value={ticker} onClick={handleRemove}>
                         Remove
                       </button>
@@ -266,7 +270,11 @@ const WatchListView = () => {
                     <h2>{trimmedName}</h2>
                   </Link>
                   <p>Ticker: {ticker}</p>
-                  <p>Price: {stockInfo.close || stockInfo.preMarket}</p>
+                  <p>
+                    Price:{" "}
+                    {stockInfo.close.toFixed(2) ||
+                      stockInfo.preMarket.toFixed(2)}
+                  </p>
                 </div>
               );
             })

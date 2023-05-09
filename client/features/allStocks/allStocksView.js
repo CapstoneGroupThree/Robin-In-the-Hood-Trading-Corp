@@ -269,7 +269,7 @@ const AllStocksView = () => {
                   <td>
                     $
                     {currentPageNameCapInfo[stock.T]
-                      ? currentPageNameCapInfo[stock.T].price
+                      ? currentPageNameCapInfo[stock.T].price.toFixed(2)
                       : "loading"}
                   </td>
                   <td>{changePercentageFunc(stock.o, stock.c)}%</td>

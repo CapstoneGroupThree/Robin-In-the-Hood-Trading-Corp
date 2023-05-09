@@ -163,7 +163,8 @@ export default function SingleStockView() {
         fetchSingleStockOpenCloseInfo({ ticker, to })
       ).unwrap();
       console.log("Response from fetchSingleStockOpenCloseInfo:", response);
-      // await console.log(tickerPriceInfo);
+      // await console.log(tickerPriceInfo);\
+      console.log(tickerPriceInfo.payload);
       return tickerPriceInfo.payload;
     };
     return getTickerPrice(ticker);
@@ -208,7 +209,9 @@ export default function SingleStockView() {
     console.log(ticker);
     await dispatch(addWatchListItem({ id, ticker }));
   };
-
+  const formatNumber = (number) => {
+    return (number ?? 0).toFixed(2);
+  };
   // todo maybe make the news section a little smaller 4 ~ etc
   // ! uses clearbit Logo API to get logos
   //! potentially might break during weekdays based on different api calls
@@ -230,28 +233,40 @@ export default function SingleStockView() {
         />
         <p>
           Price:{" "}
-          {tickerPriceInfo.close ||
-            tickerPriceInfo.results?.[0]?.c ||
-            tickerPriceInfo.preMarket}
+          {formatNumber(
+            tickerPriceInfo?.close ??
+              tickerPriceInfo?.results?.[0]?.c ??
+              tickerPriceInfo?.preMarket
+          )}
         </p>
-        <p>High:{tickerPriceInfo.high || singleStockInfo.openClose.high}</p>
-        <p>Low: {tickerPriceInfo.low || singleStockInfo.openClose.low}</p>
-        <p>Open: {tickerPriceInfo.open || singleStockInfo.openClose.open}</p>
-        {/* <p>Close: {tickerPriceInfo.close || singleStockInfo.openClose.close}</p>
         <p>
-          Premarket:{" "}
-          {tickerPriceInfo.preMarket || singleStockInfo.openClose.preMarket}
-        </p> */}
+          High:{" "}
+          {formatNumber(
+            tickerPriceInfo?.high ?? singleStockInfo?.openClose?.high
+          )}
+        </p>
         <p>
-          {tickerPriceInfo.close || singleStockInfo.openClose.close
-            ? `Close: ${
-                tickerPriceInfo.close || singleStockInfo.openClose.close
-              }`
-            : `Premarket: ${
-                tickerPriceInfo.preMarket ||
-                tickerPriceInfo.open ||
-                singleStockInfo.openClose.open
-              }`}
+          Low:{" "}
+          {formatNumber(
+            tickerPriceInfo?.low ?? singleStockInfo?.openClose?.low
+          )}
+        </p>
+        <p>
+          Open:{" "}
+          {formatNumber(
+            tickerPriceInfo?.open ?? singleStockInfo?.openClose?.open
+          )}
+        </p>
+        <p>
+          {tickerPriceInfo?.close || singleStockInfo?.openClose?.close
+            ? `Close: ${formatNumber(
+                tickerPriceInfo?.close ?? singleStockInfo?.openClose?.close
+              )}`
+            : `Premarket: ${formatNumber(
+                tickerPriceInfo?.preMarket ??
+                  tickerPriceInfo?.open ??
+                  singleStockInfo?.openClose?.open
+              )}`}
         </p>
         <p>Description: {tickerInfo.description} </p>
         <h2>News</h2>

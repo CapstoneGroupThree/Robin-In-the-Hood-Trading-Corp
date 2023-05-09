@@ -271,7 +271,10 @@ const PopularStocksHomeView = () => {
             </Link>
 
             <p>Ticker: {ticker}</p>
-            <p>Price: {stockInfo.close || stockInfo.preMarket}</p>
+            <p>
+              Price:{" "}
+              {stockInfo.close.toFixed(2) || stockInfo.preMarket.toFixed(2)}
+            </p>
           </div>
         );
       })}
