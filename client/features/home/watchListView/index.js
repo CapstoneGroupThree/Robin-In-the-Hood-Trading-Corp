@@ -69,7 +69,7 @@ const WatchListView = () => {
     let to = `${year}-${month}-${day}`;
 
     const holidays = await fetchHolidays();
-    const estOffset = -5 * 60; // Eastern Time is UTC-5
+    const estOffset = -4 * 60; // Eastern Time is UTC-5
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
 
@@ -87,10 +87,27 @@ const WatchListView = () => {
       (hour > 9 || (hour === 9 && minute >= 30)) &&
       hour < 16 &&
       !isHoliday;
+    console.log(marketOpen);
 
-    const getMostRecentTradingDay = (date) => {
+    const isPreMarket =
+      dayOfWeek >= 1 &&
+      dayOfWeek <= 5 &&
+      hour >= 8 &&
+      (hour < 9 || (hour === 9 && minute < 30)) &&
+      !isHoliday;
+
+    const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
       let newDate = new Date(date);
-      let currentMarketOpen = marketOpen;
+
+      if (isPreMarket) {
+        newDate.setHours(16);
+        newDate.setMinutes(0);
+        newDate.setSeconds(0);
+        newDate.setMilliseconds(0);
+        newDate.setDate(newDate.getDate() - 1);
+      }
+
+      let currentMarketOpen = marketOpen || isPreMarket;
 
       while (!currentMarketOpen) {
         const dayOfWeek = newDate.getDay();
@@ -122,8 +139,11 @@ const WatchListView = () => {
       return newDate.toISOString().slice(0, 10);
     };
 
-    const from = marketOpen ? to : getMostRecentTradingDay(now);
-    to = marketOpen ? to : from;
+    const from =
+      marketOpen || isPreMarket
+        ? to
+        : getMostRecentTradingDay(now, marketOpen, isPreMarket);
+    to = marketOpen || isPreMarket ? to : from;
     console.log(marketOpen);
     // console.log(from, to);
     // Pass marketOpen and from, to to the thunk

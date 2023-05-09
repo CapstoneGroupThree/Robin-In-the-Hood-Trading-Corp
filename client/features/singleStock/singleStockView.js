@@ -72,13 +72,14 @@ export default function SingleStockView() {
     let to = `${year}-${month}-${day}`;
 
     const holidays = await fetchHolidays();
-    const estOffset = -5 * 60; // Eastern Time is UTC-5
+    const estOffset = -4 * 60; // Eastern Time is UTC-5
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
 
     const dayOfWeek = now.getDay(); // 0 is Sunday, 6 is Saturday
     const hour = now.getHours();
     const minute = now.getMinutes();
+    console.log(dayOfWeek, hour, minute);
 
     // Check if the current date is a holiday
     const isHoliday = holidays.includes(to);
@@ -90,10 +91,27 @@ export default function SingleStockView() {
       (hour > 9 || (hour === 9 && minute >= 30)) &&
       hour < 16 &&
       !isHoliday;
+    console.log(marketOpen);
 
-    const getMostRecentTradingDay = (date) => {
+    const isPreMarket =
+      dayOfWeek >= 1 &&
+      dayOfWeek <= 5 &&
+      hour >= 8 &&
+      (hour < 9 || (hour === 9 && minute < 30)) &&
+      !isHoliday;
+
+    const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
       let newDate = new Date(date);
-      let currentMarketOpen = marketOpen;
+
+      if (isPreMarket) {
+        newDate.setHours(16);
+        newDate.setMinutes(0);
+        newDate.setSeconds(0);
+        newDate.setMilliseconds(0);
+        newDate.setDate(newDate.getDate() - 1);
+      }
+
+      let currentMarketOpen = marketOpen || isPreMarket;
 
       while (!currentMarketOpen) {
         const dayOfWeek = newDate.getDay();
@@ -125,8 +143,12 @@ export default function SingleStockView() {
       return newDate.toISOString().slice(0, 10);
     };
 
-    const from = marketOpen ? to : getMostRecentTradingDay(now);
-    to = marketOpen ? to : from;
+    const from =
+      marketOpen || isPreMarket
+        ? to
+        : getMostRecentTradingDay(now, marketOpen, isPreMarket);
+    to = marketOpen || isPreMarket ? to : from;
+
     // console.log(marketOpen);
     // console.log(from, to);
     // Pass marketOpen and from, to to the thunk
@@ -190,7 +212,7 @@ export default function SingleStockView() {
   //! potentially might break during weekdays based on different api calls
   return (
     <div>
-      {console.log("singleStockInfoOpenCLose", singleStockInfo.openClose.high)}
+      {console.log("singleStockInfoOpenCLose", singleStockInfo.openClose)}
       {console.log(tickerInfo)}
       {console.log(tickerPriceInfo)}
       <SearchBar />
@@ -204,11 +226,24 @@ export default function SingleStockView() {
           onError={handleImageError}
           style={{ width: "10rem", height: "10rem" }}
         />
-        <p>Price: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
+        <p>Price: {tickerPriceInfo.close || tickerPriceInfo.results[0].c}</p>
         <p>High:{tickerPriceInfo.high || singleStockInfo.openClose.high}</p>
         <p>Low: {tickerPriceInfo.low || singleStockInfo.openClose.low}</p>
         <p>Open: {tickerPriceInfo.open || singleStockInfo.openClose.open}</p>
-        <p>Close: {tickerPriceInfo.close || singleStockInfo.openClose.close}</p>
+        {/* <p>Close: {tickerPriceInfo.close || singleStockInfo.openClose.close}</p>
+        <p>
+          Premarket:{" "}
+          {tickerPriceInfo.preMarket || singleStockInfo.openClose.preMarket}
+        </p> */}
+        <p>
+          {tickerPriceInfo.close || singleStockInfo.openClose.close
+            ? `Close: ${
+                tickerPriceInfo.close || singleStockInfo.openClose.close
+              }`
+            : `Premarket: ${
+                tickerPriceInfo.open || singleStockInfo.openClose.open
+              }`}
+        </p>
         <p>Description: {tickerInfo.description} </p>
         <h2>News</h2>
         <div>

@@ -54,15 +54,18 @@ export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
     // console.log(ticker, marketOpen, from, to);
     // console.log(typeof marketOpen);
     try {
+      console.log(marketOpen);
       if (marketOpen) {
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/aggregates?ticker=${ticker}&from=${from}&to=${to}`
         );
+        console.log(response.data);
         return response.data;
       } else if (!marketOpen) {
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/open-close?ticker=${ticker}&date=${to}`
         );
+        console.log(response.data);
         return response.data;
       }
     } catch (error) {
