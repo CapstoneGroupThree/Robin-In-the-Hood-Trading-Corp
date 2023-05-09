@@ -150,17 +150,24 @@ const PopularStocksHomeView = () => {
 
     const from = marketOpen ? to : getMostRecentTradingDay(now);
     to = marketOpen ? to : from;
-    // console.log(marketOpen);
+    console.log(marketOpen);
     // console.log(from, to);
     // Pass marketOpen and from, to to the thunk
     const getTickerPrice = async (ticker) => {
       let tickerPriceInfo = await dispatch(
-        fetchSinglePopularStockTickerPrice({ ticker, marketOpen, from, to })
+        fetchSinglePopularStockTickerPrice({
+          ticker,
+          marketOpen: marketOpen,
+          from,
+          to,
+        })
       );
       // await console.log(tickerPriceInfo);
       return tickerPriceInfo.payload.close;
     };
-    return getTickerPrice(ticker);
+    const tickerPrice = await getTickerPrice(ticker);
+    console.log(`[getStockInfo] Ticker: ${ticker}, Price: ${tickerPrice}`);
+    return tickerPrice;
   };
 
   const getTickerName = async (ticker) => {
@@ -180,6 +187,7 @@ const PopularStocksHomeView = () => {
 
   const getRandomTickers = () => {
     const selectedTickers = [];
+    // const selectedTickers = ["TSLA", "AAPL", "V", "GOOG"]; problem isn't in this randomtickers
     const numToSelect = 4;
     while (selectedTickers.length < numToSelect) {
       const randomIndex = Math.floor(Math.random() * tickerNames.length);
@@ -195,29 +203,29 @@ const PopularStocksHomeView = () => {
   let numOfPopStocksInfoInState = Object.keys(popularStocks).length;
   console.log(numOfPopStocksInfoInState);
 
+  const runPopStocksFetch = async (arrTickers) => {
+    const fetchStockData = async (ticker) => {
+      await getStockInfo(ticker);
+      await getTickerName(ticker);
+      console.log("done");
+    };
+
+    await Promise.all(arrTickers.map(fetchStockData));
+  };
+
   useEffect(() => {
     const selectedTickers = getRandomTickers();
     console.log(selectedTickers);
-    const runPopStocksFetch = async (arrTickers) => {
-      await Promise.all(
-        arrTickers.map(async (ticker) => {
-          await getStockInfo(ticker);
-          await getTickerName(ticker);
-        })
-      );
-    };
 
-    if (numOfPopStocksInfoInState < 4) {
+    if (numOfPopStocksInfoInState < 8) {
       console.log("running fetch");
-      runPopStocksFetch(selectedTickers)
-        .then(() => {
+      runPopStocksFetch(selectedTickers).then((success) => {
+        if (success) {
           console.log("done loading");
           setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching stocks:", error);
-        });
-    } //else everything we need should be in the state via (popularStocks)
+        }
+      });
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -241,7 +249,7 @@ const PopularStocksHomeView = () => {
             </Link>
 
             <p>Ticker: {ticker}</p>
-            <p>Price: {stockInfo.close.toFixed(2)}</p>
+            <p>Price: {stockInfo.close}</p>
           </div>
         );
       })}
