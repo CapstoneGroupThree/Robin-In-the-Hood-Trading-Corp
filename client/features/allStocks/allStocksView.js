@@ -110,6 +110,7 @@ const AllStocksView = () => {
     const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
       let newDate = new Date(date);
 
+      // todo test what happens if its monday premarket
       if (isPreMarket) {
         newDate.setHours(16);
         newDate.setMinutes(0);

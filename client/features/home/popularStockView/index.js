@@ -126,7 +126,6 @@ const PopularStocksHomeView = () => {
 
     const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
       let newDate = new Date(date);
-
       if (isPreMarket) {
         newDate.setHours(16);
         newDate.setMinutes(0);
