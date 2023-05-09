@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import ClosePriceChart from "./ClosePriceChart";
 
-const ClosePriceChartPage = ({ symbol }) => {
+const ClosePriceChartPage = ({ ticker }) => {
   const [stockData, setStockData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/polygon/candlestick/${symbol}`
+        `http://localhost:8080/polygon/candlestick/${ticker}`
       );
       const data = await response.json();
       console.log("Fetched data:", data);
-  
+
       const labels = data.labels;
       const closePrices = data.datasets.map((entry) => entry.close);
-  
+
       const chartData = {
         labels: labels,
         datasets: [
@@ -27,14 +27,12 @@ const ClosePriceChartPage = ({ symbol }) => {
           },
         ],
       };
-  
+
       setStockData(chartData);
     };
-  
+
     fetchData();
-  }, [symbol]);
-  
-  
+  }, [ticker]);
 
   return (
     <div>
