@@ -158,28 +158,30 @@ export default function SingleStockView() {
   // ! uses clearbit Logo API to get logos
   //! potentially might break during weekdays based on different api calls
   return (
-    <div>
-      {console.log(tickerInfo)}
-      {console.log(tickerPriceInfo)}
-      <SearchBar />
-      <h2>{tickerInfo.name}</h2>
-      <div>
-        <ClosePriceChartPage ticker={ticker} />
+    <div className="flex flex-col md:grid md:grid-cols-2 h-screen overflow-auto">
+      <div className="w-full p-4">
+        <SearchBar />
+        <h2>{tickerInfo.name}</h2>
+        <div className="flex-shrink overflow-auto border border-gray-300">
+          <ClosePriceChartPage ticker={ticker} />
+        </div>
+        <div>
+          <h3></h3>
+          <p>{tickerInfo.ticker}</p>
+          <img
+            src={`https://logo.clearbit.com/${tickerInfo.homepage_url}`}
+            alt="Company Logo"
+            onError={handleImageError}
+          />
+          <p>Price: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
+          <p>High:{tickerPriceInfo.high || tickerPriceInfo.results[0].h}</p>
+          <p>Low: {tickerPriceInfo.low || tickerPriceInfo.results[0].l}</p>
+          <p>Close: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
+          <p>Description: {tickerInfo.description} </p>
+        </div>
       </div>
-      <div>
-        <h3></h3>
-        <p>{tickerInfo.ticker}</p>
-        <img
-          src={`https://logo.clearbit.com/${tickerInfo.homepage_url}`}
-          alt="Company Logo"
-          onError={handleImageError}
-          style={{ width: "10rem", height: "10rem" }}
-        />
-        <p>Price: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
-        <p>High:{tickerPriceInfo.high || tickerPriceInfo.results[0].h}</p>
-        <p>Low: {tickerPriceInfo.low || tickerPriceInfo.results[0].l}</p>
-        <p>Close: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
-        <p>Description: {tickerInfo.description} </p>
+
+      <div className="w-full  p-4 overflow-auto h-64">
         <h2>News</h2>
         <div>
           {console.log("here", tickerNews)}
@@ -190,7 +192,6 @@ export default function SingleStockView() {
                 <img
                   src={news.image_url}
                   alt="company image"
-                  style={{ width: "10rem", height: "10rem" }}
                   onError={handleImageError}
                 ></img>
                 <div>Author: {news.author}</div>
@@ -202,18 +203,15 @@ export default function SingleStockView() {
           )}
         </div>
       </div>
-      <div>
+
+      <div className="w-full p-4 md:absolute md:bottom-0">
         <button onClick={() => console.log("Buy functionality")}>Buy</button>
         <button onClick={() => console.log("Sell functionality")}>Sell</button>
         <button value={tickerInfo.ticker} onClick={handleAddToWatchList}>
           Add to Watchlist
         </button>
         <div>You already own: XXX shares:</div>
-        <img
-          src="/aiChatRB.png"
-          alt="your AI chat assistant "
-          style={{ width: "5rem", height: "5rem" }}
-        ></img>
+        <img src="/aiChatRB.png" alt="your AI chat assistant "></img>
       </div>
     </div>
   );

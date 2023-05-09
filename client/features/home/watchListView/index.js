@@ -223,7 +223,7 @@ const WatchListView = () => {
   {
     /* Tailwind classes for .popup */
   }
-  const popupClasses = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-white p-5 border border-gray-300 shadow-md rounded-md w-72 max-w-full w-max max-h-full h-max overflow-y-auto`;
+  const popupClasses = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-white p-5 border border-gray-300 shadow-md rounded-md w-100 max-w-full w-max max-h-full h-max overflow-y-auto`;
 
   {
     /* Tailwind classes for .overlay */
