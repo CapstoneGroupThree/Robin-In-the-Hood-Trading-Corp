@@ -16,7 +16,7 @@ app.get("/aggregates", async (req, res) => {
     const { ticker, from, to } = req.query;
     // const ticker = req.params.ticker;
     const response = await axios.get(
-      `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/minute/${from}/${to}?adjusted=true&sort=asc&limit=1&apiKey=${api_key}`
+      `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/day/${from}/${to}?adjusted=true&sort=asc&limit=1&apiKey=${api_key}`
     );
     res.send(response.data);
   } catch (error) {

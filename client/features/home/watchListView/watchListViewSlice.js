@@ -63,16 +63,24 @@ export const fetchWLSingleStockTickerPrice = createAsyncThunk(
   "fetchWLStockTickerPrice",
   async ({ ticker, marketOpen, from, to }) => {
     try {
+      console.log("sent");
       if (marketOpen) {
+        console.log("me?");
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/aggregates?ticker=${ticker}&from=${from}&to=${to}`
         );
         return { ticker, close: response.data.results[0].c };
-      } else if (!marketOpen) {
+      } else {
+        console.log("got");
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/open-close?ticker=${ticker}&date=${to}`
         );
-        return { ticker, close: response.data.close };
+        console.log(response.data);
+        return {
+          ticker,
+          close: response.data.close,
+          preMarket: response.data.preMarket,
+        };
       }
     } catch (error) {
       console.log(error);
@@ -106,10 +114,12 @@ export const watchlistStocksViewSlice = createSlice({
       fetchWLSingleStockTickerPrice.fulfilled,
       (state, action) => {
         const ticker = action.payload.ticker;
+        console.log(action.payload.preMarket);
         if (!state.watchlist[ticker]) {
           state.watchlist[ticker] = {};
         }
-        state.watchlist[ticker].close = action.payload.close;
+        state.watchlist[ticker].close =
+          action.payload.close || action.payload.preMarket;
         if (state.watchlist[ticker].name !== undefined) {
           state.watchlist[ticker].isLoaded = true;
         }

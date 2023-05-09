@@ -33,6 +33,20 @@ export const fetchSingleStockNews = createAsyncThunk(
   }
 );
 
+export const fetchSingleStockOpenCloseInfo = createAsyncThunk(
+  "fetchSingleStockOpenCloseInfo",
+  async ({ ticker, to }) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/proxy/mde/open-close?ticker=${ticker}&date=${to}`
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 //todo this needs date check
 export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
   "fetchSingleStockTickerPriceInfo",
@@ -40,16 +54,30 @@ export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
     // console.log(ticker, marketOpen, from, to);
     // console.log(typeof marketOpen);
     try {
+      console.log(marketOpen);
+      console.log(from, to);
       if (marketOpen) {
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/aggregates?ticker=${ticker}&from=${from}&to=${to}`
         );
+        console.log(response.data);
         return response.data;
       } else if (!marketOpen) {
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/open-close?ticker=${ticker}&date=${to}`
         );
+        console.log(response.data);
         return response.data;
+        // {
+        //   status: 'OK',
+        //   from: '2023-05-09',
+        //   symbol: 'ZSL',
+        //   open: 16.53,
+        //   high: 16.5464,
+        //   low: 16.29,
+        //   volume: 138300,
+        //   preMarket: 16.55
+        // }
       }
     } catch (error) {
       console.log(error);
@@ -60,24 +88,33 @@ export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
 
 export const singleStockViewSlice = createSlice({
   name: "singleStock",
-  initialState: {},
+  initialState: {
+    singleStock: {},
+  },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchSingleStockInfo.fulfilled, (state, action) => {
-      return action.payload;
+      state.singleStock.info = action.payload;
     });
     builder.addCase(
       fetchSingleStockTickerPriceInfo.fulfilled,
       (state, action) => {
-        return action.payload;
+        state.singleStock.tickerPriceInfo = action.payload;
       }
     );
     builder.addCase(fetchSingleStockNews.fulfilled, (state, action) => {
-      return action.payload;
+      state.singleStock.news = action.payload;
     });
+    builder.addCase(
+      fetchSingleStockOpenCloseInfo.fulfilled,
+      (state, action) => {
+        console.log("Action payload:", action.payload);
+        state.singleStock.openClose = action.payload;
+      }
+    );
   },
 });
 
-export const selectSingleStock = (state) => state.singleStock;
+export const selectSingleStock = (state) => state.singleStockView.singleStock;
 
 export default singleStockViewSlice.reducer;
