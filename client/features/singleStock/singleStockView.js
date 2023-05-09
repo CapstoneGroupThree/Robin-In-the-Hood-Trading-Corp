@@ -214,7 +214,11 @@ export default function SingleStockView() {
           {tickerNews && tickerNews.length > 0 ? (
             tickerNews.map((news) => (
               <div key={news.id}>
-                <div>{news.title}</div>
+                <h2>
+                  <a href={`${news.article_url}`} alt={`link to ${news.title}`}>
+                    {news.title}
+                  </a>
+                </h2>
                 <img
                   src={news.image_url}
                   alt="company image"
