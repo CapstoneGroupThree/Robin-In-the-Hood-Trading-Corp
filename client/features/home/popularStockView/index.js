@@ -186,7 +186,7 @@ const PopularStocksHomeView = () => {
         })
       );
       // await console.log(tickerPriceInfo);
-      return tickerPriceInfo.payload.close || tickerPriceInfo.payload.preMarket;
+      return tickerPriceInfo.payload.close;
     };
     const tickerPrice = await getTickerPrice(ticker);
     console.log(`[getStockInfo] Ticker: ${ticker}, Price: ${tickerPrice}`);

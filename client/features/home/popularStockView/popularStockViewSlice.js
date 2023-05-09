@@ -71,11 +71,8 @@ export const popularStocksViewSlice = createSlice({
         if (!state.stocks[ticker]) {
           state.stocks[ticker] = {};
         }
-        state.stocks[ticker].close = action.payload.close;
-        if (state.stocks[ticker].name !== undefined) {
-          state.stocks[ticker].isLoaded = true;
-        }
-        state.stocks[ticker].preMarket = action.payload.preMarket;
+        state.stocks[ticker].close =
+          action.payload.close || action.payload.preMarket;
         if (state.stocks[ticker].name !== undefined) {
           state.stocks[ticker].isLoaded = true;
         }
