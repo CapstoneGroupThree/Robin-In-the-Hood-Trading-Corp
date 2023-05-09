@@ -62,6 +62,8 @@ const PopularStocksHomeView = () => {
 
   const fetchHolidays = async () => {
     try {
+      const now = new Date();
+      const year = now.getFullYear();
       const response = await fetch(
         `https://date.nager.at/api/v3/PublicHolidays/${year}/US`
       );

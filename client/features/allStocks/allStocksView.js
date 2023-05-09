@@ -4,6 +4,7 @@ import {
   fetchAllStocks,
   fetchAllStockDetails,
   selectAllStocks,
+  fetchAllStockTickerPriceSingle,
 } from "../allStocks/allStocksSlice";
 import { Link } from "react-router-dom";
 import "./styles.css";
@@ -43,6 +44,8 @@ const AllStocksView = () => {
 
   const fetchHolidays = async () => {
     try {
+      const now = new Date();
+      const year = now.getFullYear();
       const response = await fetch(
         `https://date.nager.at/api/v3/PublicHolidays/${year}/US`
       );
@@ -134,19 +137,34 @@ const AllStocksView = () => {
     // console.log(marketOpen);
     // console.log(from, to);
     // Pass marketOpen and from, to to the thunk
-    return from;
+
+    return { marketOpen, from, to };
+  };
+
+  const getTickerPrice = async (ticker, marketOpen, from, to) => {
+    let tickerPriceInfo = await dispatch(
+      fetchAllStockTickerPriceSingle({
+        ticker,
+        marketOpen: marketOpen,
+        from,
+        to,
+      })
+    );
+    // await console.log(tickerPriceInfo);
+    return tickerPriceInfo.payload.close;
   };
 
   useEffect(() => {
-    const x = async () => {
-      const date = await getStockDate();
+    const main = async () => {
+      const { marketOpen, from, to } = await getStockDate();
       const page = currentPage;
       //todo import date functionality and pass it to the fetchAllStocks
 
-      console.log("Date:", date, "Page:", page);
+      console.log("Date:", to, "Page:", page);
       const currentPageInfo = await dispatch(
-        fetchAllStocks({ date: date, page: page })
+        fetchAllStocks({ date: to, page: page })
       );
+
       await console.log(currentPageInfo.payload.results);
       const fetchedInfo = currentPageInfo.payload.results;
       // const fetchedInfoNameCap = fetchedInfo.map((info) => {info = {T: info.T}});
@@ -157,8 +175,10 @@ const AllStocksView = () => {
           const fetchedNameCap = await dispatch(
             fetchAllStockDetails({ ticker: stock.T })
           );
-          await console.log(fetchedNameCap.payload.results);
+          const price = await getTickerPrice(stock.T, marketOpen, from, to);
+          console.log(fetchedNameCap.payload.results);
           objInfo[stock.T] = fetchedNameCap.payload.results;
+          objInfo[stock.T].price = price;
           console.log(objInfo);
           if (Object.keys(objInfo).length >= 10) {
             setCurrentPageNameCapInfo(objInfo);
@@ -173,7 +193,7 @@ const AllStocksView = () => {
       await setCurrentPageInfo(fetchedInfo);
       setIsLoading(false);
     };
-    x();
+    main();
   }, [dispatch, currentPage]);
 
   // useEffect(() => {
@@ -223,7 +243,12 @@ const AllStocksView = () => {
                     </Link>
                   </td>
                   <td>{stock.T}</td>
-                  <td>${stock.c.toFixed(2)}</td>
+                  <td>
+                    $
+                    {currentPageNameCapInfo[stock.T]
+                      ? currentPageNameCapInfo[stock.T].price
+                      : "loading"}
+                  </td>
                   <td>{changePercentageFunc(stock.o, stock.c)}%</td>
                 </tr>
                 // <tr key={index}>
