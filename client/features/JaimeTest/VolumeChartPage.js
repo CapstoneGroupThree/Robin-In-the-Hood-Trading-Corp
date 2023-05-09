@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import VolumeChart from './VolumeChart';
+import React, { useState, useEffect } from "react";
+import VolumeChart from "./VolumeChart";
 
-const VolumeChartPage = ({ symbol }) => {
+const VolumeChartPage = ({ ticker }) => {
   const [stockData, setStockData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       // Replace with your API URL
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/polygon/candlestick/${symbol}`);
+      const response = await fetch(
+        `http://localhost:8080/polygon/candlestick/${ticker}`
+      );
       const data = await response.json();
-      console.log('Fetched data:', data);
+      console.log("Fetched data:", data);
 
       setStockData(data);
     };
 
     fetchData();
-  }, [symbol]);
+  }, [ticker]);
 
   return (
     <div>
