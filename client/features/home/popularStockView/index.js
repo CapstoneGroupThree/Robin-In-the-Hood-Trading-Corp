@@ -58,16 +58,12 @@ const PopularStocksHomeView = () => {
     "WMT",
   ];
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  let to = `${year}-${month}-${day}`;
-
   //! used nager date api to get public holidays
 
   const fetchHolidays = async () => {
     try {
+      const now = new Date();
+      const year = now.getFullYear();
       const response = await fetch(
         `https://date.nager.at/api/v3/PublicHolidays/${year}/US`
       );
@@ -94,8 +90,14 @@ const PopularStocksHomeView = () => {
   };
 
   const getStockInfo = async (ticker) => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    let to = `${year}-${month}-${day}`;
+
     const holidays = await fetchHolidays();
-    const estOffset = -5 * 60; // Eastern Time is UTC-5
+    const estOffset = -4 * 60; // Eastern Time is UTC-5
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
 
@@ -113,35 +115,81 @@ const PopularStocksHomeView = () => {
       (hour > 9 || (hour === 9 && minute >= 30)) &&
       hour < 16 &&
       !isHoliday;
+    console.log(marketOpen);
 
-    const getMostRecentTradingDay = (date) => {
+    const isPreMarket =
+      dayOfWeek >= 1 &&
+      dayOfWeek <= 5 &&
+      hour >= 0 &&
+      (hour < 9 || (hour === 9 && minute < 30)) &&
+      !isHoliday;
+
+    const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
       let newDate = new Date(date);
-      let currentMarketOpen = marketOpen;
+      if (isPreMarket) {
+        newDate.setHours(16);
+        newDate.setMinutes(0);
+        newDate.setSeconds(0);
+        newDate.setMilliseconds(0);
+        newDate.setDate(newDate.getDate() - 1);
+      }
+
+      let currentMarketOpen = marketOpen || isPreMarket;
 
       while (!currentMarketOpen) {
-        newDate.setDate(newDate.getDate() - 1);
-
-        // Update the marketOpen condition inside the loop
         const dayOfWeek = newDate.getDay();
+        const hour = newDate.getHours();
+        const minute = newDate.getMinutes();
         const isHoliday = holidays.includes(newDate.toISOString().slice(0, 10));
-        currentMarketOpen = dayOfWeek >= 1 && dayOfWeek <= 5 && !isHoliday;
+
+        if (
+          hour > 16 ||
+          (hour === 16 && minute >= 1) ||
+          dayOfWeek === 0 ||
+          dayOfWeek === 6 ||
+          isHoliday
+        ) {
+          if (hour > 16 || (hour === 16 && minute >= 1)) {
+            // If the hour is past 4 PM, set the newDate to 16:00 (market close)
+            newDate.setHours(16);
+            newDate.setMinutes(0);
+            newDate.setSeconds(0);
+            newDate.setMilliseconds(0);
+          } else {
+            // Move to the previous day
+            newDate.setDate(newDate.getDate() - 1);
+          }
+        } else {
+          currentMarketOpen = true;
+        }
       }
       return newDate.toISOString().slice(0, 10);
     };
 
-    const from = marketOpen ? to : getMostRecentTradingDay(now);
-    to = marketOpen ? to : from;
-    // console.log(marketOpen);
+    const from =
+      marketOpen || isPreMarket
+        ? to
+        : getMostRecentTradingDay(now, marketOpen, isPreMarket);
+    to = marketOpen || isPreMarket ? to : from;
+    //! for some reason market open was passing in as true before i put this console log in, does it past the 3rd call.... going to fix in watchlist view as well.
+    console.log(marketOpen);
     // console.log(from, to);
     // Pass marketOpen and from, to to the thunk
     const getTickerPrice = async (ticker) => {
       let tickerPriceInfo = await dispatch(
-        fetchSinglePopularStockTickerPrice({ ticker, marketOpen, from, to })
+        fetchSinglePopularStockTickerPrice({
+          ticker,
+          marketOpen: marketOpen,
+          from,
+          to,
+        })
       );
       // await console.log(tickerPriceInfo);
       return tickerPriceInfo.payload.close;
     };
-    return getTickerPrice(ticker);
+    const tickerPrice = await getTickerPrice(ticker);
+    console.log(`[getStockInfo] Ticker: ${ticker}, Price: ${tickerPrice}`);
+    return tickerPrice;
   };
 
   const getTickerName = async (ticker) => {
@@ -161,6 +209,7 @@ const PopularStocksHomeView = () => {
 
   const getRandomTickers = () => {
     const selectedTickers = [];
+    // const selectedTickers = ["TSLA", "AAPL", "V", "GOOG"]; problem isn't in this randomtickers
     const numToSelect = 4;
     while (selectedTickers.length < numToSelect) {
       const randomIndex = Math.floor(Math.random() * tickerNames.length);
@@ -176,29 +225,29 @@ const PopularStocksHomeView = () => {
   let numOfPopStocksInfoInState = Object.keys(popularStocks).length;
   console.log(numOfPopStocksInfoInState);
 
+  const runPopStocksFetch = async (arrTickers) => {
+    const fetchStockData = async (ticker) => {
+      await getStockInfo(ticker);
+      await getTickerName(ticker);
+      console.log("done");
+    };
+
+    await Promise.all(arrTickers.map(fetchStockData));
+  };
+
   useEffect(() => {
     const selectedTickers = getRandomTickers();
     console.log(selectedTickers);
-    const runPopStocksFetch = async (arrTickers) => {
-      await Promise.all(
-        arrTickers.map(async (ticker) => {
-          await getStockInfo(ticker);
-          await getTickerName(ticker);
-        })
-      );
-    };
 
     if (numOfPopStocksInfoInState < 4) {
       console.log("running fetch");
-      runPopStocksFetch(selectedTickers)
-        .then(() => {
+      runPopStocksFetch(selectedTickers).then((success) => {
+        if (success) {
           console.log("done loading");
           setIsLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching stocks:", error);
-        });
-    } //else everything we need should be in the state via (popularStocks)
+        }
+      });
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -222,7 +271,10 @@ const PopularStocksHomeView = () => {
             </Link>
 
             <p>Ticker: {ticker}</p>
-            <p>Price: {stockInfo.close}</p>
+            <p>
+              Price:{" "}
+              {stockInfo.close.toFixed(2) || stockInfo.preMarket.toFixed(2)}
+            </p>
           </div>
         );
       })}

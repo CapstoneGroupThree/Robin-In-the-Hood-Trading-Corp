@@ -4,6 +4,7 @@ import {
   fetchAllStocks,
   fetchAllStockDetails,
   selectAllStocks,
+  fetchAllStockTickerPriceSingle,
 } from "../allStocks/allStocksSlice";
 import { Link } from "react-router-dom";
 import "./styles.css";
@@ -39,16 +40,12 @@ const AllStocksView = () => {
     return name;
   };
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  let to = `${year}-${month}-${day}`;
-
   //! used nager date api to get public holidays
 
   const fetchHolidays = async () => {
     try {
+      const now = new Date();
+      const year = now.getFullYear();
       const response = await fetch(
         `https://date.nager.at/api/v3/PublicHolidays/${year}/US`
       );
@@ -75,14 +72,21 @@ const AllStocksView = () => {
   };
 
   const getStockDate = async () => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    let to = `${year}-${month}-${day}`;
+
     const holidays = await fetchHolidays();
-    const estOffset = -5 * 60; // Eastern Time is UTC-5
+    const estOffset = -4 * 60; // Eastern Time is UTC-5
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
 
     const dayOfWeek = now.getDay(); // 0 is Sunday, 6 is Saturday
     const hour = now.getHours();
     const minute = now.getMinutes();
+    console.log(hour, minute);
 
     // Check if the current date is a holiday
     const isHoliday = holidays.includes(to);
@@ -94,40 +98,96 @@ const AllStocksView = () => {
       (hour > 9 || (hour === 9 && minute >= 30)) &&
       hour < 16 &&
       !isHoliday;
+    console.log(marketOpen);
 
-    const getMostRecentTradingDay = (date) => {
+    const isPreMarket =
+      dayOfWeek >= 1 &&
+      dayOfWeek <= 5 &&
+      hour >= 0 &&
+      (hour < 9 || (hour === 9 && minute < 30)) &&
+      !isHoliday;
+
+    const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
       let newDate = new Date(date);
-      let currentMarketOpen = marketOpen;
+
+      // todo test what happens if its monday premarket
+      if (isPreMarket) {
+        newDate.setHours(16);
+        newDate.setMinutes(0);
+        newDate.setSeconds(0);
+        newDate.setMilliseconds(0);
+        newDate.setDate(newDate.getDate() - 1);
+      }
+
+      let currentMarketOpen = marketOpen || isPreMarket;
 
       while (!currentMarketOpen) {
-        newDate.setDate(newDate.getDate() - 1);
-
-        // Update the marketOpen condition inside the loop
         const dayOfWeek = newDate.getDay();
+        const hour = newDate.getHours();
+        const minute = newDate.getMinutes();
         const isHoliday = holidays.includes(newDate.toISOString().slice(0, 10));
-        currentMarketOpen = dayOfWeek >= 1 && dayOfWeek <= 5 && !isHoliday;
+
+        if (
+          hour > 16 ||
+          (hour === 16 && minute >= 1) ||
+          dayOfWeek === 0 ||
+          dayOfWeek === 6 ||
+          isHoliday
+        ) {
+          if (hour > 16 || (hour === 16 && minute >= 1)) {
+            // If the hour is past 4 PM, set the newDate to 16:00 (market close)
+            newDate.setHours(16);
+            newDate.setMinutes(0);
+            newDate.setSeconds(0);
+            newDate.setMilliseconds(0);
+          } else {
+            // Move to the previous day
+            newDate.setDate(newDate.getDate() - 1);
+          }
+        } else {
+          currentMarketOpen = true;
+        }
       }
       return newDate.toISOString().slice(0, 10);
     };
 
-    const from = marketOpen ? to : getMostRecentTradingDay(now);
-    to = marketOpen ? to : from;
+    const from =
+      marketOpen || isPreMarket
+        ? to
+        : getMostRecentTradingDay(now, marketOpen, isPreMarket);
+    to = marketOpen || isPreMarket ? to : from;
     // console.log(marketOpen);
     // console.log(from, to);
     // Pass marketOpen and from, to to the thunk
-    return from;
+
+    return { marketOpen, from, to };
+  };
+
+  const getTickerPrice = async (ticker, marketOpen, from, to) => {
+    let tickerPriceInfo = await dispatch(
+      fetchAllStockTickerPriceSingle({
+        ticker,
+        marketOpen: marketOpen,
+        from,
+        to,
+      })
+    );
+    // await console.log(tickerPriceInfo);
+    console.log(tickerPriceInfo.payload);
+    return tickerPriceInfo.payload.close || tickerPriceInfo.payload.preMarket;
   };
 
   useEffect(() => {
-    const x = async () => {
-      const date = await getStockDate();
+    const main = async () => {
+      const { marketOpen, from, to } = await getStockDate();
       const page = currentPage;
       //todo import date functionality and pass it to the fetchAllStocks
 
-      console.log("Date:", date, "Page:", page);
+      console.log("Date:", to, "Page:", page);
       const currentPageInfo = await dispatch(
-        fetchAllStocks({ date: date, page: page })
+        fetchAllStocks({ date: to, page: page })
       );
+
       await console.log(currentPageInfo.payload.results);
       const fetchedInfo = currentPageInfo.payload.results;
       // const fetchedInfoNameCap = fetchedInfo.map((info) => {info = {T: info.T}});
@@ -138,8 +198,10 @@ const AllStocksView = () => {
           const fetchedNameCap = await dispatch(
             fetchAllStockDetails({ ticker: stock.T })
           );
-          await console.log(fetchedNameCap.payload.results);
+          const price = await getTickerPrice(stock.T, marketOpen, from, to);
+          console.log(fetchedNameCap.payload.results);
           objInfo[stock.T] = fetchedNameCap.payload.results;
+          objInfo[stock.T].price = price;
           console.log(objInfo);
           if (Object.keys(objInfo).length >= 10) {
             setCurrentPageNameCapInfo(objInfo);
@@ -154,7 +216,7 @@ const AllStocksView = () => {
       await setCurrentPageInfo(fetchedInfo);
       setIsLoading(false);
     };
-    x();
+    main();
   }, [dispatch, currentPage]);
 
   // useEffect(() => {
@@ -167,16 +229,6 @@ const AllStocksView = () => {
     const change = close - open;
     const percentageChange = (change / open) * 100;
     return percentageChange.toFixed(2);
-  };
-
-  const formatMarketCap = (number) => {
-    if (number >= 1e12) {
-      return (number / 1e12).toFixed(2) + "T";
-    } else if (number >= 1e9) {
-      return (number / 1e9).toFixed(2) + "B";
-    } else {
-      return number.toFixed(2);
-    }
   };
 
   if (isLoading) {
@@ -214,7 +266,12 @@ const AllStocksView = () => {
                     </Link>
                   </td>
                   <td>{stock.T}</td>
-                  <td>${stock.c.toFixed(2)}</td>
+                  <td>
+                    $
+                    {currentPageNameCapInfo[stock.T]
+                      ? currentPageNameCapInfo[stock.T].price.toFixed(2)
+                      : "loading"}
+                  </td>
                   <td>{changePercentageFunc(stock.o, stock.c)}%</td>
                 </tr>
                 // <tr key={index}>

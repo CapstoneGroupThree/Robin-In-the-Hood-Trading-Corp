@@ -32,14 +32,10 @@ const WatchListView = () => {
     setPopupVisible(false);
   };
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  let to = `${year}-${month}-${day}`;
-
   const fetchHolidays = async () => {
     try {
+      const now = new Date();
+      const year = now.getFullYear();
       const response = await fetch(
         `https://date.nager.at/api/v3/PublicHolidays/${year}/US`
       );
@@ -66,8 +62,14 @@ const WatchListView = () => {
   };
 
   const getWLStockInfo = async (ticker) => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    let to = `${year}-${month}-${day}`;
+
     const holidays = await fetchHolidays();
-    const estOffset = -5 * 60; // Eastern Time is UTC-5
+    const estOffset = -4 * 60; // Eastern Time is UTC-5
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
 
@@ -85,35 +87,81 @@ const WatchListView = () => {
       (hour > 9 || (hour === 9 && minute >= 30)) &&
       hour < 16 &&
       !isHoliday;
+    console.log(marketOpen);
 
-    const getMostRecentTradingDay = (date) => {
+    const isPreMarket =
+      dayOfWeek >= 1 &&
+      dayOfWeek <= 5 &&
+      hour >= 0 &&
+      (hour < 9 || (hour === 9 && minute < 30)) &&
+      !isHoliday;
+
+    const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
       let newDate = new Date(date);
-      let currentMarketOpen = marketOpen;
+
+      if (isPreMarket) {
+        newDate.setHours(16);
+        newDate.setMinutes(0);
+        newDate.setSeconds(0);
+        newDate.setMilliseconds(0);
+        newDate.setDate(newDate.getDate() - 1);
+      }
+
+      let currentMarketOpen = marketOpen || isPreMarket;
 
       while (!currentMarketOpen) {
-        newDate.setDate(newDate.getDate() - 1);
-
-        // Update the marketOpen condition inside the loop
         const dayOfWeek = newDate.getDay();
+        const hour = newDate.getHours();
+        const minute = newDate.getMinutes();
         const isHoliday = holidays.includes(newDate.toISOString().slice(0, 10));
-        currentMarketOpen = dayOfWeek >= 1 && dayOfWeek <= 5 && !isHoliday;
+
+        if (
+          hour > 16 ||
+          (hour === 16 && minute >= 1) ||
+          dayOfWeek === 0 ||
+          dayOfWeek === 6 ||
+          isHoliday
+        ) {
+          if (hour > 16 || (hour === 16 && minute >= 1)) {
+            // If the hour is past 4 PM, set the newDate to 16:00 (market close)
+            newDate.setHours(16);
+            newDate.setMinutes(0);
+            newDate.setSeconds(0);
+            newDate.setMilliseconds(0);
+          } else {
+            // Move to the previous day
+            newDate.setDate(newDate.getDate() - 1);
+          }
+        } else {
+          currentMarketOpen = true;
+        }
       }
       return newDate.toISOString().slice(0, 10);
     };
 
-    const from = marketOpen ? to : getMostRecentTradingDay(now);
-    to = marketOpen ? to : from;
-    // console.log(marketOpen);
+    const from =
+      marketOpen || isPreMarket
+        ? to
+        : getMostRecentTradingDay(now, marketOpen, isPreMarket);
+    to = marketOpen || isPreMarket ? to : from;
+    console.log(marketOpen);
     // console.log(from, to);
     // Pass marketOpen and from, to to the thunk
     const getTickerPrice = async (ticker) => {
       let tickerPriceInfo = await dispatch(
-        fetchWLSingleStockTickerPrice({ ticker, marketOpen, from, to })
+        fetchWLSingleStockTickerPrice({
+          ticker,
+          marketOpen: marketOpen,
+          from,
+          to,
+        })
       );
-      // await console.log(tickerPriceInfo);
-      return tickerPriceInfo.payload.close;
+      await console.log(tickerPriceInfo);
+      return tickerPriceInfo.payload.close || tickerPriceInfo.payload.preMarket;
     };
-    return getTickerPrice(ticker);
+    const tickerPrice = await getTickerPrice(ticker);
+    console.log(`[getStockInfo] Ticker: ${ticker}, Price: ${tickerPrice}`);
+    return tickerPrice;
   };
 
   const getWLTickerName = async (ticker) => {
@@ -192,7 +240,11 @@ const WatchListView = () => {
                         <h2>{trimmedName}</h2>
                       </Link>
                       <p>Ticker: {ticker}</p>
-                      <p>Price: {stockInfo.close}</p>
+                      <p>
+                        Price:{" "}
+                        {stockInfo.close.toFixed(2) ||
+                          stockInfo.preMarket.toFixed(2)}
+                      </p>
                       <button value={ticker} onClick={handleRemove}>
                         Remove
                       </button>
@@ -218,7 +270,11 @@ const WatchListView = () => {
                     <h2>{trimmedName}</h2>
                   </Link>
                   <p>Ticker: {ticker}</p>
-                  <p>Price: {stockInfo.close}</p>
+                  <p>
+                    Price:{" "}
+                    {stockInfo.close.toFixed(2) ||
+                      stockInfo.preMarket.toFixed(2)}
+                  </p>
                 </div>
               );
             })
