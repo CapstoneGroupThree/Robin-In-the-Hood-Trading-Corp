@@ -32,12 +32,6 @@ const WatchListView = () => {
     setPopupVisible(false);
   };
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  let to = `${year}-${month}-${day}`;
-
   const fetchHolidays = async () => {
     try {
       const response = await fetch(
@@ -66,6 +60,12 @@ const WatchListView = () => {
   };
 
   const getWLStockInfo = async (ticker) => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    let to = `${year}-${month}-${day}`;
+
     const holidays = await fetchHolidays();
     const estOffset = -5 * 60; // Eastern Time is UTC-5
     const utcOffset = -now.getTimezoneOffset();
@@ -122,12 +122,17 @@ const WatchListView = () => {
 
     const from = marketOpen ? to : getMostRecentTradingDay(now);
     to = marketOpen ? to : from;
-    // console.log(marketOpen);
+    console.log(marketOpen);
     // console.log(from, to);
     // Pass marketOpen and from, to to the thunk
     const getTickerPrice = async (ticker) => {
       let tickerPriceInfo = await dispatch(
-        fetchWLSingleStockTickerPrice({ ticker, marketOpen, from, to })
+        fetchWLSingleStockTickerPrice({
+          ticker,
+          marketOpen: marketOpen,
+          from,
+          to,
+        })
       );
       // await console.log(tickerPriceInfo);
       return tickerPriceInfo.payload.close;

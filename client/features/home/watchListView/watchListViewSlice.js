@@ -63,15 +63,19 @@ export const fetchWLSingleStockTickerPrice = createAsyncThunk(
   "fetchWLStockTickerPrice",
   async ({ ticker, marketOpen, from, to }) => {
     try {
+      console.log("sent");
       if (marketOpen) {
+        console.log("me?");
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/aggregates?ticker=${ticker}&from=${from}&to=${to}`
         );
         return { ticker, close: response.data.results[0].c };
-      } else if (!marketOpen) {
+      } else {
+        console.log("got");
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/open-close?ticker=${ticker}&date=${to}`
         );
+        console.log(response.data);
         return { ticker, close: response.data.close };
       }
     } catch (error) {

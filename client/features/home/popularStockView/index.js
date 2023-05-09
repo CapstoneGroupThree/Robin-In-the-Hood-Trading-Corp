@@ -58,12 +58,6 @@ const PopularStocksHomeView = () => {
     "WMT",
   ];
 
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  let to = `${year}-${month}-${day}`;
-
   //! used nager date api to get public holidays
 
   const fetchHolidays = async () => {
@@ -94,6 +88,12 @@ const PopularStocksHomeView = () => {
   };
 
   const getStockInfo = async (ticker) => {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    let to = `${year}-${month}-${day}`;
+
     const holidays = await fetchHolidays();
     const estOffset = -5 * 60; // Eastern Time is UTC-5
     const utcOffset = -now.getTimezoneOffset();
