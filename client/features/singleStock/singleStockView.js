@@ -9,6 +9,8 @@ import { addWatchListItem } from "../home/watchListView/watchListViewSlice.js";
 import SearchBar from "../searchBar/index.js";
 import { useParams } from "react-router-dom";
 import ClosePriceChartPage from "../JaimeTest/ClosePriceChartPage";
+import VolumeChartPage from "../JaimeTest/VolumeChartPage.js";
+import StockData from "../JaimeTest/StockData.js";
 
 export default function SingleStockView() {
   const dispatch = useDispatch();
@@ -165,6 +167,8 @@ export default function SingleStockView() {
       <h2>{tickerInfo.name}</h2>
       <div>
         <ClosePriceChartPage ticker={ticker} />
+        <StockData ticker={ticker} />
+        <VolumeChartPage ticker={ticker} />
       </div>
       <div>
         <h3></h3>
