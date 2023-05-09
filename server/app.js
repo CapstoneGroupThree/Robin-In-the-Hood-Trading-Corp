@@ -2,6 +2,9 @@ const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
+const routes = require("./jaimesTestFolder/routes/routes");
+const polygonController = require("./jaimesTestFolder/controllers/polygonController");
+require("dotenv").config();
 module.exports = app;
 
 // logging middleware
@@ -14,6 +17,8 @@ app.use(express.json());
 app.use("/auth", require("./auth"));
 app.use("/api", require("./api"));
 app.use("/proxy", require("./polygonProxy"));
+//JaimeTest
+app.use(routes);
 
 app.get("/", (req, res) =>
   res.sendFile(path.join(__dirname, "..", "public/index.html"))
