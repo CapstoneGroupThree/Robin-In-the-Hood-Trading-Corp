@@ -4,21 +4,16 @@ import {
   fetchSingleStockInfo,
   fetchSingleStockNews,
   fetchSingleStockTickerPriceInfo,
-  fetchSingleStockOpenCloseInfo,
-  selectSingleStock,
 } from "./singleStockViewSlice.js";
 import { addWatchListItem } from "../home/watchListView/watchListViewSlice.js";
 import SearchBar from "../searchBar/index.js";
 import { useParams } from "react-router-dom";
+import ClosePriceChartPage from "../JaimeTest/ClosePriceChartPage";
 
 export default function SingleStockView() {
   const dispatch = useDispatch();
   const { ticker } = useParams();
   const id = useSelector((state) => state.auth.me.id);
-  const singleStockInfo = useSelector(selectSingleStock);
-  // const allState = useSelector((state) => state);
-  // console.log("All state:", allState);
-
   console.log(id);
 
   //! tesla is currently hardcoded in until all stocks is working
@@ -33,12 +28,16 @@ export default function SingleStockView() {
   const [tickerInfo, setTickerInfo] = useState({});
   const [tickerPriceInfo, setTickerPriceInfo] = useState({});
 
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  let to = `${year}-${month}-${day}`;
+
   //! used nager date api to get public holidays
 
   const fetchHolidays = async () => {
     try {
-      const now = new Date();
-      const year = now.getFullYear();
       const response = await fetch(
         `https://date.nager.at/api/v3/PublicHolidays/${year}/US`
       );
@@ -65,23 +64,14 @@ export default function SingleStockView() {
   };
 
   const getStockInfo = async (ticker) => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    let to = `${year}-${month}-${day}`;
-
     const holidays = await fetchHolidays();
-    const estOffset = -4 * 60; // Eastern Time is UTC-5
+    const estOffset = -5 * 60; // Eastern Time is UTC-5
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
-
-    //todo might need to add a check for 15 min delayed data??
 
     const dayOfWeek = now.getDay(); // 0 is Sunday, 6 is Saturday
     const hour = now.getHours();
     const minute = now.getMinutes();
-    console.log(dayOfWeek, hour, minute);
 
     // Check if the current date is a holiday
     const isHoliday = holidays.includes(to);
@@ -93,64 +83,24 @@ export default function SingleStockView() {
       (hour > 9 || (hour === 9 && minute >= 30)) &&
       hour < 16 &&
       !isHoliday;
-    console.log(marketOpen);
 
-    const isPreMarket =
-      dayOfWeek >= 1 &&
-      dayOfWeek <= 5 &&
-      hour >= 0 &&
-      (hour < 9 || (hour === 9 && minute < 30)) &&
-      !isHoliday;
-
-    const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
+    const getMostRecentTradingDay = (date) => {
       let newDate = new Date(date);
-
-      if (isPreMarket) {
-        newDate.setHours(16);
-        newDate.setMinutes(0);
-        newDate.setSeconds(0);
-        newDate.setMilliseconds(0);
-        newDate.setDate(newDate.getDate() - 1);
-      }
-
-      let currentMarketOpen = marketOpen || isPreMarket;
+      let currentMarketOpen = marketOpen;
 
       while (!currentMarketOpen) {
-        const dayOfWeek = newDate.getDay();
-        const hour = newDate.getHours();
-        const minute = newDate.getMinutes();
-        const isHoliday = holidays.includes(newDate.toISOString().slice(0, 10));
+        newDate.setDate(newDate.getDate() - 1);
 
-        if (
-          hour > 16 ||
-          (hour === 16 && minute >= 1) ||
-          dayOfWeek === 0 ||
-          dayOfWeek === 6 ||
-          isHoliday
-        ) {
-          if (hour > 16 || (hour === 16 && minute >= 1)) {
-            // If the hour is past 4 PM, set the newDate to 16:00 (market close)
-            newDate.setHours(16);
-            newDate.setMinutes(0);
-            newDate.setSeconds(0);
-            newDate.setMilliseconds(0);
-          } else {
-            // Move to the previous day
-            newDate.setDate(newDate.getDate() - 1);
-          }
-        } else {
-          currentMarketOpen = true;
-        }
+        // Update the marketOpen condition inside the loop
+        const dayOfWeek = newDate.getDay();
+        const isHoliday = holidays.includes(newDate.toISOString().slice(0, 10));
+        currentMarketOpen = dayOfWeek >= 1 && dayOfWeek <= 5 && !isHoliday;
       }
       return newDate.toISOString().slice(0, 10);
     };
 
-    const from =
-      marketOpen || isPreMarket
-        ? to
-        : getMostRecentTradingDay(now, marketOpen, isPreMarket);
-    to = marketOpen || isPreMarket ? to : from;
-
+    const from = marketOpen ? to : getMostRecentTradingDay(now);
+    to = marketOpen ? to : from;
     // console.log(marketOpen);
     // console.log(from, to);
     // Pass marketOpen and from, to to the thunk
@@ -158,13 +108,7 @@ export default function SingleStockView() {
       let tickerPriceInfo = await dispatch(
         fetchSingleStockTickerPriceInfo({ ticker, marketOpen, from, to })
       );
-      //save misc info into state
-      const response = await dispatch(
-        fetchSingleStockOpenCloseInfo({ ticker, to })
-      ).unwrap();
-      console.log("Response from fetchSingleStockOpenCloseInfo:", response);
-      // await console.log(tickerPriceInfo);\
-      console.log(tickerPriceInfo.payload);
+      // await console.log(tickerPriceInfo);
       return tickerPriceInfo.payload;
     };
     return getTickerPrice(ticker);
@@ -209,19 +153,19 @@ export default function SingleStockView() {
     console.log(ticker);
     await dispatch(addWatchListItem({ id, ticker }));
   };
-  const formatNumber = (number) => {
-    return (number ?? 0).toFixed(2);
-  };
+
   // todo maybe make the news section a little smaller 4 ~ etc
   // ! uses clearbit Logo API to get logos
   //! potentially might break during weekdays based on different api calls
   return (
     <div>
-      {console.log("singleStockInfoOpenCLose", singleStockInfo.openClose)}
       {console.log(tickerInfo)}
       {console.log(tickerPriceInfo)}
       <SearchBar />
       <h2>{tickerInfo.name}</h2>
+      <div>
+        <ClosePriceChartPage ticker={ticker} />
+      </div>
       <div>
         <h3></h3>
         <p>{tickerInfo.ticker}</p>
@@ -231,43 +175,10 @@ export default function SingleStockView() {
           onError={handleImageError}
           style={{ width: "10rem", height: "10rem" }}
         />
-        <p>
-          Price:{" "}
-          {formatNumber(
-            tickerPriceInfo?.close ??
-              tickerPriceInfo?.results?.[0]?.c ??
-              tickerPriceInfo?.preMarket
-          )}
-        </p>
-        <p>
-          High:{" "}
-          {formatNumber(
-            tickerPriceInfo?.high ?? singleStockInfo?.openClose?.high
-          )}
-        </p>
-        <p>
-          Low:{" "}
-          {formatNumber(
-            tickerPriceInfo?.low ?? singleStockInfo?.openClose?.low
-          )}
-        </p>
-        <p>
-          Open:{" "}
-          {formatNumber(
-            tickerPriceInfo?.open ?? singleStockInfo?.openClose?.open
-          )}
-        </p>
-        <p>
-          {tickerPriceInfo?.close || singleStockInfo?.openClose?.close
-            ? `Close: ${formatNumber(
-                tickerPriceInfo?.close ?? singleStockInfo?.openClose?.close
-              )}`
-            : `Premarket: ${formatNumber(
-                tickerPriceInfo?.preMarket ??
-                  tickerPriceInfo?.open ??
-                  singleStockInfo?.openClose?.open
-              )}`}
-        </p>
+        <p>Price: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
+        <p>High:{tickerPriceInfo.high || tickerPriceInfo.results[0].h}</p>
+        <p>Low: {tickerPriceInfo.low || tickerPriceInfo.results[0].l}</p>
+        <p>Close: {tickerPriceInfo.close || tickerPriceInfo.results[0].c} </p>
         <p>Description: {tickerInfo.description} </p>
         <h2>News</h2>
         <div>
@@ -275,11 +186,7 @@ export default function SingleStockView() {
           {tickerNews && tickerNews.length > 0 ? (
             tickerNews.map((news) => (
               <div key={news.id}>
-                <h2>
-                  <a href={`${news.article_url}`} alt={`link to ${news.title}`}>
-                    {news.title}
-                  </a>
-                </h2>
+                <div>{news.title}</div>
                 <img
                   src={news.image_url}
                   alt="company image"
