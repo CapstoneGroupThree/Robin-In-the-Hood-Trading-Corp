@@ -19,7 +19,7 @@ const Navbar = () => {
 
         <h1 className="ml-4">Robin In the Hood {"(RITH)"}</h1>
       </div>
-      <nav space-y-2>
+      <nav>
         {isLoggedIn ? (
           <div className="flex flex-col items-center ">
             {/* The navbar will show these links after you log in */}
@@ -38,7 +38,7 @@ const Navbar = () => {
             </button>
           </div>
         ) : (
-          <div className="flex flex-col items-center space-y-2">
+          <div className="flex flex-col items-center ">
             {/* The navbar will show these links before you log in */}
             <Link to="/login" className="hover:text-blue-500 block">
               Login
