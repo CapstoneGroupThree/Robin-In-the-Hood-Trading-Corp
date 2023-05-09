@@ -120,7 +120,7 @@ const PopularStocksHomeView = () => {
     const isPreMarket =
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
-      hour >= 8 &&
+      hour >= 0 &&
       (hour < 9 || (hour === 9 && minute < 30)) &&
       !isHoliday;
 
