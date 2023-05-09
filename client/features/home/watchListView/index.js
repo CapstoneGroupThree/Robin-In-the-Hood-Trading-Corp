@@ -223,7 +223,7 @@ const WatchListView = () => {
   {
     /* Tailwind classes for .popup */
   }
-  const popupClasses = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-white p-5 border border-gray-300 shadow-md rounded-md w-72 max-w-full`;
+  const popupClasses = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-white p-5 border border-gray-300 shadow-md rounded-md w-72 max-w-full w-max max-h-full h-max overflow-y-auto`;
 
   {
     /* Tailwind classes for .overlay */
@@ -239,28 +239,44 @@ const WatchListView = () => {
         <div>
           <div className={overlayClasses} onClick={handleOverlayClick}></div>
           <div className={popupClasses}>
-            {lengthOfWatchlist ? (
-              Object.entries(watchlist)
-                .filter(([key]) => key !== "list")
-                .map(([ticker, stockInfo]) => {
-                  const trimmedName = trimName(stockInfo.name);
-                  return (
-                    <div key={ticker} className="Watchlist">
-                      <Link to={`/singleStock/${ticker}`}>
-                        <h2>{trimmedName}</h2>
-                      </Link>
-                      <p>Ticker: {ticker}</p>
-                      <p>
-                        Price:{" "}
-                        {stockInfo.close.toFixed(2) ||
-                          stockInfo.preMarket.toFixed(2)}
-                      </p>
-                      <button value={ticker} onClick={handleRemove}>
-                        Remove
-                      </button>
-                    </div>
-                  );
-                })
+            {lengthOfWatchlist > 0 ? (
+              <div className="watchlist-table-container max-h-600px w-full overflow-y-auto">
+                <table className="w-full table-auto border-collapse border border-purple-500">
+                  <thead className="border-b-2 border-purple-500">
+                    <tr>
+                      <th className="px-4 py-2">Name</th>
+                      <th className="px-4 py-2">Symbol</th>
+                      <th className="px-4 py-2">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(watchlist)
+                      .filter(([key]) => key !== "list")
+                      .map(([ticker, stockInfo]) => {
+                        const trimmedName = trimName(stockInfo.name);
+                        return (
+                          <tr key={ticker}>
+                            <td className="px-4 py-2">
+                              <Link to={`/singleStock/${ticker}`}>
+                                {trimmedName}
+                              </Link>
+                            </td>
+                            <td className="px-4 py-2">{ticker}</td>
+                            <td className="px-4 py-2">
+                              {stockInfo.close.toFixed(2) ||
+                                stockInfo.preMarket.toFixed(2)}
+                            </td>
+                            <td className="px-4 py-2">
+                              <button value={ticker} onClick={handleRemove}>
+                                Remove
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
             ) : (
               <div className="popup">Watchlist is empty</div>
             )}
@@ -269,25 +285,39 @@ const WatchListView = () => {
       )}
 
       <div>
-        {lengthOfWatchlist ? (
-          Object.entries(watchlist)
-            .filter(([key]) => key !== "list")
-            .map(([ticker, stockInfo]) => {
-              const trimmedName = trimName(stockInfo.name);
-              return (
-                <div key={ticker} className="Watchlist">
-                  <Link to={`/singleStock/${ticker}`}>
-                    <h2>{trimmedName}</h2>
-                  </Link>
-                  <p>Ticker: {ticker}</p>
-                  <p>
-                    Price:{" "}
-                    {stockInfo.close.toFixed(2) ||
-                      stockInfo.preMarket.toFixed(2)}
-                  </p>
-                </div>
-              );
-            })
+        {lengthOfWatchlist > 0 ? (
+          <div className="watchlist-table-container">
+            <table className="w-full table-auto border-collapse border border-purple-500">
+              <thead className="border-b-2 border-purple-500">
+                <tr>
+                  <th className="px-4 py-2">Name</th>
+                  <th className="px-4 py-2">Symbol</th>
+                  <th className="px-4 py-2">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(watchlist)
+                  .filter(([key]) => key !== "list")
+                  .map(([ticker, stockInfo]) => {
+                    const trimmedName = trimName(stockInfo.name);
+                    return (
+                      <tr key={ticker}>
+                        <td className="px-4 py-2">
+                          <Link to={`/singleStock/${ticker}`}>
+                            {trimmedName}
+                          </Link>
+                        </td>
+                        <td className="px-4 py-2">{ticker}</td>
+                        <td className="px-4 py-2">
+                          {stockInfo.close.toFixed(2) ||
+                            stockInfo.preMarket.toFixed(2)}
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <div>Please add stocks to your watchlist</div>
         )}
