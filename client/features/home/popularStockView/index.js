@@ -150,6 +150,7 @@ const PopularStocksHomeView = () => {
 
     const from = marketOpen ? to : getMostRecentTradingDay(now);
     to = marketOpen ? to : from;
+    //! for some reason market open was passing in as true before i put this console log in, does it past the 3rd call.... going to fix in watchlist view as well.
     console.log(marketOpen);
     // console.log(from, to);
     // Pass marketOpen and from, to to the thunk
@@ -217,7 +218,7 @@ const PopularStocksHomeView = () => {
     const selectedTickers = getRandomTickers();
     console.log(selectedTickers);
 
-    if (numOfPopStocksInfoInState < 8) {
+    if (numOfPopStocksInfoInState < 4) {
       console.log("running fetch");
       runPopStocksFetch(selectedTickers).then((success) => {
         if (success) {
