@@ -1,0 +1,57 @@
+.chart-container {
+  height: 500px;
+  width: 100%;
+}
+
+.custom-tooltip {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.tooltip-price {
+  margin: 0;
+  color: #2196f3;
+}
+
+.recharts-cartesian-axis-tick {
+  font-size: 14px;
+  color: #666;
+}
+
+.recharts-cartesian-axis-tick-line {
+  display: none;
+}
+
+.recharts-cartesian-grid-horizontal line {
+  stroke: #e0e0e0;
+}
+
+.recharts-cartesian-grid-vertical line {
+  display: none;
+}
+
+.recharts-cartesian-axis-tick-value {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.chart {
+  background-color: white;
+}
+
+.axis path,
+.axis line {
+  stroke: #3dbb3d;
+}
+
+.area {
+  opacity: 0.7;
+}
