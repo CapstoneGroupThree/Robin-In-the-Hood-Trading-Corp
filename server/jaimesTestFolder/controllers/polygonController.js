@@ -76,7 +76,7 @@ polygonController.getCandlestickData = async (req, res, next) => {
 
   try {
     const response = await axios.get(
-      `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${multiplier}/${timespan}/${from}/${to}?unadjusted=true&sort=asc&limit=400&apiKey=${polygonApiKey}`
+      `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${multiplier}/${timespan}/${from}/${to}?unadjusted=true&sort=asc&limit=1000&apiKey=${polygonApiKey}`
     );
     console.log(`response.data: ${JSON.stringify(response.data)}`);
 

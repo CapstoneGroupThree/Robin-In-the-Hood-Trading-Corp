@@ -62,7 +62,7 @@ const ClosePriceChartPage = ({ ticker }) => {
     now.setHours(now.getHours() - 4);
 
     const fromDate = new Date();
-    fromDate.setHours(fromDate.getHours() - 28);
+    fromDate.setHours(fromDate.getHours() - 6);
 
     const formatDate = (date) => {
       const year = date.getFullYear();
