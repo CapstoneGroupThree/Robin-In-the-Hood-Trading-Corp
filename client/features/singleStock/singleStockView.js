@@ -219,96 +219,138 @@ export default function SingleStockView() {
   // ! uses clearbit Logo API to get logos
   //! potentially might break during weekdays based on different api calls
   return (
-    <div>
+    <div className="font-semibold flex flex-col h-screen  overflow-hidden">
       {console.log("singleStockInfoOpenCLose", singleStockInfo.openClose)}
       {console.log(tickerInfo)}
       {console.log(tickerPriceInfo)}
-      <SearchBar />
-      <h2>{tickerInfo.name}</h2>
-      <StockData ticker={ticker} />
-      <VolumeChartPage ticker={ticker} />
-      <ClosePriceChartPage ticker={ticker} />
-      <div>
-        <h3></h3>
-        <p>{tickerInfo.ticker}</p>
-        <img
-          src={`https://logo.clearbit.com/${tickerInfo.homepage_url}`}
-          alt="Company Logo"
-          onError={handleImageError}
-          style={{ width: "10rem", height: "10rem" }}
-        />
-        <p>
-          Price:{" "}
-          {formatNumber(
-            tickerPriceInfo?.close ??
-              tickerPriceInfo?.results?.[0]?.c ??
-              tickerPriceInfo?.preMarket
-          )}
-        </p>
-        <p>
-          High:{" "}
-          {formatNumber(
-            tickerPriceInfo?.high ?? singleStockInfo?.openClose?.high
-          )}
-        </p>
-        <p>
-          Low:{" "}
-          {formatNumber(
-            tickerPriceInfo?.low ?? singleStockInfo?.openClose?.low
-          )}
-        </p>
-        <p>
-          Open:{" "}
-          {formatNumber(
-            tickerPriceInfo?.open ?? singleStockInfo?.openClose?.open
-          )}
-        </p>
-        <p>
-          {tickerPriceInfo?.close || singleStockInfo?.openClose?.close
-            ? `Close: ${formatNumber(
-                tickerPriceInfo?.close ?? singleStockInfo?.openClose?.close
-              )}`
-            : `Premarket: ${formatNumber(
-                tickerPriceInfo?.preMarket ??
-                  tickerPriceInfo?.open ??
-                  singleStockInfo?.openClose?.open
-              )}`}
-        </p>
-        <p>Description: {tickerInfo.description} </p>
-        <h2>News</h2>
-        <div>
-          {console.log("here", tickerNews)}
-          {tickerNews && tickerNews.length > 0 ? (
-            tickerNews.map((news) => (
-              <div key={news.id}>
-                <h2>
-                  <a href={`${news.article_url}`} alt={`link to ${news.title}`}>
-                    {news.title}
-                  </a>
-                </h2>
-                <img
-                  src={news.image_url}
-                  alt="company image"
-                  onError={handleImageError}
-                ></img>
-                <div>Author: {news.author}</div>
-                <div>Date Published: {news.published_utc.slice(0, 10)}</div>
-              </div>
-            ))
-          ) : (
-            <div>Currently no news</div>
-          )}
+
+      {/* Header Section */}
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center">
+          <div className="w-20 h-20 overflow-hidden rounded-full mr-4">
+            <img
+              src={`https://logo.clearbit.com/${tickerInfo.homepage_url}`}
+              alt="Company Logo"
+              onError={handleImageError}
+              className="object-cover w-full h-full"
+            />
+          </div>
+          <h2>{tickerInfo.name}</h2>
+        </div>
+        <SearchBar />
+      </div>
+
+      {/* Main Section */}
+      <div className="flex flex-grow overflow-hidden">
+        <div className="flex flex-col pr-4 overflow-auto w-1/2">
+          <StockData ticker={ticker} />
+          {/* <VolumeChartPage ticker={ticker} />
+        <ClosePriceChartPage ticker={ticker} /> */}
+
+          <h3></h3>
+          <p>{tickerInfo.ticker}</p>
+          <p>
+            Price:{" "}
+            {formatNumber(
+              tickerPriceInfo?.close ??
+                tickerPriceInfo?.results?.[0]?.c ??
+                tickerPriceInfo?.preMarket
+            )}
+          </p>
+          <p>
+            High:{" "}
+            {formatNumber(
+              tickerPriceInfo?.high ?? singleStockInfo?.openClose?.high
+            )}
+          </p>
+          <p>
+            Low:{" "}
+            {formatNumber(
+              tickerPriceInfo?.low ?? singleStockInfo?.openClose?.low
+            )}
+          </p>
+          <p>
+            Open:{" "}
+            {formatNumber(
+              tickerPriceInfo?.open ?? singleStockInfo?.openClose?.open
+            )}
+          </p>
+          <p>
+            {tickerPriceInfo?.close || singleStockInfo?.openClose?.close
+              ? `Close: ${formatNumber(
+                  tickerPriceInfo?.close ?? singleStockInfo?.openClose?.close
+                )}`
+              : `Premarket: ${formatNumber(
+                  tickerPriceInfo?.preMarket ??
+                    tickerPriceInfo?.open ??
+                    singleStockInfo?.openClose?.open
+                )}`}
+          </p>
+          <p className="content-start">Description: {tickerInfo.description}</p>
+        </div>
+
+        {/* News Section */}
+        <div className="overflow-auto h-full w-1/5 ml-4 border border-purple-500 p-2 rounded-md flex-none">
+          <h2>News</h2>
+          <div>
+            {console.log("here", tickerNews)}
+            {tickerNews && tickerNews.length > 0 ? (
+              tickerNews.map((news) => (
+                <div key={news.id}>
+                  <h2>
+                    <a
+                      href={`${news.article_url}`}
+                      alt={`link to ${news.title}`}
+                    >
+                      {news.title}
+                    </a>
+                  </h2>
+                  <img
+                    src={news.image_url}
+                    alt="company image"
+                    onError={handleImageError}
+                    className="w-32 h-32 object-cover"
+                  ></img>
+                  <div>Author: {news.author}</div>
+                  <div>Date Published: {news.published_utc.slice(0, 10)}</div>
+                </div>
+              ))
+            ) : (
+              <div>Currently no news</div>
+            )}
+          </div>
         </div>
       </div>
 
+      {/* Footer Section */}
       <div className="w-full p-4 md:absolute md:bottom-0">
-        <button onClick={() => console.log("Buy functionality")}>Buy</button>
-        <button onClick={() => console.log("Sell functionality")}>Sell</button>
-        <button value={tickerInfo.ticker} onClick={handleAddToWatchList}>
+        <button
+          onClick={() => console.log("Buy functionality")}
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Buy
+        </button>
+        <button
+          onClick={() => console.log("Sell functionality")}
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-3"
+        >
+          Sell
+        </button>
+        <button
+          value={tickerInfo.ticker}
+          onClick={handleAddToWatchList}
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-3"
+        >
           Add to Watchlist
         </button>
         <div>You already own: XXX shares:</div>
-        <img src="/aiChatRB.png" alt="your AI chat assistant "></img>
+      </div>
+      <div className="aibot absolute bottom-0 right-0">
+        <img
+          src="/aiChatRB.png"
+          alt="your AI chat assistant"
+          className="w-20 h-20"
+        ></img>
       </div>
     </div>
   );
