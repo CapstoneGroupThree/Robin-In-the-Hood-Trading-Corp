@@ -224,7 +224,7 @@ export default function SingleStockView() {
       {console.log(tickerInfo)}
       {console.log(tickerPriceInfo)}
 
-      {/* Header Section */}
+      {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
           <div className="w-20 h-20 overflow-hidden rounded-full mr-4">
@@ -240,7 +240,7 @@ export default function SingleStockView() {
         <SearchBar />
       </div>
 
-      {/* Main Section */}
+      {/* Main  */}
       <div className="flex flex-grow overflow-hidden">
         <div className="flex flex-col pr-4 overflow-auto w-1/2">
           <StockData ticker={ticker} />
@@ -289,7 +289,7 @@ export default function SingleStockView() {
           <p className="content-start">Description: {tickerInfo.description}</p>
         </div>
 
-        {/* News Section */}
+        {/* News */}
         <div className="overflow-auto h-full w-1/5 ml-4 border border-purple-500 p-2 rounded-md flex-none">
           <h2>News</h2>
           <div>
@@ -322,7 +322,7 @@ export default function SingleStockView() {
         </div>
       </div>
 
-      {/* Footer Section */}
+      {/* Footer */}
       <div className="w-full p-4 md:absolute md:bottom-0">
         <button
           onClick={() => console.log("Buy functionality")}
