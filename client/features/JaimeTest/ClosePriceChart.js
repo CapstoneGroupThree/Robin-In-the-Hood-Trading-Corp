@@ -13,6 +13,25 @@ import {
 const ClosePriceChart = ({ stockData }) => {
   const [chartData, setChartData] = useState([]);
 
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "white",
+            border: "1px solid #ccc",
+            padding: "10px",
+          }}
+        >
+          <p className="label">{label}</p>
+          <p className="intro">{`Price: ${payload[0].value.toFixed(2)}`}</p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   useEffect(() => {
     const labels = stockData.labels;
     const closePrices = stockData.datasets
@@ -36,8 +55,8 @@ const ClosePriceChart = ({ stockData }) => {
             // this changes the time to only show hour
             tickFormatter={(tickItem) => tickItem.slice(10)}
           />
-          <YAxis />
-          <Tooltip />
+          <YAxis domain={["dataMin", "dataMax"]} />
+          <Tooltip content={<CustomTooltip />} />
           <Legend />
           <Area
             type="monotone"
