@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-} from 'recharts';
+} from "recharts";
 
 const ClosePriceChart = ({ stockData }) => {
   const [chartData, setChartData] = useState([]);
@@ -16,22 +16,35 @@ const ClosePriceChart = ({ stockData }) => {
   useEffect(() => {
     const labels = stockData.labels;
     const closePrices = stockData.datasets
-      ? stockData.datasets[0].data.map((close, index) => ({ name: labels[index], close }))
+      ? stockData.datasets[0].data.map((close, index) => ({
+          name: labels[index],
+          close,
+        }))
       : [];
 
     setChartData(closePrices);
   }, [stockData]);
 
   return (
-    <div style={{ width: '100%', height: 500 }}>
+    <div style={{ width: "100%", height: 500 }}>
       <ResponsiveContainer>
         <AreaChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" type="category" tickFormatter={(tickItem) => new Date(tickItem).toLocaleDateString()} />
+          <XAxis
+            dataKey="name"
+            type="category"
+            // this changes the time to only show hour
+            tickFormatter={(tickItem) => tickItem.slice(10)}
+          />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Area type="monotone" dataKey="close" stroke="#8884d8" fill="rgba(136, 132, 216, 0.5)" />
+          <Area
+            type="monotone"
+            dataKey="close"
+            stroke="#8884d8"
+            fill="rgba(136, 132, 216, 0.5)"
+          />
         </AreaChart>
       </ResponsiveContainer>
     </div>

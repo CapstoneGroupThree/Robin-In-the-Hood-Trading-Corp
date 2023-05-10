@@ -71,14 +71,15 @@ polygonController.getCandlestickData = async (req, res, next) => {
 
   try {
     const response = await axios.get(
-      `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${multiplier}/${timespan}/${from}/${to}?unadjusted=true&sort=asc&limit=120&apiKey=${polygonApiKey}`
+      `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${multiplier}/${timespan}/${from}/${to}?unadjusted=true&sort=asc&limit=400&apiKey=${polygonApiKey}`
     );
     console.log(`response.data: ${JSON.stringify(response.data)}`);
 
     // extract and format data for chart.js
     const chartData = {
       labels: response.data.results.map((result) =>
-        new Date(result.t).toISOString().slice(0, 10)
+        // this is good for showing the entire date
+        new Date(result.t).toISOString().slice(0, 16).replace("T", " ")
       ),
       datasets: response.data.results.map((result) => ({
         open: result.o,
