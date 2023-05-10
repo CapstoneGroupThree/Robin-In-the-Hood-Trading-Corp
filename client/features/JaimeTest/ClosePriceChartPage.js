@@ -122,7 +122,7 @@ const ClosePriceChartPage = ({ ticker }) => {
           <ClosePriceChart stockData={stockData} />
         </>
       ) : (
-        <p>Loading...</p>
+        <p className="loader"></p>
       )}
     </div>
   );
