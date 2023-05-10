@@ -63,11 +63,16 @@ polygonController.getGroupTickers = async (req, res, next) => {
 
 // fetch stock data for candlestick chart
 polygonController.getCandlestickData = async (req, res, next) => {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const month = (now.getMonth() + 1).toString().padStart(2, "0");
+  const day = now.getDate().toString().padStart(2, "0");
+
   const symbol = req.params.symbol;
   const multiplier = req.params.multiplier || 1;
   const timespan = req.params.timespan || "day";
-  const from = req.params.from || "2022-01-01";
-  const to = req.params.to || "2022-12-31";
+  const from = req.params.from || `${currentYear}-01-01`;
+  const to = req.params.to || `${currentYear}-${month}-${day}`;
 
   try {
     const response = await axios.get(
