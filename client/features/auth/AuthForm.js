@@ -65,12 +65,20 @@ const AuthForm = ({ name, displayName }) => {
   };
 
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       {error && <div className="alert alert-danger">{error}</div>}
-      <form className="text-center" onSubmit={handleSubmit} name={name}>
+      <form
+        className="text-center bg-gray-600 w-96 h-96 p-10 rounded shadow-md"
+        onSubmit={handleSubmit}
+        name={name}
+      >
         {name === "login" ? <Login /> : <SignUp />}
-
-        <button type="submit">{displayName}</button>
+        <button
+          type="submit"
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mt-4"
+        >
+          {displayName}
+        </button>
         {handleNoAccount()}
       </form>
     </div>

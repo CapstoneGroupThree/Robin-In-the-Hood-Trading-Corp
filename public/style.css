@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   font-family: sans-serif;
 }
@@ -18,4 +22,43 @@ nav a {
 form div {
   margin: 1em;
   display: inline-block;
+}
+
+.component-spacing {
+  margin: 16px;
+}
+
+.home-padding {
+  padding-left: 25rem;
+}
+
+.watchlist-table-container {
+  max-height: 600px; /* Set a max-height that fits your design */
+  width: 100%;
+  overflow-y: auto; /* Enable vertical scroll */
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  width: 1000px;
+  max-width: 100%;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 5;
 }
