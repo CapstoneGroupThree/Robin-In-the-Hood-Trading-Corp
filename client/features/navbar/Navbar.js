@@ -29,6 +29,7 @@ const Navbar = () => {
             <Link to="/allStocks" className="hover:text-blue-500 block">
               All Stocks
             </Link>
+            <Link to="/user/edit"> Edit User Profile</Link>
             <button
               type="button"
               className="hover:text-blue-500 "

@@ -6,6 +6,7 @@ import Home from "../features/home/Home";
 import AllStocksView from "../features/allStocks/allStocksView";
 import SingleStockView from "../features/singleStock/singleStockView";
 import { me } from "./store";
+import EditUserInfo from "../features/editUserInfo";
 
 /**
  * COMPONENT
@@ -27,6 +28,7 @@ const AppRoutes = () => {
           <Route to="/home" element={<Home />} />
           <Route path="/allStocks" element={<AllStocksView />} />
           <Route path="/singleStock/:ticker" element={<SingleStockView />} />
+          <Route path="/user/edit" element={<EditUserInfo />} />
         </Routes>
       ) : (
         <Routes>
