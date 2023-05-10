@@ -13,7 +13,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex flex-col items-center space-y-4 text-white font-semibold">
+    <div className="flex flex-col max-h-screen items-center space-y-4 text-white font-semibold">
       <div className="flex items-center border-b w-full border-purple-500 pb-4">
         <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
 

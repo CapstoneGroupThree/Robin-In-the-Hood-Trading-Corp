@@ -5,8 +5,8 @@ import AppRoutes from "./AppRoutes";
 
 const App = () => {
   return (
-    <div className="h-screen flex">
-      <nav className="w-2/12 bg-gray-800 p-4">
+    <div className="h-screen  flex">
+      <nav className="w-2/15 bg-gray-800 p-4">
         <Navbar />
       </nav>
       <main className="w-4/5 p-4">
