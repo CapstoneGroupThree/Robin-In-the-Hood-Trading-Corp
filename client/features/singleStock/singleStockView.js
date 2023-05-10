@@ -35,6 +35,7 @@ export default function SingleStockView() {
   const [tickerNews, setTickerNews] = useState([]);
   const [tickerInfo, setTickerInfo] = useState({});
   const [tickerPriceInfo, setTickerPriceInfo] = useState({});
+  const [currentChart, setCurrentChart] = useState("stockData");
 
   //! used nager date api to get public holidays
 
@@ -249,9 +250,41 @@ export default function SingleStockView() {
         <div className="flex flex-grow">
           <div className="flex flex-col pr-4 w-7/12">
             <div>
-              <StockData ticker={ticker} />
-              {/* <VolumeChartPage ticker={ticker} />
-    <ClosePriceChartPage ticker={ticker} /> */}
+              <div>
+                {currentChart === "stockData" && <StockData ticker={ticker} />}
+                {currentChart === "volume" && (
+                  <VolumeChartPage ticker={ticker} />
+                )}
+
+                {currentChart === "closePrice" && (
+                  <ClosePriceChartPage
+                    className="close-price-chart"
+                    ticker={ticker}
+                  />
+                )}
+              </div>
+
+              {/* Buttons to switch charts */}
+              <div>
+                <button
+                  className="chart-button"
+                  onClick={() => setCurrentChart("stockData")}
+                >
+                  Stock Data
+                </button>
+                <button
+                  className="chart-button"
+                  onClick={() => setCurrentChart("volume")}
+                >
+                  Volume Chart
+                </button>
+                <button
+                  className="chart-button"
+                  onClick={() => setCurrentChart("closePrice")}
+                >
+                  2-Hour Price Chart
+                </button>
+              </div>
             </div>
 
             <h3>{tickerInfo.ticker}</h3>
