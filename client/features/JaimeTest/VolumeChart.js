@@ -16,14 +16,7 @@ const VolumeChart = ({ stockData }) => {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div
-          className="custom-tooltip"
-          style={{
-            backgroundColor: "white",
-            border: "1px solid #ccc",
-            padding: "10px",
-          }}
-        >
+        <div className="custom-tooltip">
           <p className="label">{label.slice(0, 10)}</p>
           <p className="intro">{`Volume: ${payload[0].value}`}</p>
         </div>
@@ -45,28 +38,67 @@ const VolumeChart = ({ stockData }) => {
   }, [stockData]);
 
   return (
-    <div style={{ width: "100%", height: 500 }}>
+    <div style={{ width: "100%", height: 500, backgroundColor: "#15202B" }}>
       <ResponsiveContainer>
-        <AreaChart data={chartData}>
+        <AreaChart
+          data={chartData}
+          margin={{
+            top: 30,
+            right: 50,
+            left: 20,
+            bottom: 30,
+          }}
+        >
+          <defs>
+            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#e80a89" stopOpacity={0.8} />
+              <stop offset="95%" stopColor="#f9af57" stopOpacity={0.1} />
+            </linearGradient>
+          </defs>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
             dataKey="name"
+            tick={{ stroke: "#f9af57", strokeWidth: 0.5 }}
             tickFormatter={(tick) => {
               return tick.length > 10 ? `${tick.substring(0, 10)}` : tick;
             }}
           />
-          <YAxis />
+          <YAxis tick={{ stroke: "#f9af57", strokeWidth: 0.5 }} />
           <Tooltip content={<CustomTooltip />} />
-          <Legend />
+          <Legend
+            wrapperStyle={{
+              color: "#f9af57",
+              fontSize: "14px",
+              fontWeight: "bold",
+            }}
+          />
           <Area
             type="monotone"
             dataKey="volume"
-            stroke="#8884d8"
-            fillOpacity={0.2}
-            fill="#8884d8"
+            stroke="#e80a89"
+            fillOpacity={1}
+            fill="url(#colorUv)"
           />
         </AreaChart>
       </ResponsiveContainer>
+      <style jsx="true">{`
+        .custom-tooltip {
+          background-color: #000;
+          padding: 10px;
+          border-radius: 5px;
+          font-size: 12px;
+        }
+        .custom-tooltip .label {
+          color: #f9af57;
+          margin: 0;
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .custom-tooltip .intro {
+          color: #fff;
+          margin: 0;
+        }
+      `}</style>
     </div>
   );
 };
