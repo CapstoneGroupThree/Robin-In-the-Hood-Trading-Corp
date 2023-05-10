@@ -7,8 +7,6 @@ router.use("/mde", require("./mde"));
 router.use("/rde", require("./rde"));
 //Watchlist
 router.use("/watchlist", require("./watchlist"));
-//Users
-router.use("/users", require("./users"));
 
 router.use((req, res, next) => {
   const error = new Error("Not Found");
