@@ -7,7 +7,7 @@ import {
   fetchAllStockTickerPriceSingle,
 } from "../allStocks/allStocksSlice";
 import { Link } from "react-router-dom";
-import "./styles.css";
+// import "./styles.css";
 import SearchBar from "../searchBar";
 
 const AllStocksView = () => {
@@ -232,24 +232,31 @@ const AllStocksView = () => {
   };
 
   if (isLoading) {
-    return <div>is Loading</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-purple-500"></div>
+      </div>
+    );
   }
 
   return (
-    <div>
-      <SearchBar />
+    <div className="font-semibold">
+      <div className="flex justify-between items-center mb-4 border-b border-purple-500 ">
+        <h1>All Stocks</h1>
+        <SearchBar />
+      </div>
       {console.log(currentPageNameCapInfo)}
-      <h2>All Stocks</h2>
+
       <h3>Popular Stocks</h3>
       {Object.keys(allStocks).length === 0 && <div>Loading stocks...</div>}
       {Object.keys(allStocks).length > 0 && (
-        <table>
-          <thead>
+        <table className="w-full table-auto border-collapse border border-purple-500">
+          <thead className="border-b-2 border-purple-500">
             <tr>
-              <th>Name</th>
-              <th>Symbol</th>
-              <th>Price</th>
-              <th>Today's Change (%)</th>
+              <th className="px-4 py-2">Name</th>
+              <th className="px-4 py-2">Symbol</th>
+              <th className="px-4 py-2">Price</th>
+              <th className="px-4 py-2">Today's Change (%)</th>
             </tr>
           </thead>
           <tbody>
@@ -257,22 +264,27 @@ const AllStocksView = () => {
               // const stockDetail = allStockDetails[stock.T];
               // const marketCap = stockDetail ? stockDetail.marketCap : "N/A";
               return (
-                <tr key={stock.T}>
-                  <td>
-                    <Link to={`/singleStock/${stock.T}`} className="stock-link">
+                <tr key={stock.T} className="border-b border-purple-500">
+                  <td className="px-4 py-2">
+                    <Link
+                      to={`/singleStock/${stock.T}`}
+                      className=" hover:text-purple-500 "
+                    >
                       {currentPageNameCapInfo[stock.T]
                         ? trimName(currentPageNameCapInfo[stock.T].name)
                         : "loading"}
                     </Link>
                   </td>
-                  <td>{stock.T}</td>
-                  <td>
+                  <td className="px-4 py-2 text-center">{stock.T}</td>
+                  <td className="px-4 py-2 text-center">
                     $
                     {currentPageNameCapInfo[stock.T]
                       ? currentPageNameCapInfo[stock.T].price.toFixed(2)
                       : "loading"}
                   </td>
-                  <td>{changePercentageFunc(stock.o, stock.c)}%</td>
+                  <td className="px-4 py-2 text-center">
+                    {changePercentageFunc(stock.o, stock.c)}%
+                  </td>
                 </tr>
                 // <tr key={index}>
                 //   <td>
@@ -294,18 +306,34 @@ const AllStocksView = () => {
           </tbody>
         </table>
       )}
-      <div>
+      <div className="mt-4 flex justify-center items-center">
+        {" "}
         {currentPage > 1 ? (
-          <button value="prev" onClick={handlePageChange}>
+          <button
+            value="prev"
+            onClick={handlePageChange}
+            className="mr-2 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700"
+          >
             Prev
           </button>
         ) : (
           ""
         )}
-        Page: {currentPage}
-        <button value="next" onClick={handlePageChange}>
+        <span className="mr-2">Page: {currentPage}</span>
+        <button
+          value="next"
+          onClick={handlePageChange}
+          className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700"
+        >
           Next
         </button>
+        <div className="aibot absolute bottom-0 right-0">
+          <img
+            src="/aiChatRB.png"
+            alt="your AI chat assistant "
+            className="w-20 h-20"
+          ></img>
+        </div>
       </div>
     </div>
   );
