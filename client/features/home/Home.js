@@ -18,7 +18,7 @@ const Home = () => {
         <h1>Home</h1>
         <SearchBar name={displayedName} />
       </div>
-      <div className="flex flex-grow space-x-4 h-2/5 overflow-hidden border  ">
+      <div className="flex flex-grow space-x-4 h-2/5 overflow-hidden   ">
         <div className="w-1/2 h-full flex flex-col space-y-4 box-content ">
           <div className="assets h-1/3  border border-gray-400 p-4 rounded bg-gray-100">
             <h2>Asset</h2>

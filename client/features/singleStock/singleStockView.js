@@ -224,185 +224,183 @@ export default function SingleStockView() {
   // ! uses clearbit Logo API to get logos
   //! potentially might break during weekdays based on different api calls
   return (
-    <div className="overflow-hidden max-h-screen">
-      <div className="font-semibold flex flex-col h-screen  overflow-hidden">
-        {console.log("singleStockInfoOpenCLose", singleStockInfo.openClose)}
-        {console.log(tickerInfo)}
-        {console.log(tickerPriceInfo)}
+    <div className="font-semibold flex flex-col h-screen justify-between max-h-screen  overflow-hidden">
+      {console.log("singleStockInfoOpenCLose", singleStockInfo.openClose)}
+      {console.log(tickerInfo)}
+      {console.log(tickerPriceInfo)}
 
-        {/* Header */}
-        <div className="flex justify-between items-center mb-4 ">
-          <div className="flex items-center">
-            <div className="w-10 h-10 overflow-hidden rounded-full mr-4">
-              <img
-                src={`https://logo.clearbit.com/${tickerInfo.homepage_url}`}
-                alt="Company Logo"
-                onError={handleImageError}
-                className="object-cover w-full h-full"
-              />
-            </div>
-            <h2>{tickerInfo.name}</h2>
+      {/* Header */}
+      <div className="flex justify-between  items-center mb-2 ">
+        <div className="flex items-center">
+          <div className="w-10 h-10 overflow-visible rounded-full mr-4">
+            <img
+              src={`https://logo.clearbit.com/${tickerInfo.homepage_url}`}
+              alt="Company Logo"
+              onError={handleImageError}
+              className="object-cover w-full h-full"
+            />
           </div>
-          <SearchBar />
+          <h2>{tickerInfo.name}</h2>
         </div>
+        <SearchBar />
+      </div>
 
-        {/* Main  */}
-        <div className="flex flex-grow">
-          <div className="flex flex-col pr-4 w-7/12">
-            <div>
-              <div>
-                {currentChart === "stockData" && <StockData ticker={ticker} />}
-                {currentChart === "volume" && (
-                  <VolumeChartPage ticker={ticker} />
-                )}
+      {/* Main  */}
+      <div className="flex flex-grow space-x-2 h-full max-h-fit">
+        <div className="flex flex-col max-h-full h-5/6  space-y-2 pr-2 w-7/12 overflow-y-auto overflow-x-hidden">
+          <div>
+            <div className="">
+              {currentChart === "stockData" && <StockData ticker={ticker} />}
+              {currentChart === "volume" && <VolumeChartPage ticker={ticker} />}
 
-                {currentChart === "closePrice" && (
-                  <ClosePriceChartPage
-                    className="close-price-chart"
-                    ticker={ticker}
-                  />
-                )}
-              </div>
-
-              {/* Buttons to switch charts */}
-              <div>
-                <button
-                  className="chart-button"
-                  onClick={() => setCurrentChart("stockData")}
-                >
-                  Stock Data
-                </button>
-                <button
-                  className="chart-button"
-                  onClick={() => setCurrentChart("volume")}
-                >
-                  Volume Chart
-                </button>
-                <button
-                  className="chart-button"
-                  onClick={() => setCurrentChart("closePrice")}
-                >
-                  2-Hour Price Chart
-                </button>
-              </div>
-            </div>
-
-            <h3>{tickerInfo.ticker}</h3>
-
-            <div className="grid grid-cols-3 gap-2">
-              <div>
-                <strong>Price:</strong>
-                <p>
-                  {formatNumber(
-                    tickerPriceInfo?.close ??
-                      tickerPriceInfo?.results?.[0]?.c ??
-                      tickerPriceInfo?.preMarket
-                  )}
-                </p>
-              </div>
-              <div>
-                <strong>High:</strong>
-                <p>
-                  {formatNumber(
-                    tickerPriceInfo?.high ?? singleStockInfo?.openClose?.high
-                  )}
-                </p>
-              </div>
-              <div>
-                <strong>Premarket:</strong>
-                <p>
-                  {tickerPriceInfo?.preMarket ??
-                    tickerPriceInfo?.open ??
-                    singleStockInfo?.openClose?.open}
-                </p>
-              </div>
-              <div>
-                <strong>Low:</strong>
-                <p>
-                  {formatNumber(
-                    tickerPriceInfo?.low ?? singleStockInfo?.openClose?.low
-                  )}
-                </p>
-              </div>
-              <div>
-                <strong>Open:</strong>
-                <p>
-                  {formatNumber(
-                    tickerPriceInfo?.open ?? singleStockInfo?.openClose?.open
-                  )}
-                </p>
-              </div>
-            </div>
-            <div className=" max-h-full overflow-auto overflow-x-hidden">
-              <p className="content-start ">
-                Description: {tickerInfo.description}
-              </p>
-            </div>
-          </div>
-
-          {/* News */}
-          <div className="  overflow-y-scroll h-5/6 max-h-screen w-5/12 ml-10 border border-purple-500 p-2 rounded-md flex-none">
-            <h2>News</h2>
-            <div>
-              {console.log("here", tickerNews)}
-              {tickerNews && tickerNews.length > 0 ? (
-                tickerNews.map((news) => (
-                  <div key={news.id}>
-                    <h2>
-                      <a
-                        href={`${news.article_url}`}
-                        alt={`link to ${news.title}`}
-                      >
-                        {news.title}
-                      </a>
-                    </h2>
-                    <img
-                      src={news.image_url}
-                      alt="company image"
-                      onError={handleImageError}
-                      className="w-32 h-32 object-cover"
-                    ></img>
-                    <div>Author: {news.author}</div>
-                    <div>Date Published: {news.published_utc.slice(0, 10)}</div>
-                  </div>
-                ))
-              ) : (
-                <div>Currently no news</div>
+              {currentChart === "closePrice" && (
+                <ClosePriceChartPage
+                  className="close-price-chart"
+                  ticker={ticker}
+                />
               )}
             </div>
+
+            {/* Buttons to switch charts */}
+            <div>
+              <button
+                className="chart-button"
+                onClick={() => setCurrentChart("stockData")}
+              >
+                Stock Data
+              </button>
+              <button
+                className="chart-button"
+                onClick={() => setCurrentChart("volume")}
+              >
+                Volume Chart
+              </button>
+              <button
+                className="chart-button"
+                onClick={() => setCurrentChart("closePrice")}
+              >
+                2-Hour Price Chart
+              </button>
+            </div>
+          </div>
+
+          <h3>{tickerInfo.ticker}</h3>
+
+          <div className="grid grid-cols-3 gap-1">
+            <div>
+              <strong>
+                Price:{" "}
+                {formatNumber(
+                  tickerPriceInfo?.close ??
+                    tickerPriceInfo?.results?.[0]?.c ??
+                    tickerPriceInfo?.preMarket
+                )}
+              </strong>
+            </div>
+            <div>
+              <strong>
+                High:{" "}
+                {formatNumber(
+                  tickerPriceInfo?.high ?? singleStockInfo?.openClose?.high
+                )}
+              </strong>
+            </div>
+            <div>
+              <strong>
+                Premarket:{" "}
+                {tickerPriceInfo?.preMarket ??
+                  tickerPriceInfo?.open ??
+                  singleStockInfo?.openClose?.open}
+              </strong>
+            </div>
+            <div>
+              <strong>
+                Low:{" "}
+                {formatNumber(
+                  tickerPriceInfo?.low ?? singleStockInfo?.openClose?.low
+                )}
+              </strong>
+            </div>
+            <div>
+              <strong>
+                Open:{" "}
+                {formatNumber(
+                  tickerPriceInfo?.open ?? singleStockInfo?.openClose?.open
+                )}
+              </strong>
+            </div>
+          </div>
+          <div className=" max-h-fit overflow-auto scroll-style overflow-x-hidden">
+            <p className="content-start ">
+              Description: {tickerInfo.description}
+            </p>
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="w-full absolute bottom-0 max-w-screen-md ">
-          <button
-            onClick={() => console.log("Buy functionality")}
-            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Buy
-          </button>
-          <button
-            onClick={() => console.log("Sell functionality")}
-            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-3"
-          >
-            Sell
-          </button>
-          <button
-            value={tickerInfo.ticker}
-            onClick={handleAddToWatchList}
-            className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-3"
-          >
-            Add to Watchlist
-          </button>
-          <div>You already own: XXX shares:</div>
+        {/* News */}
+        <div className="  overflow-y-scroll scroll-style  h-5/6 max-h-full w-5/12 border border-purple-500 p-2 rounded-md ">
+          <h2>News</h2>
+          <div>
+            {console.log("here", tickerNews)}
+            {tickerNews && tickerNews.length > 0 ? (
+              tickerNews.map((news) => (
+                <div key={news.id}>
+                  <h2>
+                    <a
+                      href={`${news.article_url}`}
+                      alt={`link to ${news.title}`}
+                    >
+                      {news.title}
+                    </a>
+                  </h2>
+                  <img
+                    src={news.image_url}
+                    alt="company image"
+                    onError={handleImageError}
+                    className="w-32 h-32 object-cover"
+                  ></img>
+                  <div>Author: {news.author}</div>
+                  <div>Date Published: {news.published_utc.slice(0, 10)}</div>
+                </div>
+              ))
+            ) : (
+              <div>Currently no news</div>
+            )}
+          </div>
         </div>
-        <div className="aibot absolute bottom-0 right-10">
-          <img
-            src="/aiChatRB.png"
-            alt="your AI chat assistant"
-            className="w-20 h-20"
-          ></img>
+      </div>
+
+      {/* Footer */}
+      <div className=" flex absolute bottom-0 items-center mb-4 footer ">
+        <button
+          onClick={() => console.log("Buy functionality")}
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Buy
+        </button>
+        <button
+          onClick={() => console.log("Sell functionality")}
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-3"
+        >
+          Sell
+        </button>
+        <button
+          value={tickerInfo.ticker}
+          onClick={handleAddToWatchList}
+          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-3"
+        >
+          Add to Watchlist
+        </button>
+        <div className=" ml-4 text-purple-500">
+          You already own: XXX shares:
         </div>
+      </div>
+      <div className="aibot absolute bottom-0 right-0">
+        <img
+          src="/aiChatRB.png"
+          alt="your AI chat assistant"
+          className="w-20 h-20"
+        ></img>
       </div>
     </div>
   );
