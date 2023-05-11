@@ -21,6 +21,21 @@ app.get("/:id", requireToken, async (req, res) => {
   }
 });
 
+app.put("/:id", requireToken, async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    await user.update(req.body);
+    res.send(user);
+  } catch (error) {
+    console.log(error);
+    res.status(404).send("Update User Error");
+  }
+});
+
 // Edit User Profile with Password Change
 app.put("/password/:id", requireToken, async (req, res) => {
   try {

@@ -12,7 +12,6 @@ const EditUserInfo = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [editPasswordMode, setEditPasswordMode] = useState(false);
-  const { error } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
