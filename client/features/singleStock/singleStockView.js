@@ -216,6 +216,7 @@ export default function SingleStockView() {
     let ticker = e.target.value;
     console.log(ticker);
     await dispatch(addWatchListItem({ id, ticker }));
+    alert(`Added ${ticker} to watchlist!`);
   };
   const formatNumber = (number) => {
     return (number ?? 0).toFixed(2);
