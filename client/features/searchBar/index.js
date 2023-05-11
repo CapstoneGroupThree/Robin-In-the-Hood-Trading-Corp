@@ -24,6 +24,10 @@ const SearchBar = (props) => {
           value={query}
           onChange={handleInputChange}
         ></input>
+        {/*On submit we navigate the user to the stock tickers page*/}
+        <Link to={`/singleStock/${query}`}>
+          <button type="submit">GO!</button>
+        </Link>
         <span className="notificationBell mr-2">
           <img
             src="/notificationBell.png"
@@ -39,10 +43,6 @@ const SearchBar = (props) => {
           ></img>
           {name}
         </span>
-        {/*On submit we navigate the user to the stock tickers page*/}
-        <Link to={`/singleStock/${query}`}>
-          <button type="submit">GO!</button>
-        </Link>
       </form>
     </div>
   );
