@@ -5,11 +5,11 @@ import AppRoutes from "./AppRoutes";
 
 const App = () => {
   return (
-    <div className="h-screen overflow-hidden flex">
-      <nav className="w-2/15 bg-gray-800 p-4">
+    <div className="h-screen max-w-full w-full overflow-hidden flex">
+      <nav className="w-1/5 bg-gray-800 p-4">
         <Navbar />
       </nav>
-      <main className="w-4/5 p-4">
+      <main className="w-full p-4">
         <AppRoutes />
       </main>
       {/* <h1>Yolo</h1> */}
