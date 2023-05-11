@@ -59,10 +59,10 @@ const ClosePriceChartPage = ({ ticker }) => {
 
   useEffect(() => {
     const now = new Date();
-    now.setHours(now.getHours() - 4);
+    now.setHours(now.getHours() - 0);
 
     const fromDate = new Date();
-    fromDate.setHours(fromDate.getHours() - 6);
+    fromDate.setHours(fromDate.getHours() - 2);
 
     const formatDate = (date) => {
       const year = date.getFullYear();
@@ -79,8 +79,10 @@ const ClosePriceChartPage = ({ ticker }) => {
     console.log(f, t);
     let f2 = new Date(f);
     let t2 = new Date(t);
-    const from = f2.getTime();
-    const to = t2.getTime();
+    let from = f2.getTime();
+    let to = t2.getTime();
+    from = from - 900000 - 1;
+    to = to - 900000 - 1;
     console.log(from, to);
     const fetchData = async () => {
       const multiplier = 1; // 1-minute intervals

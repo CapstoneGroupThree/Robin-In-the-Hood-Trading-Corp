@@ -15,6 +15,23 @@ const ClosePriceChart = ({ stockData }) => {
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
+      // console.log(label);
+      const dateStr = label;
+      const date = new Date(dateStr);
+
+      // Subtract 3 hours and 45 minutes in milliseconds
+      date.setTime(date.getTime() - (3 * 60 + 45) * 60 * 1000);
+
+      // Format date back to string
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hour = String(date.getHours()).padStart(2, "0");
+      const minute = String(date.getMinutes()).padStart(2, "0");
+
+      const newDateStr = `${year}-${month}-${day} ${hour}:${minute}`;
+
+      // console.log(newDateStr);
       return (
         <div
           className="custom-tooltip"
@@ -30,7 +47,7 @@ const ClosePriceChart = ({ stockData }) => {
           }}
         >
           <p className="label" style={{ marginBottom: "0", color: "#999999" }}>
-            {label}
+            {newDateStr}
           </p>
           <p
             className="intro"
@@ -76,7 +93,22 @@ const ClosePriceChart = ({ stockData }) => {
             dataKey="name"
             type="category"
             tickLine={false}
-            tickFormatter={(tickItem) => tickItem.slice(10)}
+            tickFormatter={(tickItem) => {
+              // console.log(tickItem);
+              const dateStr = tickItem;
+              const date = new Date(dateStr);
+
+              // Subtract 3 hours and 45 minutes in milliseconds
+              date.setTime(date.getTime() - (3 * 60 + 45) * 60 * 1000);
+
+              const hour = String(date.getHours()).padStart(2, "0");
+              const minute = String(date.getMinutes()).padStart(2, "0");
+
+              const newDateStr = `${hour}:${minute}`;
+
+              // console.log(newDateStr);
+              return newDateStr;
+            }}
             axisLine={false}
           />
           <YAxis
