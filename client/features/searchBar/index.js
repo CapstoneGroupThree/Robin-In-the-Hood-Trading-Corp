@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const SearchBar = (props) => {
-  //Using state to determine the query
   const [query, setQuery] = useState("");
   const { name } = props;
 
