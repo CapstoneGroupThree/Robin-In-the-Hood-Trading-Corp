@@ -45,6 +45,60 @@ export const authenticate = createAsyncThunk(
   }
 );
 
+export const editUserProfileInfo = createAsyncThunk(
+  "editUserInfo",
+  async ({ id, first_name, last_name, email }) => {
+    const token = window.localStorage.getItem(TOKEN);
+    try {
+      if (token) {
+        const res = await axios.put(
+          `http://localhost:8080/api/users/${id}`,
+          { first_name, last_name, email },
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+        return res.data;
+      }
+    } catch (error) {
+      console.log(error);
+      return "Please input the correct previous password";
+    }
+  }
+);
+
+export const editUserPassword = createAsyncThunk(
+  "editUserPassword",
+  async ({ id, oldPassword, newPassword }) => {
+    const token = window.localStorage.getItem(TOKEN);
+    try {
+      const res = await axios.put(
+        `http://localhost:8080/api/users/password/${id}`,
+        {
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      return res.data;
+    } catch (error) {
+      if (error.response.data) {
+        // eslint-disable-next-line no-undef
+        return thunkAPI.rejectWithValue(err.response.data);
+      } else {
+        return "There was an issue with your request.";
+      }
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -68,6 +122,15 @@ export const authSlice = createSlice({
     });
     builder.addCase(authenticate.rejected, (state, action) => {
       state.error = action.payload;
+    });
+    builder.addCase(editUserProfileInfo.fulfilled, (state, action) => {
+      state.me = action.payload;
+    });
+    builder.addCase(editUserPassword.fulfilled, (state, action) => {
+      state.me = action.payload;
+    });
+    builder.addCase(editUserPassword.rejected, (state, action) => {
+      state.error = action.error;
     });
   },
 });
