@@ -30,18 +30,15 @@ const Chatbot = () => {
     setNewMessage("");
 
     try {
-      const response = await fetch(
-        "https://fun-chatgpt-clone-with-a-twist.onrender.com",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: newMessage,
-          }),
-        }
-      );
+      const response = await fetch("http://localhost:8080/openAi/chat", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: newMessage,
+        }),
+      });
 
       if (response.ok) {
         const data = await response.json();

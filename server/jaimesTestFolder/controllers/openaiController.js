@@ -4,12 +4,12 @@
 const axios = require("axios");
 
 require("dotenv").config();
-const chalk = require("chalk");
+// const chalk = require("chalk");
 
 // test if .env is found and passing the api key
-console.log(
-  chalk.yellow.bold("OPENAI KEY IS THE FOLLOWING: ", process.env.OPENAI_API_KEY)
-);
+// console.log(
+//   chalk.yellow.bold("OPENAI KEY IS THE FOLLOWING: ", process.env.OPENAI_API_KEY)
+// );
 
 // prep for openai api call authorization
 const openai = axios.create({
@@ -20,8 +20,11 @@ const openai = axios.create({
 });
 
 // Function that takes prompt and returns a response from openai
-async function getOpenaiResponse(prompt, model) {
+async function getOpenaiResponse(req, res, next) {
   try {
+    const model = "text-davinci-003";
+    const prompt = req.body.prompt;
+
     const response = await openai.post(
       "https://api.openai.com/v1/completions",
       {
@@ -36,11 +39,15 @@ async function getOpenaiResponse(prompt, model) {
       }
     );
     console.log("Response from OpenAI API: ", response.data.choices[0].text);
-    return response.data.choices[0].text.trim();
+    // return response.data.choices[0].text.trim();
+    res.status(200).send({
+      bot: response.data.choices[0].text,
+    });
   } catch (err) {
     console.log("Error ocurred while calling OpenAI API: ", err.response.data);
-    return handleError(err);
+    // return handleError(err);
+    next(err);
   }
 }
 
-module.exports = getOpenaiResponse;
+module.exports = { getOpenaiResponse };
