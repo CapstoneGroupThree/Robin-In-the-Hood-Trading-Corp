@@ -39,13 +39,13 @@ const Home = () => {
         </div>
       </div>
       <div className="aibot self-end bottom-0 right-0">
-        <img
+        {/* <img
           src="/aiChatRB.png"
           alt="your AI chat assistant "
           className="w-20 h-20"
-        ></img>
+        ></img> */}
+        <Chatbot />
       </div>
-      <Chatbot />
     </div>
   );
 };
