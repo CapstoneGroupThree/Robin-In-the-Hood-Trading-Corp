@@ -3,6 +3,7 @@ module.exports = router;
 
 //Data file (to be deleted)
 router.use("/data", require("./data"));
+router.use("/ticker", require("./ticker"));
 //Users
 router.use("/users", require("./users"));
 
