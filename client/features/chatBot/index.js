@@ -22,14 +22,75 @@ const Chatbot = () => {
     return `id-${timestamp}-${hexadecimalString}`;
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   const oldMessages = [...messages];
+  //   const userMessage = { isAi: false, value: newMessage };
+  //   const aiMessage = { isAi: true, value: " ", id: generateUniqueId() };
+  //   setMessages([...oldMessages, userMessage, aiMessage]);
+  //   setNewMessage("");
+
+  //   try {
+  //     const response = await fetch("http://localhost:8080/openAi/chat", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify({
+  //         prompt: newMessage,
+  //       }),
+  //     });
+
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       const parsedData = data.bot.trim();
+  //       setMessages((currentMessages) => {
+  //         const updatedMessages = currentMessages.map((message) =>
+  //           message.id === aiMessage.id
+  //             ? { ...message, value: parsedData }
+  //             : message
+  //         );
+  //         return updatedMessages;
+  //       });
+  //     } else {
+  //       throw new Error(await response.text());
+  //     }
+  //   } catch (err) {
+  //     alert(err);
+  //   }
+  // };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const oldMessages = [...messages];
     const userMessage = { isAi: false, value: newMessage };
-    const aiMessage = { isAi: true, value: " ", id: generateUniqueId() };
+    const aiMessage = {
+      isAi: true,
+      value: "AI thinking.",
+      id: generateUniqueId(),
+    };
     setMessages([...oldMessages, userMessage, aiMessage]);
     setNewMessage("");
+
+    // Loading dots simulation
+    const loadingDots = setInterval(() => {
+      setMessages((currentMessages) => {
+        return currentMessages.map((message) => {
+          if (message.id === aiMessage.id) {
+            if (message.value.endsWith("...")) {
+              return { ...message, value: "AI thinking." };
+            } else if (message.value.endsWith("..")) {
+              return { ...message, value: "AI thinking..." };
+            } else if (message.value.endsWith(".")) {
+              return { ...message, value: "AI thinking.." };
+            }
+          }
+          return message;
+        });
+      });
+    }, 500);
 
     try {
       const response = await fetch("http://localhost:8080/openAi/chat", {
@@ -42,17 +103,41 @@ const Chatbot = () => {
         }),
       });
 
+      clearInterval(loadingDots);
+
       if (response.ok) {
         const data = await response.json();
         const parsedData = data.bot.trim();
         setMessages((currentMessages) => {
           const updatedMessages = currentMessages.map((message) =>
-            message.id === aiMessage.id
-              ? { ...message, value: parsedData }
-              : message
+            message.id === aiMessage.id ? { ...message, value: "" } : message
           );
           return updatedMessages;
         });
+
+        // Slowly type out the AI's response
+        let index = -1;
+        const interval = setInterval(() => {
+          if (index < parsedData.length) {
+            setMessages((currentMessages) => {
+              const updatedMessages = currentMessages.map((message) =>
+                message.id === aiMessage.id
+                  ? {
+                      ...message,
+                      value:
+                        index === 0
+                          ? parsedData.charAt(index)
+                          : message.value + parsedData.charAt(index),
+                    }
+                  : message
+              );
+              return updatedMessages;
+            });
+            index++;
+          } else {
+            clearInterval(interval);
+          }
+        }, 20);
       } else {
         throw new Error(await response.text());
       }
@@ -60,6 +145,8 @@ const Chatbot = () => {
       alert(err);
     }
   };
+
+  // Reset the AI message value to an empty string
 
   if (!showChat) {
     return (
@@ -101,6 +188,12 @@ const Chatbot = () => {
               placeholder="Ask AI Chatbot"
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }
+              }}
             ></textarea>
             <button type="submit">
               <img src="/send.svg" />
