@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import SearchBar from "../searchBar";
 import WatchListView from "./watchListView";
 import PopularStocksHomeView from "./popularStockView";
+import ClosePriceChartPage from "../JaimeTest/ClosePriceChartPage";
 
 const Home = () => {
   const username = useSelector((state) => state.auth.me.first_name);
@@ -26,6 +27,9 @@ const Home = () => {
           </div>
           <div className="watchlist h-2/3 w-full  border border-gray-400 p-4 bg-gray-100 rounded">
             <WatchListView />
+            <div>
+              <ClosePriceChartPage />
+            </div>
           </div>
         </div>
 
