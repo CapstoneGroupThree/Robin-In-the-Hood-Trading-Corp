@@ -13,30 +13,46 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex flex-col max-h-screen items-center space-y-4 text-white font-semibold">
+    <div className="flex flex-col max-h-screen items-center  text-white font-semibold">
       <div className="flex items-center border-b w-full border-purple-500 pb-4">
         <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
 
         <h1 className="ml-4">Robin In the Hood {"(RITH)"}</h1>
       </div>
-      <nav>
+      <nav className="w-full">
         {isLoggedIn ? (
-          <div className="flex flex-col items-center ">
+          <div className="flex flex-col items-center place-content-evenly ">
             {/* The navbar will show these links after you log in */}
-            <Link to="/home" className="hover:text-blue-500 block">
+            <Link
+              to="/home"
+              className="hover:text-blue-500 block active:bg-gray-500 active:text-white"
+            >
               Home
             </Link>
-            <Link to="/allStocks" className="hover:text-blue-500 block">
+            <Link
+              to="/allStocks"
+              className="hover:text-blue-500 block  active:bg-gray-500 active:text-white"
+            >
               All Stocks
             </Link>
-            <Link to="/user/edit"> Edit User Profile</Link>
-            <button
-              type="button"
-              className="hover:text-blue-500 "
-              onClick={logoutAndRedirectHome}
+            <Link
+              to="/user/edit"
+              className="hover:text-blue-500 block  active:bg-gray-500 active:text-white"
             >
-              Logout
-            </button>
+              {" "}
+              Edit User Profile
+            </Link>
+
+            <hr className=" w-56 fixed bottom-8 border-purple-500 pb-4 " />
+            <div className="fixed bottom-0 pb-4">
+              <button
+                type="button"
+                className="hover:text-blue-500  active:bg-gray-500 active:text-white "
+                onClick={logoutAndRedirectHome}
+              >
+                Logout
+              </button>
+            </div>
           </div>
         ) : (
           <div className="flex flex-col items-center ">
@@ -50,7 +66,6 @@ const Navbar = () => {
           </div>
         )}
       </nav>
-      <hr className="w-full mt-4 border-purple-500" />
     </div>
   );
 };

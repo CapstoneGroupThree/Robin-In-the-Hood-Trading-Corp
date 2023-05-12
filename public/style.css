@@ -124,3 +124,19 @@ form div {
   height: 200px;
   max-height: 80rem;
 }
+
+.scroll-style {
+  overflow-y: scroll;
+}
+
+.scroll-style::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0;
+}
+
+.scroll-style::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.scroll-style::-webkit-scrollbar {
+  width: 6px;
+}
