@@ -54,9 +54,9 @@
 import React, { useState, useEffect } from "react";
 import ClosePriceChart from "./ClosePriceChart";
 
-const ClosePriceChartPage = ({ ticker }) => {
+const ClosePriceChartPage = (props) => {
   const [stockData, setStockData] = useState(null);
-
+  const { ticker, page } = props;
   useEffect(() => {
     const now = new Date();
     now.setHours(now.getHours() - 0);
@@ -121,7 +121,7 @@ const ClosePriceChartPage = ({ ticker }) => {
     <div>
       {stockData ? (
         <>
-          <ClosePriceChart stockData={stockData} />
+          <ClosePriceChart stockData={stockData} page={page} />
         </>
       ) : (
         <p className="loader"></p>

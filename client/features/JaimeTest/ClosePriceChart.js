@@ -10,8 +10,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const ClosePriceChart = ({ stockData }) => {
+const ClosePriceChart = (props) => {
   const [chartData, setChartData] = useState([]);
+  const { stockData, page } = props;
+
+  const isWidget = page === "popular";
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -59,6 +62,31 @@ const ClosePriceChart = ({ stockData }) => {
     return null;
   };
 
+  const WidgetTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div
+          className="custom-tooltip"
+          style={{
+            backgroundColor: "rgba(255, 255, 255, 0.8)",
+            border: "1px solid #999999",
+            borderRadius: "5px",
+            padding: "10px",
+            boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+            fontSize: "14px",
+            lineHeight: "20px",
+            fontWeight: "bold",
+          }}
+        >
+          <p className="intro" style={{ marginBottom: "0", color: "#000000" }}>
+            {`Price: ${payload[0].value.toFixed(2)}`}
+          </p>
+        </div>
+      );
+    }
+    return null;
+  };
+
   useEffect(() => {
     const labels = stockData.labels;
     const closePrices = stockData.datasets
@@ -74,8 +102,8 @@ const ClosePriceChart = ({ stockData }) => {
   return (
     <div
       style={{
-        width: "100%",
-        height: "50vh",
+        width: isWidget ? "30%" : "100%",
+        height: isWidget ? "10vh" : "50vh",
         backgroundColor: "#15202B",
         color: "#FFFFFF",
       }}
@@ -93,32 +121,38 @@ const ClosePriceChart = ({ stockData }) => {
             dataKey="name"
             type="category"
             tickLine={false}
-            tickFormatter={(tickItem) => {
-              // console.log(tickItem);
-              const dateStr = tickItem;
-              const date = new Date(dateStr);
+            tickFormatter={
+              isWidget
+                ? null
+                : (tickItem) => {
+                    // console.log(tickItem);
+                    const dateStr = tickItem;
+                    const date = new Date(dateStr);
 
-              // Subtract 3 hours and 45 minutes in milliseconds
-              date.setTime(date.getTime() - (3 * 60 + 45) * 60 * 1000);
+                    // Subtract 3 hours and 45 minutes in milliseconds
+                    date.setTime(date.getTime() - (3 * 60 + 45) * 60 * 1000);
 
-              const hour = String(date.getHours()).padStart(2, "0");
-              const minute = String(date.getMinutes()).padStart(2, "0");
+                    const hour = String(date.getHours()).padStart(2, "0");
+                    const minute = String(date.getMinutes()).padStart(2, "0");
 
-              const newDateStr = `${hour}:${minute}`;
+                    const newDateStr = `${hour}:${minute}`;
 
-              // console.log(newDateStr);
-              return newDateStr;
-            }}
+                    // console.log(newDateStr);
+                    return newDateStr;
+                  }
+            }
             axisLine={false}
+            hide={isWidget} // hide the axis if it's a widget
           />
           <YAxis
             domain={[
               "auto",
               Math.max(...chartData.map((data) => data.close)) * 1.005,
             ]}
+            hide={isWidget} // hide the axis if it's a widget
           />
 
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={isWidget ? <WidgetTooltip /> : <CustomTooltip />} />
           <Area
             type="monotone"
             dataKey="close"
