@@ -5,12 +5,15 @@ import "./chatBot.css";
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [showChat, setShowChat] = useState(false);
   const chatContainerRef = useRef();
 
   useEffect(() => {
-    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
   }, [messages]);
-
   const generateUniqueId = () => {
     const timestamp = Date.now();
     const randomNumber = Math.random();
@@ -58,36 +61,59 @@ const Chatbot = () => {
     }
   };
 
-  return (
-    <div id="app">
-      <div id="chat_container" ref={chatContainerRef}>
-        {messages.map((message, index) => (
-          <div className={`wrapper ${message.isAi ? "ai" : ""}`} key={index}>
-            <div className="chat">
-              <div className="profile">
-                <img
-                  src={message.isAi ? "/bot.svg" : "/user.svg"}
-                  alt={message.isAi ? "bot" : "user"}
-                ></img>
-              </div>
-              <div className="message">{message.value}</div>
-            </div>
-          </div>
-        ))}
+  if (!showChat) {
+    return (
+      <div>
+        <img
+          onClick={() => setShowChat(true)}
+          src="/aiChatRB.png"
+          alt="your AI chat assistant "
+          className="w-20 h-20"
+        ></img>
       </div>
-      <form onSubmit={handleSubmit}>
-        <textarea
-          name="prompt"
-          rows="1"
-          cols="1"
-          placeholder="Ask AI Chatbot"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-        ></textarea>
-        <button type="submit">
-          <img src="/send.svg" />
-        </button>
-      </form>
+    );
+  }
+
+  return (
+    <div className="chatBotContainer">
+      <div>
+        <div id="chat_container" ref={chatContainerRef}>
+          {messages.map((message, index) => (
+            <div className={`wrapper ${message.isAi ? "ai" : ""}`} key={index}>
+              <div className="chat">
+                <div className="profile">
+                  <img
+                    src={message.isAi ? "/bot.svg" : "/user.svg"}
+                    alt={message.isAi ? "bot" : "user"}
+                  ></img>
+                </div>
+                <div className="message">{message.value}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="chatArea">
+          <form onSubmit={handleSubmit}>
+            <textarea
+              name="prompt"
+              rows="1"
+              cols="1"
+              placeholder="Ask AI Chatbot"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+            ></textarea>
+            <button type="submit">
+              <img src="/send.svg" />
+            </button>
+          </form>
+          <img
+            onClick={() => setShowChat(false)}
+            src="/aiChatRB.png"
+            alt="your AI chat assistant "
+            className="w-20 h-20"
+          ></img>
+        </div>
+      </div>
     </div>
   );
 };
