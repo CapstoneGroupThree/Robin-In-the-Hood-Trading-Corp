@@ -17,5 +17,6 @@ router.get(
   polygonController.getCandlestickData
 ); // fetch stock data for candlestick chart
 router.get("/polygon/summary/:symbol", polygonController.getSummary); // fetches data for openai api and returns a summary of the stock
+router.get("/openAi/chat", openaiController.getOpenaiResponse);
 
 module.exports = router;
