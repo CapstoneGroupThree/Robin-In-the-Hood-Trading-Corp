@@ -7,7 +7,9 @@ require("dotenv").config();
 const chalk = require("chalk");
 
 // test if .env is found and passing the api key
-console.log(chalk.yellow.bold("OPENAI KEY IS THE FOLLOWING: ", process.env.OPENAI_API_KEY));
+console.log(
+  chalk.yellow.bold("OPENAI KEY IS THE FOLLOWING: ", process.env.OPENAI_API_KEY)
+);
 
 // prep for openai api call authorization
 const openai = axios.create({
@@ -36,8 +38,9 @@ async function getOpenaiResponse(prompt, model) {
     console.log("Response from OpenAI API: ", response.data.choices[0].text);
     return response.data.choices[0].text.trim();
   } catch (err) {
-    console.log('Error ocurred while calling OpenAI API: ', err.response.data);
+    console.log("Error ocurred while calling OpenAI API: ", err.response.data);
     return handleError(err);
   }
 }
 
+module.exports = getOpenaiResponse;
