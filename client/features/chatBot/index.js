@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import bot from "/assets/bot.svg";
-import user from "/assets/user.svg";
+
 import "./chatBot.css";
 
 const Chatbot = () => {
@@ -31,7 +30,7 @@ const Chatbot = () => {
 
     try {
       const response = await fetch("http://localhost:8080/openAi/chat", {
-        method: "GET",
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -43,12 +42,14 @@ const Chatbot = () => {
       if (response.ok) {
         const data = await response.json();
         const parsedData = data.bot.trim();
-        const updatedMessages = messages.map((message) =>
-          message.id === aiMessage.id
-            ? { ...message, value: parsedData }
-            : message
-        );
-        setMessages(updatedMessages);
+        setMessages((currentMessages) => {
+          const updatedMessages = currentMessages.map((message) =>
+            message.id === aiMessage.id
+              ? { ...message, value: parsedData }
+              : message
+          );
+          return updatedMessages;
+        });
       } else {
         throw new Error(await response.text());
       }
@@ -65,7 +66,7 @@ const Chatbot = () => {
             <div className="chat">
               <div className="profile">
                 <img
-                  src={message.isAi ? bot : user}
+                  src={message.isAi ? "/bot.svg" : "/user.svg"}
                   alt={message.isAi ? "bot" : "user"}
                 ></img>
               </div>
@@ -84,7 +85,7 @@ const Chatbot = () => {
           onChange={(e) => setNewMessage(e.target.value)}
         ></textarea>
         <button type="submit">
-          <img src="/assets/send.svg" />
+          <img src="/send.svg" />
         </button>
       </form>
     </div>
