@@ -15,6 +15,7 @@ const ClosePriceChart = (props) => {
   const { stockData, page } = props;
 
   const isWidget = page === "popular";
+  const isWatchlist = page === "watchlist";
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -55,7 +56,7 @@ const ClosePriceChart = (props) => {
           <p
             className="intro"
             style={{ marginBottom: "0", color: "#000000" }}
-          >{`Price: ${payload[0].value.toFixed(2)}`}</p>
+          >{`Price: $${payload[0].value.toFixed(2)}`}</p>
         </div>
       );
     }
@@ -79,7 +80,7 @@ const ClosePriceChart = (props) => {
           }}
         >
           <p className="intro" style={{ marginBottom: "0", color: "#000000" }}>
-            {`Price: ${payload[0].value.toFixed(2)}`}
+            {`Price: $${payload[0].value.toFixed(2)}`}
           </p>
         </div>
       );

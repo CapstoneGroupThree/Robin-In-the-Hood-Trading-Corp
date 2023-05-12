@@ -280,7 +280,8 @@ const PopularStocksHomeView = () => {
             <p className="text-gray-500">Ticker: {ticker}</p>
             <p className="text-gray-500">
               Price:{" "}
-              {stockInfo.close.toFixed(2) || stockInfo.preMarket.toFixed(2)}
+              {"$" + stockInfo.close.toFixed(2) ||
+                "$" + stockInfo.preMarket.toFixed(2)}
             </p>
             <ClosePriceChartPage ticker={ticker} page={page} />
           </div>
