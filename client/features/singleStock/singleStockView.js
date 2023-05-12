@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import VolumeChartPage from "../JaimeTest/VolumeChartPage.js";
 import StockData from "../JaimeTest/StockData.js";
 import ClosePriceChartPage from "../JaimeTest/ClosePriceChartPage";
+import Chatbot from "../chatBot/index.js";
 
 export default function SingleStockView() {
   const dispatch = useDispatch();
@@ -397,11 +398,12 @@ export default function SingleStockView() {
         </div>
       </div>
       <div className="aibot absolute bottom-0 right-0">
-        <img
+        {/* <img
           src="/aiChatRB.png"
           alt="your AI chat assistant"
           className="w-20 h-20"
-        ></img>
+        ></img> */}
+        <Chatbot />
       </div>
     </div>
   );

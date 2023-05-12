@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import SearchBar from "../searchBar";
 import WatchListView from "./watchListView";
 import PopularStocksHomeView from "./popularStockView";
+import Chatbot from "../chatBot";
 
 const Home = () => {
   const username = useSelector((state) => state.auth.me.first_name);
@@ -44,6 +45,7 @@ const Home = () => {
           className="w-20 h-20"
         ></img>
       </div>
+      <Chatbot />
     </div>
   );
 };

@@ -9,15 +9,16 @@ body {
   background: #f0f4f7;
 }
 
-#app {
-  width: 100vw;
-  height: 100vh;
-  background: #f0f4f7;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
+.chatBotContainer {
+  width: 500px; /* adjust this to your needs */
+  height: 800px; /* adjust this to your needs */
+  position: relative;
+  bottom: 0;
+  right: 0;
+  border: 1px solid black;
+  background-color: white;
+  border-radius: 10px;
+  overflow: auto;
 }
 
 #chat_container {
@@ -35,11 +36,11 @@ body {
 
   padding-bottom: 20px;
   scroll-behavior: smooth;
+  overflow: auto;
 }
-
-#chat_container::-webkit-scrollbar {
+/*/ #chat_container::-webkit-scrollbar {
   display: none;
-}
+} */
 
 .wrapper {
   width: 100%;
@@ -90,12 +91,12 @@ body {
   font-size: 20px;
 
   max-width: 100%;
-  overflow-x: scroll;
+  overflow-y: scroll;
 
   white-space: pre-wrap;
 
-  -ms-overflow-style: none;
   scrollbar-width: none;
+  overflow: auto;
 }
 
 .message::-webkit-scrollbar {
@@ -103,7 +104,7 @@ body {
 }
 
 form {
-  width: 100%;
+  width: 50%;
   max-width: 1280px;
   margin: 0 auto;
   padding: 10px;
@@ -115,28 +116,18 @@ form {
 }
 
 textarea {
-  width: 100%;
+  width: 88%;
 
   color: #353535;
   font-size: 18px;
-
+  position: absolute;
+  right: 0;
+  bottom: 1;
   padding: 10px;
   background: transparent;
   border-radius: 5px;
   border: none;
   outline: none;
-}
-
-button {
-  outline: 0;
-  border: 0;
-  cursor: pointer;
-  background: transparent;
-}
-
-form img {
-  width: 30px;
-  height: 30px;
 }
 
 .chat-container {
@@ -148,6 +139,50 @@ form img {
   border: 1px solid black;
   background-color: white;
   padding: 10px;
-  overflow: auto;
+  overflow: hidden;
   border-radius: 10px;
+}
+.chatArea {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  background: #e0f0ff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+form {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+textarea {
+  flex: 1;
+  color: #353535;
+  font-size: 18px;
+  padding: 10px;
+  background: transparent;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+}
+
+button {
+  outline: 0;
+  border: 0;
+  right: -100;
+  bottom: 20;
+  cursor: pointer;
+  background: transparent;
+}
+
+form img {
+  width: 30px;
+  height: 30px;
 }
