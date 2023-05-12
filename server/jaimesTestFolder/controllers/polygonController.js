@@ -1,6 +1,7 @@
 const axios = require("axios");
 require("dotenv").config();
 // const chalk = require('chalk');
+const openaiController = require("./openaiController");
 
 const polygonApiKey = process.env.API_KEY;
 // console.log(chalk.red.bold(`polygonApiKey: ${polygonApiKey}`));
@@ -100,6 +101,41 @@ polygonController.getCandlestickData = async (req, res, next) => {
     console.log(
       `Error in polygonController.getCandlestickData: ${err.message}`
     );
+    console.error(err);
+    next(err);
+  }
+};
+
+polygonController.getSummary = async (req, res, next) => {
+  const symbol = req.params.symbol;
+  const from = req.params.from || "2023-01-01";
+  const to = req.params.to || "2023-05-08";
+
+  try {
+    const response = await axios.get(
+      `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${from}/${to}?unadjusted=true&sort=asc&limit=120&apiKey=${polygonApiKey}`
+    );
+    console.log(`response.data: ${JSON.stringify(response.data)}`);
+
+    // extract closing prices
+    const closePrices = response.data.results.map((result) => result.c);
+    // console.log(chalk.green.italic(`closePrices: ${closePrices}`));
+
+    // generate the prompt for the openai api call
+    const prompt = `Please give me a summary of the following company's performance provided the stock ticker: ${symbol} which has the following history of close prices: ${closePrices.join(
+      ", "
+    )} during the following time period: ${from} to ${to}, also include the company's full name in your analysis as well as an average risk weighting if the stock should be bought, held or sold.`;
+
+    // call openai api and get the response
+    const openaiSummary = await openaiController.getOpenaiResponse(
+      prompt,
+      process.env.OPENAI_MODEL
+    );
+
+    // return the summary
+    res.json({ summary: openaiSummary });
+  } catch (err) {
+    console.log(`Error in polygonController.getSummary: ${err.message}`);
     console.error(err);
     next(err);
   }
