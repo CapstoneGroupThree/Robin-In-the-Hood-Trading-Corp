@@ -7,6 +7,7 @@ import AllStocksView from "../features/allStocks/allStocksView";
 import SingleStockView from "../features/singleStock/singleStockView";
 import { me } from "./store";
 import EditUserInfo from "../features/editUserInfo";
+import Chatbot from "../features/chatBot";
 
 /**
  * COMPONENT
@@ -29,6 +30,7 @@ const AppRoutes = () => {
           <Route path="/allStocks" element={<AllStocksView />} />
           <Route path="/singleStock/:ticker" element={<SingleStockView />} />
           <Route path="/user/edit" element={<EditUserInfo />} />
+          <Route path="/chatbot" element={<Chatbot />} />
         </Routes>
       ) : (
         <Routes>
