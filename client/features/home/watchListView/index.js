@@ -9,6 +9,10 @@ import {
 } from "./watchListViewSlice";
 // import "./watchlistView.css";
 import { Link } from "react-router-dom";
+import ClosePriceChartPage from "../../JaimeTest/ClosePriceChartPage";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const WatchListView = () => {
   const dispatch = useDispatch();
@@ -233,7 +237,7 @@ const WatchListView = () => {
   return (
     <div>
       <h2 className="text-red-500 cursor-pointer" onClick={handlePopUpClick}>
-        WatchList
+        WatchList (Click to View)
       </h2>
       {popupVisible && (
         <div>
@@ -263,8 +267,8 @@ const WatchListView = () => {
                             </td>
                             <td className="px-4 py-2">{ticker}</td>
                             <td className="px-4 py-2">
-                              {stockInfo.close.toFixed(2) ||
-                                stockInfo.preMarket.toFixed(2)}
+                              {"$" + stockInfo.close.toFixed(2) ||
+                                "$" + stockInfo.preMarket.toFixed(2)}
                             </td>
                             <td className="px-4 py-2">
                               <button value={ticker} onClick={handleRemove}>
@@ -287,7 +291,7 @@ const WatchListView = () => {
       <div>
         {lengthOfWatchlist > 0 ? (
           <div className="watchlist-table-container">
-            <table className="w-full table-auto border-collapse border border-purple-500">
+            {/* <table className="w-full table-auto border-collapse border border-purple-500">
               <thead className="border-b-2 border-purple-500">
                 <tr>
                   <th className="px-4 py-2">Name</th>
@@ -316,10 +320,39 @@ const WatchListView = () => {
                     );
                   })}
               </tbody>
-            </table>
+            </table> */}
+            <div>
+              <Slider
+                infinite={true}
+                slidesToShow={1}
+                slidesToScroll={1}
+                swipeToSlide={true}
+                arrows={false}
+              >
+                {Object.entries(watchlist)
+                  .filter(([key]) => key !== "list")
+                  .map(([ticker, stockInfo]) => {
+                    const trimmedName = trimName(stockInfo.name);
+                    return (
+                      <div key={ticker}>
+                        <div>
+                          <Link to={`/singleStock/${ticker}`}>
+                            {trimmedName}
+                          </Link>
+                        </div>
+                        <div>
+                          {"$" + stockInfo.close.toFixed(2) ||
+                            "$" + stockInfo.preMarket.toFixed(2)}
+                        </div>
+                        <ClosePriceChartPage ticker={ticker} />
+                      </div>
+                    );
+                  })}
+              </Slider>
+            </div>
           </div>
         ) : (
-          <div>Please add stocks to your watchlist</div>
+          <div>Watchlist is empty</div>
         )}
       </div>
     </div>
