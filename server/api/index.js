@@ -6,6 +6,8 @@ router.use("/data", require("./data"));
 router.use("/ticker", require("./ticker"));
 //Users
 router.use("/users", require("./users"));
+router.use("/portfolio", require("./portfolio"));
+router.use("/totalBalanceHistory", require("./totalBalanceHistory"));
 
 router.use((req, res, next) => {
   const error = new Error("Not Found");
