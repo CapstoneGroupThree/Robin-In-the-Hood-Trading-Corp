@@ -84,6 +84,13 @@ app.post("/transaction", async (req, res) => {
   // Handle buying stocks
   if (transaction_type === "buy") {
     // If the user already has this stock in their portfolio, increment the quantity
+    // Calculate the cost of the transaction
+    const transactionCost = quantity * purchasePrice;
+    // Check if the user has enough balance to complete the transaction
+    if (currentTotalBalance.balance < transactionCost) {
+      return res.status(400).json({ error: "Insufficient balance" });
+    }
+    //if the user can afford proceed
     if (portfolioEntry) {
       portfolioEntry.quantity += quantity;
       await portfolioEntry.save();
