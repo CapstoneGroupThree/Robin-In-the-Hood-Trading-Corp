@@ -41,10 +41,11 @@ app.get("/:userId", async (req, res) => {
 // "userId": "1",
 // "stockTicker": "TSLA",
 // "stockName": "Tesla",
-// "transaction_type": "buy", // change this to buy or sell, be careful if seed file has force sync true as it will delete all old data everytime you edit the backend
+// "transaction_type": "buy",
 // "quantity": 100,
 // "purchasePrice": 100
 //       }
+// when changing transaction type to buy or sell, be careful if seed file has force sync true as it will delete all old data everytime you edit the backend
 // This route handles the buying and selling of stocks
 app.post("/transaction", async (req, res) => {
   // Extract the necessary information from the request body
