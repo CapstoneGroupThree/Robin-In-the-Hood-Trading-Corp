@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import SearchBar from "../searchBar";
 import WatchListView from "./watchListView";
 import PopularStocksHomeView from "./popularStockView";
+import Chatbot from "../chatBot";
 
 const Home = () => {
   const username = useSelector((state) => state.auth.me.first_name);
@@ -38,11 +39,12 @@ const Home = () => {
         </div>
       </div>
       <div className="aibot self-end bottom-0 right-0">
-        <img
+        {/* <img
           src="/aiChatRB.png"
           alt="your AI chat assistant "
           className="w-20 h-20"
-        ></img>
+        ></img> */}
+        <Chatbot />
       </div>
     </div>
   );
