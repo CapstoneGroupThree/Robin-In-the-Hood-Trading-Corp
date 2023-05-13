@@ -1,6 +1,7 @@
 const db = require("../db");
 const Sequelize = require("sequelize");
 const User = require("./User");
+
 const Transaction = db.define("transaction", {
   id: {
     type: Sequelize.INTEGER,
@@ -26,6 +27,6 @@ const Transaction = db.define("transaction", {
   },
 });
 
-Transaction.belongsTo(User, { foreignKey: "user_id" });
+// Transaction.belongsTo(User, { foreignKey: "user_id" });
 
 module.exports = Transaction;
