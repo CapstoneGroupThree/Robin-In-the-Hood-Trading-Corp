@@ -37,6 +37,14 @@ app.get("/:userId", async (req, res) => {
 });
 
 // example route: http://localhost:8080/api/portfolio/transaction
+// sample test post: {
+// "userId": "1",
+// "stockTicker": "TSLA",
+// "stockName": "Tesla",
+// "transaction_type": "buy", // change this to buy or sell, be careful if seed file has force sync true as it will delete all old data everytime you edit the backend
+// "quantity": 100,
+// "purchasePrice": 100
+//       }
 // This route handles the buying and selling of stocks
 app.post("/transaction", async (req, res) => {
   // Extract the necessary information from the request body
