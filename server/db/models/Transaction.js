@@ -8,7 +8,7 @@ const Transaction = db.define("transaction", {
     primaryKey: true,
     autoIncrement: true,
   },
-  ticker: {
+  stockTicker: {
     type: Sequelize.STRING,
     allowNull: false,
   },

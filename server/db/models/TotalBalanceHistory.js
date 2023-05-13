@@ -15,6 +15,11 @@ const TotalBalanceHistory = db.define("totalBalanceHistory", {
     type: Sequelize.FLOAT,
     allowNull: false,
   },
+  assets: {
+    type: Sequelize.FLOAT,
+    allowNull: false,
+    defaultValue: 0,
+  },
   timestamp: {
     type: Sequelize.DATE,
     allowNull: false,
