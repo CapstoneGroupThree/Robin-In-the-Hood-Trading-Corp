@@ -12,10 +12,11 @@ import {
 
 const ClosePriceChart = (props) => {
   const [chartData, setChartData] = useState([]);
-  const { stockData, page } = props;
+  // const [holidays, setHolidays] = useState([]);
+  const { stockData, page, isWeekend } = props;
 
   const isWidget = page === "popular";
-  const isWatchlist = page === "watchlist";
+  // const isWatchlist = page === "watchlist";
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
@@ -23,8 +24,12 @@ const ClosePriceChart = (props) => {
       const dateStr = label;
       const date = new Date(dateStr);
 
-      // Subtract 3 hours and 45 minutes in milliseconds
-      date.setTime(date.getTime() - (3 * 60 + 45) * 60 * 1000);
+      if (isWeekend) {
+        date.setTime(date.getTime() - 4 * 60 * 60 * 1000);
+      } else {
+        // Subtract 3 hours and 45 minutes in milliseconds
+        date.setTime(date.getTime() - (3 * 60 + 45) * 60 * 1000);
+      }
 
       // Format date back to string
       const year = date.getFullYear();
@@ -130,8 +135,12 @@ const ClosePriceChart = (props) => {
                     const dateStr = tickItem;
                     const date = new Date(dateStr);
 
-                    // Subtract 3 hours and 45 minutes in milliseconds
-                    date.setTime(date.getTime() - (3 * 60 + 45) * 60 * 1000);
+                    if (isWeekend) {
+                      date.setTime(date.getTime() - 4 * 60 * 60 * 1000);
+                    } else {
+                      // Subtract 3 hours and 45 minutes in milliseconds
+                      date.setTime(date.getTime() - (3 * 60 + 45) * 60 * 1000);
+                    }
 
                     const hour = String(date.getHours()).padStart(2, "0");
                     const minute = String(date.getMinutes()).padStart(2, "0");
