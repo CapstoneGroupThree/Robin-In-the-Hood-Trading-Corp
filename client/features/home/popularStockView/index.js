@@ -5,6 +5,7 @@ import {
   fetchSinglePopularStockTickerPrice,
   selectSinglePopularStock,
 } from "./popularStockViewSlice";
+import ClosePriceChartPage from "../../JaimeTest/ClosePriceChartPage";
 import { Link } from "react-router-dom";
 
 const PopularStocksHomeView = () => {
@@ -259,7 +260,7 @@ const PopularStocksHomeView = () => {
   if (isLoading) {
     return <div>Yeah its loading woooooooo nice graphics here please</div>;
   }
-
+  const page = "popular";
   return (
     <div className="popularStocksView grid grid-cols-1 gap-4">
       {Object.entries(popularStocks).map(([ticker, stockInfo]) => {
@@ -279,8 +280,10 @@ const PopularStocksHomeView = () => {
             <p className="text-gray-500">Ticker: {ticker}</p>
             <p className="text-gray-500">
               Price:{" "}
-              {stockInfo.close.toFixed(2) || stockInfo.preMarket.toFixed(2)}
+              {"$" + stockInfo.close.toFixed(2) ||
+                "$" + stockInfo.preMarket.toFixed(2)}
             </p>
+            <ClosePriceChartPage ticker={ticker} page={page} />
           </div>
         );
       })}

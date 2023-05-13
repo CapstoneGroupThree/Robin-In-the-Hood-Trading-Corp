@@ -291,7 +291,7 @@ export default function SingleStockView() {
           <div className="grid grid-cols-3 gap-1">
             <div>
               <strong>
-                Price:{" "}
+                Price:{" $"}
                 {formatNumber(
                   tickerPriceInfo?.close ??
                     tickerPriceInfo?.results?.[0]?.c ??
@@ -301,7 +301,7 @@ export default function SingleStockView() {
             </div>
             <div>
               <strong>
-                High:{" "}
+                High:{" $"}
                 {formatNumber(
                   tickerPriceInfo?.high ?? singleStockInfo?.openClose?.high
                 )}
@@ -309,7 +309,7 @@ export default function SingleStockView() {
             </div>
             <div>
               <strong>
-                Premarket:{" "}
+                Premarket:{" $"}
                 {tickerPriceInfo?.preMarket ??
                   tickerPriceInfo?.open ??
                   singleStockInfo?.openClose?.open}
@@ -317,7 +317,7 @@ export default function SingleStockView() {
             </div>
             <div>
               <strong>
-                Low:{" "}
+                Low:{" $"}
                 {formatNumber(
                   tickerPriceInfo?.low ?? singleStockInfo?.openClose?.low
                 )}
@@ -325,7 +325,7 @@ export default function SingleStockView() {
             </div>
             <div>
               <strong>
-                Open:{" "}
+                Open:{" $"}
                 {formatNumber(
                   tickerPriceInfo?.open ?? singleStockInfo?.openClose?.open
                 )}

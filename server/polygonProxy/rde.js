@@ -19,6 +19,8 @@ app.get("/tickers", async (req, res) => {
   }
 });
 
+//useEffect(()=> {this}, [this])
+
 //Ticker Details
 app.get("/ticker-details", async (req, res) => {
   try {
