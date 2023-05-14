@@ -13,37 +13,28 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex flex-col max-h-screen items-center  text-white font-semibold">
-      <div className="flex items-center border-b w-full border-purple-500 pb-4">
+    <div className="flex flex-col max-h-screen items-center font-body text-white font-semibold">
+      <div className="flex items-center border-b-2 w-full border-sky-800 pb-4">
         <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
 
         <h1 className="ml-4">Robin In the Hood {"(RITH)"}</h1>
       </div>
-      <nav className="w-full">
+      <nav className="w-full text-lg ">
         {isLoggedIn ? (
           <div className="flex flex-col items-center place-content-evenly ">
             {/* The navbar will show these links after you log in */}
-            <Link
-              to="/home"
-              className="hover:text-blue-500 block active:bg-gray-500 active:text-white"
-            >
+            <Link to="/home" className="hover:text-blue-500 block">
               Home
             </Link>
-            <Link
-              to="/allStocks"
-              className="hover:text-blue-500 block  active:bg-gray-500 active:text-white"
-            >
+            <Link to="/allStocks" className="hover:text-blue-500 block ">
               All Stocks
             </Link>
-            <Link
-              to="/user/edit"
-              className="hover:text-blue-500 block  active:bg-gray-500 active:text-white"
-            >
+            <Link to="/user/edit" className="hover:text-blue-500 block ">
               {" "}
               Edit User Profile
             </Link>
 
-            <hr className=" w-56 fixed bottom-8 border-purple-500 pb-4 " />
+            <hr className=" w-52 fixed bottom-8  border-t-2 border-sky-800 pb-4 " />
             <div className="fixed bottom-0 pb-4">
               <button
                 type="button"

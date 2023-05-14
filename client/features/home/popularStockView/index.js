@@ -6,6 +6,8 @@ import {
   selectSinglePopularStock,
 } from "./popularStockViewSlice";
 import { Link } from "react-router-dom";
+import ClosePriceChartPage from "../../JaimeTest/ClosePriceChartPage";
+import { ResponsiveContainer } from "recharts";
 
 const PopularStocksHomeView = () => {
   const dispatch = useDispatch();
@@ -261,26 +263,30 @@ const PopularStocksHomeView = () => {
   }
 
   return (
-    <div className="popularStocksView grid grid-cols-1 gap-4">
+    <div className="popularStocksView grid grid-cols-1 gap-2 max-h-full">
       {Object.entries(popularStocks).map(([ticker, stockInfo]) => {
         const trimmedName = trimName(stockInfo.name);
         return (
-          <div
-            key={ticker}
-            className="stock bg-white rounded-lg shadow-lg p-4 border-1-4 border-purple-600"
-          >
-            <Link
-              to={`/singleStock/${ticker}`}
-              className="text-purple-600 hover:text-purple-900 font-semibold"
+          <div className=" popularStocks  h-full flex flex-col ">
+            <div
+              key={ticker}
+              className="stock bg-gradient-to-bl from-slate-950 to-indigo-950 rounded-lg shadow-lg p-10 border-2 border-indigo-950 shadow-slate-900 w-full h-full flex flex-col space-y-2"
             >
-              <h2> {trimmedName}</h2>
-            </Link>
+              <Link
+                to={`/singleStock/${ticker}`}
+                className="text-sky-600 hover:text-sky-900 font-semibold font-body"
+              >
+                <h2> {trimmedName}</h2>
+              </Link>
 
-            <p className="text-gray-500">Ticker: {ticker}</p>
-            <p className="text-gray-500">
-              Price:{" "}
-              {stockInfo.close.toFixed(2) || stockInfo.preMarket.toFixed(2)}
-            </p>
+              <div className="flex-row justify-between items-start">
+                <p className="text-gray-500 text-sm">Ticker: {ticker}</p>
+                <p className="text-gray-500 text-sm">
+                  Price:{" "}
+                  {stockInfo.close.toFixed(2) || stockInfo.preMarket.toFixed(2)}
+                </p>
+              </div>
+            </div>
           </div>
         );
       })}

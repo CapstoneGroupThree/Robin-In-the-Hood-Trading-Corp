@@ -223,7 +223,7 @@ const WatchListView = () => {
   {
     /* Tailwind classes for .popup */
   }
-  const popupClasses = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-white p-5 border border-gray-300 shadow-md rounded-md w-100 max-w-full w-max max-h-full h-max overflow-y-auto`;
+  const popupClasses = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 bg-white p-5  border-blue-950 shadow-md shadow-black rounded-md w-100 max-w-full w-max max-h-full h-max overflow-y-auto bg-gradient-to-bl from-slate-950 to-indigo-950`;
 
   {
     /* Tailwind classes for .overlay */
@@ -232,30 +232,38 @@ const WatchListView = () => {
 
   return (
     <div>
-      <h2 className="text-red-500 cursor-pointer" onClick={handlePopUpClick}>
+      <h2
+        className=" text-white text-lg cursor-pointer pb-2"
+        onClick={handlePopUpClick}
+      >
         WatchList
       </h2>
       {popupVisible && (
-        <div>
+        <div className="">
           <div className={overlayClasses} onClick={handleOverlayClick}></div>
           <div className={popupClasses}>
             {lengthOfWatchlist > 0 ? (
-              <div className="watchlist-table-container max-h-600px w-full overflow-y-auto">
-                <table className="w-full table-auto border-collapse border border-purple-500">
-                  <thead className="border-b-2 border-purple-500">
+              <div className="watchlist-table-container max-h-600px w-full overflow-y-auto shadow-lg shadow-black rounded-md border-6 border-x-sky-800">
+                <table className="w-full table-auto border-collapse border  border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white">
+                  <thead className="border-b-2 border-sky-950">
                     <tr>
-                      <th className="px-4 py-2">Name</th>
-                      <th className="px-4 py-2">Symbol</th>
-                      <th className="px-4 py-2">Price</th>
+                      <th className="px-4 py-2 font-semibold">Name</th>
+                      <th className="px-4 py-2 font-semibold">Symbol</th>
+                      <th className="px-4 py-2 font-semibold">Price</th>
                     </tr>
                   </thead>
                   <tbody>
                     {Object.entries(watchlist)
                       .filter(([key]) => key !== "list")
-                      .map(([ticker, stockInfo]) => {
+                      .map(([ticker, stockInfo], index) => {
                         const trimmedName = trimName(stockInfo.name);
                         return (
-                          <tr key={ticker}>
+                          <tr
+                            key={ticker}
+                            className={`${
+                              index % 2 === 0 ? "bg-slate-800" : ""
+                            } hover:bg-slate-700 transition-colors duration-200 ease-in-out`}
+                          >
                             <td className="px-4 py-2">
                               <Link to={`/singleStock/${ticker}`}>
                                 {trimmedName}
@@ -267,7 +275,11 @@ const WatchListView = () => {
                                 stockInfo.preMarket.toFixed(2)}
                             </td>
                             <td className="px-4 py-2">
-                              <button value={ticker} onClick={handleRemove}>
+                              <button
+                                value={ticker}
+                                onClick={handleRemove}
+                                className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700"
+                              >
                                 Remove
                               </button>
                             </td>
@@ -286,24 +298,32 @@ const WatchListView = () => {
 
       <div>
         {lengthOfWatchlist > 0 ? (
-          <div className="watchlist-table-container">
-            <table className="w-full table-auto border-collapse border border-purple-500">
-              <thead className="border-b-2 border-purple-500">
+          <div className="watchlist-table-container shadow-lg shadow-black rounded-md border-6 border-x-sky-800">
+            <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white  ">
+              <thead className="border-2  border-sky-950">
                 <tr>
-                  <th className="px-4 py-2">Name</th>
-                  <th className="px-4 py-2">Symbol</th>
-                  <th className="px-4 py-2">Price</th>
+                  <th className="px-4 py-2 font-semibold">Name</th>
+                  <th className="px-4 py-2 font-semibold">Symbol</th>
+                  <th className="px-4 py-2 font-semibold">Price</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className=" ">
                 {Object.entries(watchlist)
                   .filter(([key]) => key !== "list")
-                  .map(([ticker, stockInfo]) => {
+                  .map(([ticker, stockInfo], index) => {
                     const trimmedName = trimName(stockInfo.name);
                     return (
-                      <tr key={ticker}>
+                      <tr
+                        key={ticker}
+                        className={`${
+                          index % 2 === 0 ? "bg-slate-800" : ""
+                        } hover:bg-slate-700 transition-colors duration-200 ease-in-out`}
+                      >
                         <td className="px-4 py-2">
-                          <Link to={`/singleStock/${ticker}`}>
+                          <Link
+                            to={`/singleStock/${ticker}`}
+                            className="text-sky-200 hover:text-sky-400 "
+                          >
                             {trimmedName}
                           </Link>
                         </td>

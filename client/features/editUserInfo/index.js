@@ -93,8 +93,8 @@ const EditUserInfo = () => {
 
   if (!editMode) {
     return (
-      <div className="flex justify-center items-center h-screen bg-gray-100">
-        <div className="p-6 max-w-sm mx-auto bg-gray-600 rounded-xl shadow-lg shadow-black flex items-center space-x-4">
+      <div className=" container flex justify-center items-center h-screen bg-gray-100">
+        <div className=" card p-6 max-w-sm mx-auto bg-gray-600 rounded-xl shadow-lg shadow-black flex items-center space-x-4">
           <div className="text-center text-white">
             <div className="text-4xl font-extrabold">User Info</div>
             <div className="mt-4 flex justify-between">
@@ -115,7 +115,7 @@ const EditUserInfo = () => {
               <span className="text-xl">********</span>
             </div>
             <button
-              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={handleEditModeToggle}
             >
               Edit Profile Information
@@ -127,18 +127,21 @@ const EditUserInfo = () => {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="p-6 max-w-sm mx-auto bg-gray-600 rounded-xl shadow-lg shadow-black flex items-center space-x-4">
+    <div className=" container flex justify-center items-center h-screen bg-gray-100">
+      <div className=" card p-6 max-w-sm mx-auto bg-slate-700 rounded-xl shadow-lg shadow-black flex items-center space-x-4">
         <div className="text-center text-white">
           <div className="text-4xl font-extrabold border-b-2 border-white-400">
             Edit User Info
           </div>
-          <form className="space-y-4" onSubmit={handleProfileSubmit}>
+          <form
+            className="space-y-4 text-gray-600"
+            onSubmit={handleProfileSubmit}
+          >
             <label className="block text-xl font-bold" htmlFor="email">
               Email Address:
             </label>
             <input
-              className="block w-full px-4 py-2 rounded-md border-2 border-gray-300"
+              className=" input-field block w-full font-black px-4 py-2 rounded-md border-2 border-gray-300"
               name="email"
               value={email}
               onChange={(e) => {
@@ -168,7 +171,7 @@ const EditUserInfo = () => {
               }}
             />
             <button
-              className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               type="submit"
             >
               Submit
@@ -184,7 +187,10 @@ const EditUserInfo = () => {
           </div>
           {editPasswordMode ? (
             <div>
-              <form className="space-y-4" onSubmit={handlePasswordSubmit}>
+              <form
+                className="space-y-4 text-gray-600"
+                onSubmit={handlePasswordSubmit}
+              >
                 <label
                   className="block text-xl font-bold"
                   htmlFor="oldPassWord"

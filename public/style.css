@@ -70,7 +70,11 @@ form div {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  background-color: purple; /* Purple */
+  background: linear-gradient(
+    90deg,
+    rgba(93, 12, 255, 1) 0%,
+    rgb(40, 18, 117) 100%
+  ); /* Purple gradient */
   border: 1px solid transparent;
   padding: 0.375rem 0.75rem;
   font-size: 1rem;
@@ -78,10 +82,15 @@ form div {
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  margin-right: 1rem;
 }
 
 .chart-button:hover {
-  background-color: magenta; /* Darker purple for hover state */
+  background: linear-gradient(
+    90deg,
+    rgba(103, 58, 183, 1) 0%,
+    rgba(155, 0, 250, 1) 100%
+  ); /* Darker gradient for hover state */
 }
 
 .chart-button:focus {
@@ -90,7 +99,11 @@ form div {
 }
 
 .chart-button:active {
-  background-color: #3a33a6; /* Even darker purple for active/clicked state */
+  background: linear-gradient(
+    90deg,
+    rgba(74, 20, 140, 1) 0%,
+    rgba(155, 0, 250, 1) 100%
+  ); /* Even darker gradient for active/clicked state */
   box-shadow: none;
 }
 
@@ -99,6 +112,83 @@ form div {
     width: 100%;
     margin-bottom: 0.5rem;
   }
+}
+
+/* Buy Button */
+.buy-button {
+  color: #ffffff;
+  background: linear-gradient(
+    90deg,
+    rgba(39, 174, 96, 1) 0%,
+    rgba(44, 130, 201, 1) 100%
+  );
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s ease-in-out;
+  margin-right: 1rem;
+}
+
+.buy-button:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(44, 130, 201, 1) 0%,
+    rgba(39, 174, 96, 1) 100%
+  );
+}
+
+/* Sell Button */
+.sell-button {
+  color: #ffffff;
+  background: linear-gradient(
+    90deg,
+    rgba(192, 57, 43, 1) 0%,
+    rgba(230, 126, 34, 1) 100%
+  );
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s ease-in-out;
+  margin-right: 1rem;
+}
+
+.sell-button:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(230, 126, 34, 1) 0%,
+    rgba(192, 57, 43, 1) 100%
+  );
+}
+
+/* Add to Watchlist Button */
+.watchlist-button {
+  color: #ffffff;
+  background: linear-gradient(90deg, rgb(55, 21, 146) 0%, rgb(75, 5, 102) 100%);
+  border: 1px solid transparent;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.25rem;
+  transition: background-color 0.15s ease-in-out;
+}
+
+.watchlist-button:hover {
+  background: linear-gradient(90deg, rgb(34, 9, 80) 0%, rgb(82, 23, 160) 100%);
+}
+
+/* You already own text */
+.own-shares-text {
+  color: #ffffff;
+  background: #131313;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.25rem;
+  margin-left: 1rem;
 }
 
 .loader {
@@ -139,4 +229,59 @@ form div {
 
 .scroll-style::-webkit-scrollbar {
   width: 6px;
+}
+
+/* Edit User Page */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to top, rgb(0, 0, 41), rgb(34, 1, 58));
+}
+
+/* Card styling */
+.card {
+  padding: 1rem;
+  max-width: 20rem;
+  margin: auto;
+  background-color: rgba(75, 85, 99, 0.8); /* Slightly transparent dark gray */
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Input fields styling */
+.input-field {
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  border: 2px solid #2d3748; /* Dark gray */
+  font-size: 1rem;
+  width: 100%;
+}
+
+/* Button styling */
+.button {
+  font-weight: bold;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  background: linear-gradient(
+    90deg,
+    rgba(142, 68, 173, 1) 0%,
+    rgba(155, 89, 182, 1) 100%
+  );
+  transition: background-color 0.15s ease-in-out;
+}
+
+.button:hover {
+  background: linear-gradient(
+    90deg,
+    rgba(155, 89, 182, 1) 0%,
+    rgba(142, 68, 173, 1) 100%
+  );
 }
