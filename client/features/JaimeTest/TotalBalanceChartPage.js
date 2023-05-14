@@ -4,7 +4,11 @@ import React, { useEffect, useState } from "react";
 import TotalBalanceChart from "./TotalBalanceChart";
 
 const TotalBalanceChartPage = ({ userId }) => {
+  const [lastTotalBalance, setLastTotalBalance] = useState(null);
   const [balanceData, setBalanceData] = useState(null);
+  const [lastAssets, setLastAssets] = useState(null);
+  const [lastBalanceOnly, setLastBalanceOnly] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -20,6 +24,9 @@ const TotalBalanceChartPage = ({ userId }) => {
       new Date(entry.timestamp).toLocaleString()
     );
     const balances = data.map((entry) => entry.balance + entry.assets);
+    setLastTotalBalance(balances[balances.length - 1]);
+    setLastAssets(data[data.length - 1].assets);
+    setLastBalanceOnly(data[data.length - 1].balance);
 
     const chartData = {
       labels: labels,
@@ -39,6 +46,23 @@ const TotalBalanceChartPage = ({ userId }) => {
 
   return (
     <div>
+      <h2
+        onClick={() => {
+          setShowDetails(!showDetails);
+        }}
+      >
+        {" "}
+        Total Balance: {"$" + lastTotalBalance} (Click to view/hide details)
+      </h2>
+      {showDetails ? (
+        <div>
+          <p>Stock Assets: {"$" + lastAssets}</p>
+          <p>Cash Balance: {"$" + lastBalanceOnly}</p>
+        </div>
+      ) : (
+        ""
+      )}
+
       {balanceData ? (
         <TotalBalanceChart balanceData={balanceData} />
       ) : (
