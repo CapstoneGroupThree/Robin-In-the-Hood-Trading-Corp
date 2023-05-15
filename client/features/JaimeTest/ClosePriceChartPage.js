@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import ClosePriceChart from "./ClosePriceChart";
 
-const ClosePriceChartPage = ({ ticker }) => {
+const ClosePriceChartPage = (props) => {
   const [stockData, setStockData] = useState(null);
   const [holidays, setHolidays] = useState([]);
   const [isWeekend, setIsWeekend] = useState(false);
-  // const { ticker, page } = props;
+  const { ticker, page } = props;
 
   useEffect(() => {
     fetchHolidays();

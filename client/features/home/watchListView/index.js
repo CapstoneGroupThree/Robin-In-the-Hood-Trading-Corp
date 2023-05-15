@@ -303,7 +303,7 @@ const WatchListView = () => {
       <div>
         {lengthOfWatchlist > 0 ? (
           <div className="watchlist-table-container shadow-lg shadow-black rounded-md border-6 border-x-sky-800">
-            <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white  ">
+            {/* <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white  ">
               <thead className="border-2  border-sky-950">
                 <tr>
                   <th className="px-4 py-2 font-semibold">Name</th>
@@ -312,10 +312,10 @@ const WatchListView = () => {
                 </tr>
               </thead>
               <tbody className=" ">
-                {Object.entries(watchlist)
-                  .filter(([key]) => key !== "list")
-                  .map(([ticker, stockInfo], index) => {
-                    const trimmedName = trimName(stockInfo.name);
+                {/* {Object.entries(watchlist) */}
+            {/* .filter(([key]) => key !== "list") */}
+            {/* .map(([ticker, stockInfo], index) => { */}
+            {/* const trimmedName = trimName(stockInfo.name);
                     return (
                       <tr
                         key={ticker}
@@ -340,8 +340,7 @@ const WatchListView = () => {
                     );
                   })}
               </tbody>
-            </table>{" "}
-            */{}
+            </table> */}
             <div>
               <Slider
                 infinite={true}
