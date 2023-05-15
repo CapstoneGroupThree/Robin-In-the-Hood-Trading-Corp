@@ -4,15 +4,16 @@ import SearchBar from "../searchBar";
 import WatchListView from "./watchListView";
 import PopularStocksHomeView from "./popularStockView";
 import Chatbot from "../chatBot";
+import TotalBalanceChartPage from "../JaimeTest/TotalBalanceChartPage";
 
 const Home = () => {
   const username = useSelector((state) => state.auth.me.first_name);
+  const userId = useSelector((state) => state.auth.me.id);
   const displayedName = username.toUpperCase();
-
-  const balance = "$100000";
 
   // console.log(displayedName);
   //todo create a search bar feature for pages that need it
+  //todo need to get it working on my route pull
   return (
     <div className="font-semibold flex flex-col w-full h-screen justify-between max-h-screen overflow-hidden">
       <div className="flex justify-between items-center mb-4">
@@ -22,8 +23,7 @@ const Home = () => {
       <div className="flex flex-grow space-x-4 h-2/5 overflow-hidden   ">
         <div className="w-1/2 h-full flex flex-col space-y-4 box-content ">
           <div className="assets h-1/3  border border-gray-400 p-4 rounded bg-gray-100">
-            <h2>Asset</h2>
-            <h2> Total Balance: {balance}</h2>
+            <TotalBalanceChartPage userId={userId} />
           </div>
           <div className="watchlist h-2/3 w-full  border border-gray-400 p-4 bg-gray-100 rounded">
             <WatchListView />
