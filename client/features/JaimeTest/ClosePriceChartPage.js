@@ -1,132 +1,140 @@
-// import React, { useState, useEffect } from "react";
-// import ClosePriceChart from "./ClosePriceChart";
-
-// const ClosePriceChartPage = ({ ticker }) => {
-//   const [stockData, setStockData] = useState(null);
-//   let multiplier = 1;
-//   let timespan = "minute";
-//   let from = "2023-05-09";
-//   let to = "2023-05-09";
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       const response = await fetch(
-//         `http://localhost:8080/polygon/candlestick/${ticker}/${multiplier}/${timespan}/${from}/${to}`
-//       );
-//       const data = await response.json();
-//       console.log("Fetched data:", data);
-
-//       const labels = data.labels;
-//       const closePrices = data.datasets.map((entry) => entry.close);
-
-//       const chartData = {
-//         labels: labels,
-//         datasets: [
-//           {
-//             label: "Close Price",
-//             data: closePrices,
-//             backgroundColor: "rgba(75, 192, 192, 0.2)",
-//             borderColor: "rgba(75, 192, 192, 1)",
-//             borderWidth: 1,
-//           },
-//         ],
-//       };
-
-//       setStockData(chartData);
-//     };
-
-//     fetchData();
-//   }, [ticker]);
-
-//   return (
-//     <div>
-//       {stockData ? (
-//         <>
-//           <ClosePriceChart stockData={stockData} />
-//         </>
-//       ) : (
-//         <p>Loading...</p>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ClosePriceChartPage;
 import React, { useState, useEffect } from "react";
 import ClosePriceChart from "./ClosePriceChart";
 
-const ClosePriceChartPage = (props) => {
+const ClosePriceChartPage = ({ ticker }) => {
   const [stockData, setStockData] = useState(null);
-  const { ticker } = props;
-  const { page } = props;
-  console.log(ticker, page);
+  const [holidays, setHolidays] = useState([]);
+  const [isWeekend, setIsWeekend] = useState(false);
+  // const { ticker, page } = props;
+
   useEffect(() => {
-    const now = new Date();
-    now.setHours(now.getHours() - 0);
+    fetchHolidays();
+  }, []);
 
-    const fromDate = new Date();
-    fromDate.setHours(fromDate.getHours() - 2);
+  useEffect(() => {
+    fetchData();
+  }, [ticker, holidays]);
 
+  const fetchHolidays = async () => {
+    try {
+      const now = new Date();
+      const year = now.getFullYear();
+      const response = await fetch(
+        `https://date.nager.at/api/v3/PublicHolidays/${year}/US`
+      );
+
+      //filter holidays because veterans day and comlumbus dont count for stock exchanges, there's only 13 so should be relatively quick
+      //got market holiday info from https://www.aarp.org/money/investing/info-2023/stock-market-holidays.html#:~:text=They%20will%20close%20early%2C%20at,after%20Thanksgiving%20and%20Christmas%20Eve.
+      //api using: https://date.nager.at/swagger/index.html
+      const holidays = await response.json();
+      const filteredHolidays = holidays
+        .filter(
+          (holiday) =>
+            holiday.name !== "Veterans Day" && holiday.name !== "Columbus Day"
+        )
+        .map((holiday) => holiday.date);
+      // console.log(
+      //   "🚀 ~ file: index.js:102 ~ fetchHolidays ~ filteredHolidays:",
+      //   filteredHolidays
+      // );
+      setHolidays(filteredHolidays);
+    } catch (error) {
+      console.error("Error fetching holidays:", error);
+      return [];
+    }
+  };
+
+  const now = new Date();
+  now.setHours(now.getHours() - 0);
+
+  const fromDate = new Date();
+  fromDate.setHours(fromDate.getHours() - 2);
+
+  const getMostRecentTradingDay = (date) => {
+    let dayOfWeek = date.getDay();
+    let deltaDays = dayOfWeek === 0 ? 2 : 1; // if it's Sunday, go back 2 days, else go back 1 day
+    date.setDate(date.getDate() - deltaDays);
+
+    // format date to YYYY-MM-DD for comparison with holidays
     const formatDate = (date) => {
       const year = date.getFullYear();
       const month = String(date.getMonth() + 1).padStart(2, "0");
       const day = String(date.getDate()).padStart(2, "0");
-      const hour = String(date.getHours()).padStart(2, "0");
-      const minute = String(date.getMinutes()).padStart(2, "0");
 
-      return `${year}-${month}-${day}T${hour}:${minute}`;
+      return `${year}-${month}-${day}`;
     };
 
-    const f = formatDate(fromDate);
-    const t = formatDate(now);
-    console.log(f, t);
-    let f2 = new Date(f);
-    let t2 = new Date(t);
-    let from = f2.getTime();
-    let to = t2.getTime();
-    from = from - 900000 - 1;
-    to = to - 900000 - 1;
-    console.log(from, to);
-    const fetchData = async () => {
-      const multiplier = 1; // 1-minute intervals
-      const timespan = "minute"; // minute-by-minute data
-      // let from = 1683626400000;
-      // let to = 1683646200000;
-      const response = await fetch(
-        `http://localhost:8080/polygon/candlestick/${ticker}/${multiplier}/${timespan}/${from}/${to}`
-      );
-      const data = await response.json();
-      console.log("Fetched data:", data);
+    while (
+      holidays.includes(formatDate(date)) ||
+      date.getDay() === 0 ||
+      date.getDay() === 6
+    ) {
+      date.setDate(date.getDate() - 1);
+    }
+    return date;
+  };
 
-      const labels = data.labels;
-      const closePrices = data.datasets.map((entry) => entry.close);
+  const fetchData = async () => {
+    let now = new Date();
+    let fromDate = new Date();
 
-      const chartData = {
-        labels: labels,
-        datasets: [
-          {
-            label: "Close Price",
-            data: closePrices,
-            backgroundColor: "rgba(75, 192, 192, 0.2)",
-            borderColor: "rgba(75, 192, 192, 1)",
-            borderWidth: 1,
-          },
-        ],
-      };
+    let from;
+    let to;
+    if (
+      now.getDay() === 0 ||
+      now.getDay() === 6 ||
+      holidays.includes(now.toISOString().split("T")[0])
+    ) {
+      now = getMostRecentTradingDay(now);
+      now.setHours(16, 0, 0, 0); // Set the time to 14:00
+      fromDate = new Date(now.getTime());
+      fromDate.setHours(fromDate.getHours() - 2);
+      setIsWeekend(true);
+      from = fromDate.getTime();
+      to = now.getTime();
+    } else {
+      fromDate.setHours(fromDate.getHours() - 2);
+      setIsWeekend(false);
+      from = fromDate.getTime();
+      to = now.getTime();
+      from = from - 900000 - 1;
+      to = to - 900000 - 1;
+    }
 
-      setStockData(chartData);
+    const response = await fetch(
+      `http://localhost:8080/polygon/candlestick/${ticker}/1/minute/${from}/${to}`
+    );
+    const data = await response.json();
+
+    const labels = data.labels;
+    const closePrices = data.datasets.map((entry) => entry.close);
+
+    const chartData = {
+      labels: labels,
+      datasets: [
+        {
+          label: "Close Price",
+          data: closePrices,
+          backgroundColor: "rgba(75, 192, 192, 0.2)",
+          borderColor: "rgba(75, 192, 192, 1)",
+          borderWidth: 1,
+        },
+      ],
     };
 
-    fetchData();
-  }, [ticker]);
+    setStockData(chartData);
+  };
 
   return (
     <div>
       {stockData ? (
-        <>
-          <ClosePriceChart stockData={stockData} />
-        </>
+        <ClosePriceChart
+          stockData={stockData}
+          page={page}
+          isWeekend={isWeekend}
+        />
       ) : (
-        <p className="loader"></p>
+        <p>Loading...</p>
       )}
     </div>
   );

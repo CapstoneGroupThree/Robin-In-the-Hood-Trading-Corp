@@ -13,6 +13,7 @@ import { useParams } from "react-router-dom";
 import VolumeChartPage from "../JaimeTest/VolumeChartPage.js";
 import StockData from "../JaimeTest/StockData.js";
 import ClosePriceChartPage from "../JaimeTest/ClosePriceChartPage";
+import Chatbot from "../chatBot/index.js";
 
 export default function SingleStockView() {
   const dispatch = useDispatch();
@@ -290,7 +291,7 @@ export default function SingleStockView() {
           <div className="grid grid-cols-3 gap-1">
             <div>
               <strong>
-                Price:{" "}
+                Price:{" $"}
                 {formatNumber(
                   tickerPriceInfo?.close ??
                     tickerPriceInfo?.results?.[0]?.c ??
@@ -300,7 +301,7 @@ export default function SingleStockView() {
             </div>
             <div>
               <strong>
-                High:{" "}
+                High:{" $"}
                 {formatNumber(
                   tickerPriceInfo?.high ?? singleStockInfo?.openClose?.high
                 )}
@@ -308,7 +309,7 @@ export default function SingleStockView() {
             </div>
             <div>
               <strong>
-                Premarket:{" "}
+                Premarket:{" $"}
                 {tickerPriceInfo?.preMarket ??
                   tickerPriceInfo?.open ??
                   singleStockInfo?.openClose?.open}
@@ -316,7 +317,7 @@ export default function SingleStockView() {
             </div>
             <div>
               <strong>
-                Low:{" "}
+                Low:{" $"}
                 {formatNumber(
                   tickerPriceInfo?.low ?? singleStockInfo?.openClose?.low
                 )}
@@ -324,7 +325,7 @@ export default function SingleStockView() {
             </div>
             <div>
               <strong>
-                Open:{" "}
+                Open:{" $"}
                 {formatNumber(
                   tickerPriceInfo?.open ?? singleStockInfo?.openClose?.open
                 )}
@@ -401,11 +402,12 @@ export default function SingleStockView() {
         <div className=" own-shares-text">You already own: XXX shares:</div>
       </div>
       <div className="aibot absolute bottom-0 right-0">
-        <img
+        {/* <img
           src="/aiChatRB.png"
           alt="your AI chat assistant"
           className="w-20 h-20"
-        ></img>
+        ></img> */}
+        <Chatbot />
       </div>
     </div>
   );

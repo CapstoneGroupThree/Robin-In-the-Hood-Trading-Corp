@@ -9,6 +9,10 @@ import {
 } from "./watchListViewSlice";
 // import "./watchlistView.css";
 import { Link } from "react-router-dom";
+import ClosePriceChartPage from "../../JaimeTest/ClosePriceChartPage";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const WatchListView = () => {
   const dispatch = useDispatch();
@@ -236,7 +240,7 @@ const WatchListView = () => {
         className=" text-white text-lg cursor-pointer pb-2"
         onClick={handlePopUpClick}
       >
-        WatchList
+        WatchList (Click to View)
       </h2>
       {popupVisible && (
         <div className="">
@@ -271,8 +275,8 @@ const WatchListView = () => {
                             </td>
                             <td className="px-4 py-2">{ticker}</td>
                             <td className="px-4 py-2">
-                              {stockInfo.close.toFixed(2) ||
-                                stockInfo.preMarket.toFixed(2)}
+                              {"$" + stockInfo.close.toFixed(2) ||
+                                "$" + stockInfo.preMarket.toFixed(2)}
                             </td>
                             <td className="px-4 py-2">
                               <button
@@ -336,10 +340,40 @@ const WatchListView = () => {
                     );
                   })}
               </tbody>
-            </table>
+            </table>{" "}
+            */{}
+            <div>
+              <Slider
+                infinite={true}
+                slidesToShow={1}
+                slidesToScroll={1}
+                swipeToSlide={true}
+                arrows={false}
+              >
+                {Object.entries(watchlist)
+                  .filter(([key]) => key !== "list")
+                  .map(([ticker, stockInfo]) => {
+                    const trimmedName = trimName(stockInfo.name);
+                    return (
+                      <div key={ticker}>
+                        <div>
+                          <Link to={`/singleStock/${ticker}`}>
+                            {trimmedName}
+                          </Link>
+                        </div>
+                        <div>
+                          {"$" + stockInfo.close.toFixed(2) ||
+                            "$" + stockInfo.preMarket.toFixed(2)}
+                        </div>
+                        <ClosePriceChartPage ticker={ticker} />
+                      </div>
+                    );
+                  })}
+              </Slider>
+            </div>
           </div>
         ) : (
-          <div>Please add stocks to your watchlist</div>
+          <div>Watchlist is empty</div>
         )}
       </div>
     </div>

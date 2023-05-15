@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { editUserProfileInfo, editUserPassword } from "../auth/authSlice";
+import Chatbot from "../chatBot";
 
 const EditUserInfo = () => {
   const me = useSelector((state) => state.auth.me);

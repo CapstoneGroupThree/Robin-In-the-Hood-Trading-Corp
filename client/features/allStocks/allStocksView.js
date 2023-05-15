@@ -9,6 +9,7 @@ import {
 import { Link } from "react-router-dom";
 // import "./styles.css";
 import SearchBar from "../searchBar";
+import Chatbot from "../chatBot";
 
 const AllStocksView = () => {
   const dispatch = useDispatch();
@@ -332,11 +333,7 @@ const AllStocksView = () => {
           Next
         </button>
         <div className="aibot absolute bottom-0 right-0">
-          <img
-            src="/aiChatRB.png"
-            alt="your AI chat assistant "
-            className="w-20 h-20"
-          ></img>
+          <Chatbot />
         </div>
       </div>
     </div>
