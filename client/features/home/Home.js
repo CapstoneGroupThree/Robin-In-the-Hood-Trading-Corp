@@ -15,7 +15,7 @@ const Home = () => {
   //todo create a search bar feature for pages that need it
   //todo need to get it working on my route pull
   return (
-    <div className=" flex flex-col antialiased bg-transparent bg-gradient-to-tr from-slate-800 to-indigo-950 text-base font-body font-medium w-full h-screen justify-between max-h-screen overflow-hidden">
+    <div className=" flex flex-col antialiased bg-transparent bg-gradient-to-tr from-slate-800 to-indigo-950 text-base font-body font-medium w-2/5 h-screen justify-between max-h-screen overflow-hidden">
       <div className="flex justify-between text-white items-center m-2 pl-4 pr-4">
         <h1 className=" font-medium font-body text-lg">Home</h1>
         <SearchBar name={displayedName} />

@@ -6,7 +6,7 @@ import AppRoutes from "./AppRoutes";
 const App = () => {
   return (
     <div className="h-screen max-w-full w-full overflow-hidden flex">
-      <nav className="w-1/5  h-screen p-4 bg-gradient-to-bl from-slate-950 to-gray-800">
+      <nav className="w-2/5  h-screen p-4 bg-gradient-to-bl from-slate-950 to-gray-800">
         <Navbar />
       </nav>
       <main className="w-full ">
