@@ -16,6 +16,10 @@ const Transaction = db.define("transaction", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  price: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
   transaction_type: {
     type: Sequelize.ENUM("buy", "sell"),
     allowNull: false,
