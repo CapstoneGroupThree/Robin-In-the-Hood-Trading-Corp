@@ -16,17 +16,45 @@ import ClosePriceChartPage from "../JaimeTest/ClosePriceChartPage";
 import Chatbot from "../chatBot/index.js";
 import Buy from "./buy.js";
 import Sell from "./sell.js";
+import { fetchUserPortfolio } from "./portfolioBuySellSlice.js";
 
 export default function SingleStockView() {
   const dispatch = useDispatch();
   const { ticker } = useParams();
   const id = useSelector((state) => state.auth.me.id);
   const singleStockInfo = useSelector(selectSingleStock);
+  const [transactionStatus, setTransactionStatus] = useState(null);
+  const [userPortfolio, setUserPortfolio] = useState([]);
+  const [userBalance, setUserBalance] = useState(0);
+
   // const allState = useSelector((state) => state);
   // console.log("All state:", allState);
+  const handleTransactionComplete = (status) => {
+    setTransactionStatus(status);
+  };
 
   console.log(id);
 
+  useEffect(() => {
+    const fetchInfoToRender = async () => {
+      const portfolioInfo = await dispatch(fetchUserPortfolio({ userId: id }));
+      console.log(portfolioInfo.payload);
+      const tickerSpecificPortfolio = portfolioInfo.payload.portfolio.filter(
+        (portfolioItem) => portfolioItem.stockTicker === ticker
+      );
+      console.log(tickerSpecificPortfolio);
+      await setUserPortfolio(tickerSpecificPortfolio);
+      await setUserBalance(portfolioInfo.payload.latestBalance);
+
+      await console.log(priceInfo.results);
+
+      setTickerPriceInfo(priceInfo.results[0].c.toFixed(2));
+      // or different during after hours
+      console.log(setTickerPriceInfo);
+      setIsLoading(false);
+    };
+    fetchInfoToRender();
+  }, [transactionStatus]);
   //! tesla is currently hardcoded in until all stocks is working
 
   const handleImageError = (e) => {
@@ -230,6 +258,14 @@ export default function SingleStockView() {
   const formatNumber = (number) => {
     return (number ?? 0).toFixed(2);
   };
+
+  const totalValue =
+    (userPortfolio[0]?.quantity || 0) *
+    (tickerPriceInfo?.close ||
+      tickerPriceInfo?.results?.[0]?.c ||
+      tickerPriceInfo?.preMarket ||
+      0);
+
   // todo maybe make the news section a little smaller 4 ~ etc
   // ! uses clearbit Logo API to get logos
   //! potentially might break during weekdays based on different api calls
@@ -401,11 +437,22 @@ export default function SingleStockView() {
           Sell
         </button> */}
         <div>
-          <Buy ticker={ticker} name={tickerInfo.name} />
+          <Buy
+            ticker={ticker}
+            name={tickerInfo.name}
+            handleTransactionComplete={handleTransactionComplete}
+            transactionStatus={transactionStatus}
+          />
         </div>
         <div>
-          <Sell ticker={ticker} name={tickerInfo.name} />
+          <Sell
+            ticker={ticker}
+            name={tickerInfo.name}
+            handleTransactionComplete={handleTransactionComplete}
+            transactionStatus={transactionStatus}
+          />
         </div>
+
         <button
           value={tickerInfo.ticker}
           onClick={handleAddToWatchList}
@@ -413,7 +460,16 @@ export default function SingleStockView() {
         >
           Add to Watchlist
         </button>
-        <div className=" own-shares-text">You already own: XXX shares:</div>
+        <div className=" own-shares-text">
+          {ticker} owned: {userPortfolio[0] ? userPortfolio[0].quantity : "0"}
+        </div>
+        <div className=" own-shares-text">
+          Valuation: {"$ " + totalValue.toFixed(2)}
+        </div>
+
+        <div className=" own-shares-text">
+          Cash Balance: {"$ " + userBalance.toFixed(2)}
+        </div>
       </div>
       <div className="aibot absolute bottom-0 right-0">
         {/* <img

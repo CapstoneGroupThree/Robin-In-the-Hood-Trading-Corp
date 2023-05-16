@@ -12,7 +12,7 @@ const Buy = (props) => {
   const [quantity, setQuantity] = useState(0);
   const userId = useSelector((state) => state.auth.me.id);
   const dispatch = useDispatch();
-  const { ticker, name } = props;
+  const { ticker, name, handleTransactionComplete, transactionStatus } = props;
   const [isLoading, setIsLoading] = useState(true);
   const [tickerPriceInfo, setTickerPriceInfo] = useState({});
   const [userPortfolio, setUserPortfolio] = useState([]);
@@ -157,13 +157,10 @@ const Buy = (props) => {
       const priceInfo = await getStockInfo(ticker);
       const portfolioInfo = await dispatch(fetchUserPortfolio({ userId }));
       console.log(portfolioInfo.payload);
-      const tickerSpecificPortfolio = portfolioInfo.payload.portfolio.map(
-        (portfolioItem) => {
-          if (portfolioItem.stockTicker === ticker) {
-            return portfolioItem;
-          }
-        }
+      const tickerSpecificPortfolio = portfolioInfo.payload.portfolio.filter(
+        (portfolioItem) => portfolioItem.stockTicker === ticker
       );
+      console.log(tickerSpecificPortfolio);
       await setUserPortfolio(tickerSpecificPortfolio);
       await setUserBalance(portfolioInfo.payload.latestBalance);
 
@@ -175,7 +172,7 @@ const Buy = (props) => {
       setIsLoading(false);
     };
     fetchInfoToRender();
-  }, [dispatch, reload]);
+  }, [dispatch, reload, transactionStatus]);
   // todo fetch portfolio
   // todo fetch current price in
   // todo balance redux
@@ -203,8 +200,10 @@ const Buy = (props) => {
       })
     );
     console.log(response);
+    setQuantity(0);
     setShowPopup(false);
     setReload(reload + 1);
+    handleTransactionComplete(Math.random);
     alert(
       `Congratulations! Successfully purchased ${quantity} shares of ${ticker}!`
     );
@@ -223,16 +222,25 @@ const Buy = (props) => {
       >
         Buy
       </button>
-      You own: {userPortfolio[0] ? userPortfolio[0].quantity : "0"}
+
       <div>
         {showPopup && (
           <div className="popup-overlay">
             <div className="popup-content">
               <h2>Buy {ticker} Stock</h2>
               <div>Current Price: $ {tickerPriceInfo}</div>
-              <div>Current Balance: $ {userBalance} </div>
-              <div>{ticker} owned: </div>
-              <div>Total Valuation: </div>
+              <div>Current Balance: $ {userBalance.toFixed(2)} </div>
+              <div>
+                {ticker} owned:{" "}
+                {userPortfolio[0] ? userPortfolio[0].quantity : "0"}{" "}
+              </div>
+              <div>
+                Total Valuation:{" "}
+                {userPortfolio[0]
+                  ? (userPortfolio[0].quantity * tickerPriceInfo).toFixed(2)
+                  : "0"}{" "}
+              </div>
+
               <div>
                 <label htmlFor="quantity">Quantity Slider:</label>
                 <input
