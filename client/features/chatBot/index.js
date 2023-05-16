@@ -10,10 +10,16 @@ const Chatbot = () => {
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollIntoView({
+        behavior: "smooth",
+      });
     }
   }, [messages]);
+
+  const prepareMessagesForAPI = (messages) => {
+    return messages.map(({ id, ...rest }) => rest);
+  };
+
   const generateUniqueId = () => {
     const timestamp = Date.now();
     const randomNumber = Math.random();
@@ -22,69 +28,39 @@ const Chatbot = () => {
     return `id-${timestamp}-${hexadecimalString}`;
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   const oldMessages = [...messages];
-  //   const userMessage = { isAi: false, value: newMessage };
-  //   const aiMessage = { isAi: true, value: " ", id: generateUniqueId() };
-  //   setMessages([...oldMessages, userMessage, aiMessage]);
-  //   setNewMessage("");
-
-  //   try {
-  //     const response = await fetch("http://localhost:8080/openAi/chat", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         prompt: newMessage,
-  //       }),
-  //     });
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       const parsedData = data.bot.trim();
-  //       setMessages((currentMessages) => {
-  //         const updatedMessages = currentMessages.map((message) =>
-  //           message.id === aiMessage.id
-  //             ? { ...message, value: parsedData }
-  //             : message
-  //         );
-  //         return updatedMessages;
-  //       });
-  //     } else {
-  //       throw new Error(await response.text());
-  //     }
-  //   } catch (err) {
-  //     alert(err);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const oldMessages = [...messages];
-    const userMessage = { isAi: false, value: newMessage };
-    const aiMessage = {
-      isAi: true,
-      value: "AI thinking.",
+    const userMessage = {
       id: generateUniqueId(),
+      role: "user",
+      content: newMessage,
     };
-    setMessages([...oldMessages, userMessage, aiMessage]);
+    const aiMessage = {
+      id: generateUniqueId(),
+      role: "assistant",
+      content: "AI thinking...",
+    };
+
+    setMessages((oldMessages) => [...oldMessages, userMessage, aiMessage]);
     setNewMessage("");
 
-    // Loading dots simulation
+    const messagesForAPI = prepareMessagesForAPI([
+      ...messages,
+      userMessage,
+      aiMessage,
+    ]);
+
     const loadingDots = setInterval(() => {
       setMessages((currentMessages) => {
         return currentMessages.map((message) => {
           if (message.id === aiMessage.id) {
-            if (message.value.endsWith("...")) {
-              return { ...message, value: "AI thinking." };
-            } else if (message.value.endsWith("..")) {
-              return { ...message, value: "AI thinking..." };
-            } else if (message.value.endsWith(".")) {
-              return { ...message, value: "AI thinking.." };
+            if (message.content.endsWith("...")) {
+              return { ...message, content: "AI thinking." };
+            } else if (message.content.endsWith("..")) {
+              return { ...message, content: "AI thinking..." };
+            } else if (message.content.endsWith(".")) {
+              return { ...message, content: "AI thinking.." };
             }
           }
           return message;
@@ -99,7 +75,7 @@ const Chatbot = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          prompt: newMessage,
+          messages: messagesForAPI,
         }),
       });
 
@@ -107,37 +83,35 @@ const Chatbot = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const parsedData = data.bot.trim();
-        setMessages((currentMessages) => {
-          const updatedMessages = currentMessages.map((message) =>
-            message.id === aiMessage.id ? { ...message, value: "" } : message
-          );
-          return updatedMessages;
-        });
+        console.log(data);
+        const parsedData = data.assistant;
+        console.log(parsedData);
 
-        // Slowly type out the AI's response
-        let index = -1;
-        const interval = setInterval(() => {
-          if (index < parsedData.length) {
-            setMessages((currentMessages) => {
-              const updatedMessages = currentMessages.map((message) =>
-                message.id === aiMessage.id
-                  ? {
-                      ...message,
-                      value:
-                        index === 0
-                          ? parsedData.charAt(index)
-                          : message.value + parsedData.charAt(index),
-                    }
-                  : message
-              );
-              return updatedMessages;
-            });
-            index++;
-          } else {
-            clearInterval(interval);
-          }
-        }, 20);
+        if (parsedData) {
+          let index = -1;
+          const interval = setInterval(() => {
+            if (index < parsedData.length - 1) {
+              setMessages((currentMessages) => {
+                const updatedMessages = currentMessages.map((message) =>
+                  message.id === aiMessage.id
+                    ? {
+                        ...message,
+                        content:
+                          index === 0
+                            ? parsedData[index]
+                            : message.content + parsedData[index],
+                      }
+                    : message
+                );
+                console.log(updatedMessages);
+                return updatedMessages;
+              });
+              index++;
+            } else {
+              clearInterval(interval);
+            }
+          }, 10);
+        }
       } else {
         throw new Error(await response.text());
       }
@@ -145,8 +119,6 @@ const Chatbot = () => {
       alert(err);
     }
   };
-
-  // Reset the AI message value to an empty string
 
   if (!showChat) {
     return (
@@ -162,50 +134,61 @@ const Chatbot = () => {
   }
 
   return (
-    <div className="chatBotContainer">
-      <div>
-        <div id="chat_container" ref={chatContainerRef}>
-          {messages.map((message, index) => (
-            <div className={`wrapper ${message.isAi ? "ai" : ""}`} key={index}>
-              <div className="chat">
-                <div className="profile">
-                  <img
-                    src={message.isAi ? "/bot.svg" : "/user.svg"}
-                    alt={message.isAi ? "bot" : "user"}
-                  ></img>
+    <div>
+      <div className="chatBotContainer">
+        <div>
+          <div id="chat_container" ref={chatContainerRef}>
+            {messages.map((message, index) => (
+              <div
+                ref={index === messages.length - 1 ? chatContainerRef : null}
+                className={`wrapper ${
+                  message.role === "assistant" ? "ai" : ""
+                }`}
+                key={message.id}
+              >
+                <div className="chat">
+                  <div className="profile">
+                    <img
+                      src={
+                        message.role === "assistant" ? "/bot.svg" : "/user.svg"
+                      }
+                      alt={message.role === "assistant" ? "bot" : "user"}
+                    ></img>
+                  </div>
+                  {console.log(message.content)}
+                  <div className="message">{message.content}</div>
                 </div>
-                <div className="message">{message.value}</div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-        <div className="chatArea">
-          <form onSubmit={handleSubmit}>
-            <textarea
-              name="prompt"
-              rows="1"
-              cols="1"
-              placeholder="Ask AI Chatbot"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSubmit(e);
-                }
-              }}
-            ></textarea>
-            <button type="submit">
-              <img src="/send.svg" />
-            </button>
-          </form>
-          <img
-            onClick={() => setShowChat(false)}
-            src="/aiChatRB.png"
-            alt="your AI chat assistant "
-            className="w-20 h-20"
-          ></img>
-        </div>
+      </div>
+      <div className="chatArea">
+        <form onSubmit={handleSubmit}>
+          <textarea
+            name="prompt"
+            rows="1"
+            cols="1"
+            placeholder="Ask AI Chatbot"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit(e);
+              }
+            }}
+          ></textarea>
+          <button type="submit">
+            <img src="/send.svg" />
+          </button>
+        </form>
+        <img
+          onClick={() => setShowChat(false)}
+          src="/aiChatRB.png"
+          alt="your AI chat assistant "
+          className="w-20 h-20"
+        ></img>
       </div>
     </div>
   );

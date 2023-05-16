@@ -86,6 +86,10 @@ export const fetchSingleStockTickerPriceInfo = createAsyncThunk(
   }
 );
 
+//todo create a get quantity thunk which runs on start
+// todo create a buy thunk
+// todo createa sell thunk
+
 export const singleStockViewSlice = createSlice({
   name: "singleStock",
   initialState: {

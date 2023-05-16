@@ -135,6 +135,7 @@ app.post("/transaction", async (req, res) => {
     stockTicker,
     transaction_type,
     quantity,
+    price: purchasePrice,
   });
 
   // Create a new total balance history entry with the updated balance and assets value

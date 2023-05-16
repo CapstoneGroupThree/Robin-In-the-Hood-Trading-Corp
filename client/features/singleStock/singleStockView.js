@@ -14,6 +14,8 @@ import VolumeChartPage from "../JaimeTest/VolumeChartPage.js";
 import StockData from "../JaimeTest/StockData.js";
 import ClosePriceChartPage from "../JaimeTest/ClosePriceChartPage";
 import Chatbot from "../chatBot/index.js";
+import Buy from "./buy.js";
+import Sell from "./sell.js";
 
 export default function SingleStockView() {
   const dispatch = useDispatch();
@@ -380,7 +382,7 @@ export default function SingleStockView() {
 
       {/* Footer */}
       <div className=" flex absolute bottom-0 items-center mb-4 footer ">
-        <button
+        {/* <button
           onClick={() => console.log("Buy functionality")}
           className=" buy-button"
         >
@@ -391,7 +393,13 @@ export default function SingleStockView() {
           className="sell-button"
         >
           Sell
-        </button>
+        </button> */}
+        <div>
+          <Buy ticker={ticker} name={tickerInfo.name} />
+        </div>
+        <div>
+          <Sell ticker={ticker} name={tickerInfo.name} />
+        </div>
         <button
           value={tickerInfo.ticker}
           onClick={handleAddToWatchList}
