@@ -783,6 +783,10 @@ video {
   width: 1rem;
 }
 
+.w-4\/5 {
+  width: 80%;
+}
+
 .w-5 {
   width: 1.25rem;
 }
@@ -1646,7 +1650,19 @@ form div {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(to top, rgb(0, 0, 41), rgb(34, 1, 58));
+  width: 100vw;
+  background-color: #01116b;
+  opacity: 0.8;
+  background-image: radial-gradient(circle at center center, #0003b1, #4e505c),
+    repeating-radial-gradient(
+      circle at center center,
+      #101020,
+      #141535,
+      11px,
+      transparent 22px,
+      transparent 11px
+    );
+  background-blend-mode: multiply;
 }
 
 /* Card styling */

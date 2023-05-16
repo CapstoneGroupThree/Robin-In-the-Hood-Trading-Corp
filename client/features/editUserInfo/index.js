@@ -94,7 +94,7 @@ const EditUserInfo = () => {
 
   if (!editMode) {
     return (
-      <div className=" container flex justify-center items-center h-screen bg-gray-100">
+      <div className=" container flex justify-center items-center w-full ">
         <div className=" card p-6 max-w-sm mx-auto bg-gray-600 rounded-xl shadow-lg shadow-black flex items-center space-x-4">
           <div className="text-center text-white">
             <div className="text-4xl font-extrabold">User Info</div>
@@ -128,7 +128,7 @@ const EditUserInfo = () => {
   }
 
   return (
-    <div className=" container flex justify-center items-center h-screen bg-gray-100">
+    <div className=" container flex justify-center items-center h-screen w-full">
       <div className=" card p-6 max-w-sm mx-auto bg-slate-700 rounded-xl shadow-lg shadow-black flex items-center space-x-4">
         <div className="text-center text-white">
           <div className="text-4xl font-extrabold border-b-2 border-white-400">
