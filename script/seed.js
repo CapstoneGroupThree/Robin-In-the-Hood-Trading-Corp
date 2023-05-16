@@ -10,7 +10,7 @@ const {
  *      match the models, and populates the database.
  */
 async function seed() {
-  await db.sync({ force: false, alter: true }); // clears db and matches models to tables
+  await db.sync({ force: false, alter: true });
   console.log("db synced!");
 
   await Ticker.sync({ force: false });
@@ -39,6 +39,39 @@ async function seed() {
         defaults: {
           first_name: "han",
           last_name: "lin",
+          password: "123",
+        },
+        transaction,
+      }),
+      User.findOrCreate({
+        where: {
+          email: "tenzing@capstone.com",
+        },
+        defaults: {
+          first_name: "tenzing",
+          last_name: "salaka",
+          password: "123",
+        },
+        transaction,
+      }),
+      User.findOrCreate({
+        where: {
+          email: "jamie@capstone.com",
+        },
+        defaults: {
+          first_name: "jamie",
+          last_name: "lopez",
+          password: "123",
+        },
+        transaction,
+      }),
+      User.findOrCreate({
+        where: {
+          email: "adhemar@capstone.com",
+        },
+        defaults: {
+          first_name: "adhemar",
+          last_name: "hernandez",
           password: "123",
         },
         transaction,
