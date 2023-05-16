@@ -1,10 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./popup.css";
-import {
-  fetchSingleStockTickerPriceInfo,
-  fetchSingleStockOpenCloseInfo,
-} from "./singleStockViewSlice.js";
+import { fetchSingleStockTickerPriceInfo } from "./singleStockViewSlice.js";
 
 const Buy = (props) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -12,6 +9,8 @@ const Buy = (props) => {
   const id = useSelector((state) => state.auth.me.id);
   const dispatch = useDispatch();
   const { ticker, name } = props;
+  const [isLoading, setIsLoading] = useState(true);
+  const [tickerPriceInfo, setTickerPriceInfo] = useState({});
 
   const fetchHolidays = async () => {
     try {
@@ -137,16 +136,26 @@ const Buy = (props) => {
         fetchSingleStockTickerPriceInfo({ ticker, marketOpen, from, to })
       );
       //save misc info into state
-      const response = await dispatch(
-        fetchSingleStockOpenCloseInfo({ ticker, to })
-      ).unwrap();
-      console.log("Response from fetchSingleStockOpenCloseInfo:", response);
       // await console.log(tickerPriceInfo);\
       console.log(tickerPriceInfo.payload);
       return tickerPriceInfo.payload;
     };
     return getTickerPrice(ticker);
   };
+
+  useEffect(() => {
+    const fetchInfoToRender = async () => {
+      const priceInfo = await getStockInfo(ticker);
+
+      await console.log(priceInfo);
+
+      setTickerPriceInfo(priceInfo.results.c);
+      // or different during after hours
+
+      setIsLoading(false);
+    };
+    fetchInfoToRender();
+  }, [dispatch]);
 
   // todo fetch current price in
   // todo balance redux
@@ -163,6 +172,14 @@ const Buy = (props) => {
     e.preventDefault();
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
+        <div className="animate-spin rounded-full h-64 w-64 border-t-8 border-b-8  border-purple-500"></div>
+      </div>
+    );
+  }
+
   return (
     <div>
       <button
@@ -176,7 +193,7 @@ const Buy = (props) => {
           <div className="popup-overlay">
             <div className="popup-content">
               <h2>Buy {ticker} Stock</h2>
-              <div>Current Price: $ {price}</div>
+              <div>Current Price: $ {tickerPriceInfo}</div>
               <div>Current Balance: $ {balance} </div>
               <div>
                 <label htmlFor="quantity">Quantity Slider:</label>
