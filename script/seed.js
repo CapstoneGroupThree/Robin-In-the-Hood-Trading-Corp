@@ -135,10 +135,13 @@ const {
 async function seed() {
   await db.sync({ force: false, alter: true }); // clears db and matches models to tables
   console.log("db synced!");
+
   await Ticker.sync({ force: false });
   await TickerName.sync({ force: false });
+
   let users = [];
   let watchlists = [];
+
   await db.transaction(async (transaction) => {
     users = await Promise.all([
       User.findOrCreate({
@@ -164,6 +167,7 @@ async function seed() {
         transaction,
       }),
     ]);
+
     console.log(`seeded ${users.length} users`);
     watchlists = await Promise.all(
       users.map(async ([user, created]) => {
@@ -174,10 +178,13 @@ async function seed() {
         return Watchlist.create({ userId: user.id }, { transaction });
       })
     );
+
     // Filter out null watchlists
     watchlists = watchlists.filter((watchlist) => watchlist !== null);
+
     console.log(`Created a watchlist for ${watchlists.length} users`);
   });
+
   console.log(`seeded successfully`);
 }
 /*

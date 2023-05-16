@@ -162,9 +162,9 @@ async function runSeed() {
   `Async` functions always return a promise, so we can use `catch` to handle
   any errors that might occur inside of `seed`.
 */
-if (module === require.main) {
-  runSeed();
-}
-
+// if (module === require.main) {
+//   runSeed();
+// }
+runSeed();
 // we export the seed function for testing purposes (see `./seed.spec.js`)
 module.exports = seed;
