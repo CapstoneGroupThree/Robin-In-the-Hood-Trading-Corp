@@ -25,19 +25,7 @@ async function seed() {
     // const tickerData = response.data.results;
     const allTickers = await Ticker.findAll();
 
-    // console.log(allTickers[0].symbol);
     await db.transaction(async (transaction) => {
-      // Creating Users
-      // await Promise.all([
-      //   tickerData.map(async (tickerObject) => {
-      //     await Ticker.create({
-      //       symbol: tickerObject.T,
-      //     });
-      //   }),
-      // ]);
-      //TickerName exp1:
-      // console.log(allTickers[0].dataValues.symbol);
-
       allTickers.map(async (eachTicker) => {
         const ticker = eachTicker.dataValues.symbol;
         try {
@@ -56,66 +44,6 @@ async function seed() {
           console.error(`Error fetching ticker name for ${ticker}:`, error);
         }
       });
-
-      //other seeds:
-      // let users = [];
-      // let watchlists = [];
-      // users = await Promise.all([
-      //   await User.create(
-      //     {
-      //       first_name: "charlie",
-      //       last_name: "aloisio",
-      //       email: "charlie@capstone.com",
-      //       password: "123",
-      //     },
-      //     { transaction }
-      //   ),
-      //   await User.create(
-      //     {
-      //       first_name: "han",
-      //       last_name: "lin",
-      //       email: "han@capstone.com",
-      //       password: "123",
-      //     },
-      //     { transaction }
-      //   ),
-      //   await User.create(
-      //     {
-      //       first_name: "tenzing",
-      //       last_name: "salaka",
-      //       email: "tenzing@capstone.com",
-      //       password: "123",
-      //     },
-      //     { transaction }
-      //   ),
-      //   await User.create(
-      //     {
-      //       first_name: "jaime",
-      //       last_name: "lopez",
-      //       email: "jaime@capstone.com",
-      //       password: "123",
-      //     },
-      //     { transaction }
-      //   ),
-      //   await User.create(
-      //     {
-      //       first_name: "adhemar",
-      //       last_name: "hernandez",
-      //       email: "adhemar@capstone.com",
-      //       password: "123",
-      //     },
-      //     { transaction }
-      //   ),
-      // ]);
-      // console.log(`seeded ${users.length} users`);
-      //Creating Watchlists for each user
-      // watchlists = await Promise.all(
-      //   users.map(
-      //     async (user) =>
-      //       await Watchlist.create({ userId: user.id }, { transaction })
-      //   )
-      // );
-      // console.log(`Created a watchlist for ${watchlists.length} users`);
     });
     // console.log(`Created ${tickerSymbols.length} tickers.`);
   } catch (error) {
@@ -123,15 +51,6 @@ async function seed() {
   }
 }
 
-//Using Sequlize transactions to create a watchlist for every user
-
-//Transaction Function
-// await db.transaction(async (transaction) => {
-//   // Creating Users
-// });
-
-// console.log(`seeded ${users.length} users`);
-console.log(`seeded successfully`);
 // return {
 //   users: {
 //     charlie: users[0],
