@@ -29,6 +29,9 @@ const Navbar = () => {
             <Link to="/allStocks" className="hover:text-blue-500 block ">
               All Stocks
             </Link>
+            <Link to={"/portfolio"} className="hover:text-blue-500 block ">
+              Portfolio
+            </Link>
             <Link to="/user/edit" className="hover:text-blue-500 block ">
               {" "}
               Edit User Profile

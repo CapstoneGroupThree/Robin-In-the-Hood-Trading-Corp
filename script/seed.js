@@ -4,13 +4,12 @@ const {
   db,
   models: { User, Watchlist, Ticker, TickerName },
 } = require("../server/db");
-
 /**
  * seed - this function clears the database, updates tables to
  *      match the models, and populates the database.
  */
 async function seed() {
-  await db.sync({ force: false, alter: true }); // clears db and matches models to tables
+  await db.sync({ force: false, alter: true });
   console.log("db synced!");
 
   await Ticker.sync({ force: false });
@@ -43,10 +42,42 @@ async function seed() {
         },
         transaction,
       }),
+      User.findOrCreate({
+        where: {
+          email: "tenzing@capstone.com",
+        },
+        defaults: {
+          first_name: "tenzing",
+          last_name: "salaka",
+          password: "123",
+        },
+        transaction,
+      }),
+      User.findOrCreate({
+        where: {
+          email: "jamie@capstone.com",
+        },
+        defaults: {
+          first_name: "jamie",
+          last_name: "lopez",
+          password: "123",
+        },
+        transaction,
+      }),
+      User.findOrCreate({
+        where: {
+          email: "adhemar@capstone.com",
+        },
+        defaults: {
+          first_name: "adhemar",
+          last_name: "hernandez",
+          password: "123",
+        },
+        transaction,
+      }),
     ]);
 
     console.log(`seeded ${users.length} users`);
-
     watchlists = await Promise.all(
       users.map(async ([user, created]) => {
         if (!created) {
@@ -65,7 +96,6 @@ async function seed() {
 
   console.log(`seeded successfully`);
 }
-
 /*
  We've separated the `seed` function from the `runSeed` function.
  This way we can isolate the error handling and exit trapping.
@@ -84,7 +114,6 @@ async function runSeed() {
     console.log("db connection closed");
   }
 }
-
 /*
   Execute the `seed` function, IF we ran this module directly (`node seed`).
   `Async` functions always return a promise, so we can use `catch` to handle
@@ -93,6 +122,5 @@ async function runSeed() {
 if (module === require.main) {
   runSeed();
 }
-
 // we export the seed function for testing purposes (see `./seed.spec.js`)
 module.exports = seed;
