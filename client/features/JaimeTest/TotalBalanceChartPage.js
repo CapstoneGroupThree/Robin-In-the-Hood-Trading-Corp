@@ -3,23 +3,24 @@
 import React, { useEffect, useState } from "react";
 import TotalBalanceChart from "./TotalBalanceChart";
 
-const TotalBalanceChartPage = ({ userId }) => {
+const TotalBalanceChartPage = (props) => {
   const [lastTotalBalance, setLastTotalBalance] = useState(null);
   const [balanceData, setBalanceData] = useState(null);
   const [lastAssets, setLastAssets] = useState(null);
   const [lastBalanceOnly, setLastBalanceOnly] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
-
+  const { userId } = props;
   useEffect(() => {
     fetchData();
   }, [userId]);
 
   const fetchData = async () => {
+    console.log("Fetch userId:", userId);
     const response = await fetch(
       `http://localhost:8080/api/totalBalanceHistory/balance/${userId}`
     );
     const data = await response.json();
-    console.log(data);
+    console.log("Total Balance Chart Data:", data);
     const labels = data.map((entry) =>
       new Date(entry.timestamp).toLocaleString()
     );
