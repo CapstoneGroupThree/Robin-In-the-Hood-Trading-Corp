@@ -108,8 +108,9 @@ polygonController.getCandlestickData = async (req, res, next) => {
 
 polygonController.getSummary = async (req, res, next) => {
   const symbol = req.params.symbol;
-  const from = req.params.from || "2023-01-01";
-  const to = req.params.to || "2023-05-08";
+  const from = req.query.from || "2023-01-01";
+  const to = req.query.to || "2023-05-08";
+  const promptType = req.query.promptType || "default";
 
   try {
     const response = await axios.get(
@@ -119,12 +120,24 @@ polygonController.getSummary = async (req, res, next) => {
 
     // extract closing prices
     const closePrices = response.data.results.map((result) => result.c);
-    // console.log(chalk.green.italic(`closePrices: ${closePrices}`));
+    console.log(chalk.green.italic(`closePrices: ${closePrices}`));
 
     // generate the prompt for the openai api call
-    const prompt = `Please give me a summary of the following company's performance provided the stock ticker: ${symbol} which has the following history of close prices: ${closePrices.join(
-      ", "
-    )} during the following time period: ${from} to ${to}, also include the company's full name in your analysis as well as an average risk weighting if the stock should be bought, held or sold.`;
+    let prompt;
+switch (promptType) {
+  case "type1":
+    prompt = `Can you provide a brief summary on this company whose Stock: ${symbol}\n\n`;
+    break;
+  case "type2":
+    prompt = `What would be the risk category of this Stock: ${symbol} based on the following close prices: ${closePrices.join(", ")} during the following time period: ${from} to ${to}?\n\n`;
+    break;
+  case "type3":
+    prompt = `Is this Stock: ${symbol} considered a buy, hold or sell based on the following close prices: ${closePrices.join(', ')}?`;
+    break;
+  default:
+    prompt = `Please give me a summary of the following company's performance provided the stock ticker: ${symbol} which has the following history of close prices: ${closePrices.join(', ')} during the following time period: ${from} to ${to}, also include the company's full name in your analysis as well as an average risk weighting if the stock should be bought, held or sold.`;
+}
+
 
     // call openai api and get the response
     const openaiSummary = await openaiController.getOpenaiResponse(
