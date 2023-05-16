@@ -10,8 +10,9 @@ const Chatbot = () => {
 
   useEffect(() => {
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollIntoView({
+        behavior: "smooth",
+      });
     }
   }, [messages]);
 
@@ -29,22 +30,6 @@ const Chatbot = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // const oldMessages = [...messages];
-
-    // const userMessage = { role: "user", content: newMessage };
-    // oldMessages.push(userMessage);
-    // setMessages(oldMessages);
-    // setNewMessage("");
-
-    // const aiMessage = {
-    //   role: "assistant",
-    //   content: "AI thinking...",
-    //   id: generateUniqueId(),
-    // };
-
-    // oldMessages.push(aiMessage);
-    // console.log(oldMessages);
 
     const userMessage = {
       id: generateUniqueId(),
@@ -103,9 +88,9 @@ const Chatbot = () => {
         console.log(parsedData);
 
         if (parsedData) {
-          let index = 0;
+          let index = -1;
           const interval = setInterval(() => {
-            if (index < parsedData.length) {
+            if (index < parsedData.length - 1) {
               setMessages((currentMessages) => {
                 const updatedMessages = currentMessages.map((message) =>
                   message.id === aiMessage.id
@@ -125,7 +110,7 @@ const Chatbot = () => {
             } else {
               clearInterval(interval);
             }
-          }, 20);
+          }, 10);
         }
       } else {
         throw new Error(await response.text());
@@ -149,56 +134,61 @@ const Chatbot = () => {
   }
 
   return (
-    <div className="chatBotContainer">
-      <div>
-        <div id="chat_container" ref={chatContainerRef}>
-          {messages.map((message, index) => (
-            <div
-              className={`wrapper ${message.role === "assistant" ? "ai" : ""}`}
-              key={index}
-            >
-              <div className="chat">
-                <div className="profile">
-                  <img
-                    src={
-                      message.role === "assistant" ? "/bot.svg" : "/user.svg"
-                    }
-                    alt={message.role === "assistant" ? "bot" : "user"}
-                  ></img>
+    <div>
+      <div className="chatBotContainer">
+        <div>
+          <div id="chat_container" ref={chatContainerRef}>
+            {messages.map((message, index) => (
+              <div
+                ref={index === messages.length - 1 ? chatContainerRef : null}
+                className={`wrapper ${
+                  message.role === "assistant" ? "ai" : ""
+                }`}
+                key={message.id}
+              >
+                <div className="chat">
+                  <div className="profile">
+                    <img
+                      src={
+                        message.role === "assistant" ? "/bot.svg" : "/user.svg"
+                      }
+                      alt={message.role === "assistant" ? "bot" : "user"}
+                    ></img>
+                  </div>
+                  {console.log(message.content)}
+                  <div className="message">{message.content}</div>
                 </div>
-                {console.log(message.content)}
-                <div className="message">{message.content}</div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-        <div className="chatArea">
-          <form onSubmit={handleSubmit}>
-            <textarea
-              name="prompt"
-              rows="1"
-              cols="1"
-              placeholder="Ask AI Chatbot"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSubmit(e);
-                }
-              }}
-            ></textarea>
-            <button type="submit">
-              <img src="/send.svg" />
-            </button>
-          </form>
-          <img
-            onClick={() => setShowChat(false)}
-            src="/aiChatRB.png"
-            alt="your AI chat assistant "
-            className="w-20 h-20"
-          ></img>
-        </div>
+      </div>
+      <div className="chatArea">
+        <form onSubmit={handleSubmit}>
+          <textarea
+            name="prompt"
+            rows="1"
+            cols="1"
+            placeholder="Ask AI Chatbot"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit(e);
+              }
+            }}
+          ></textarea>
+          <button type="submit">
+            <img src="/send.svg" />
+          </button>
+        </form>
+        <img
+          onClick={() => setShowChat(false)}
+          src="/aiChatRB.png"
+          alt="your AI chat assistant "
+          className="w-20 h-20"
+        ></img>
       </div>
     </div>
   );
