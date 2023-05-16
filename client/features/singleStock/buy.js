@@ -2,15 +2,18 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./popup.css";
 import { fetchSingleStockTickerPriceInfo } from "./singleStockViewSlice.js";
+import { fetchUserPortfolio } from "./portfolioBuySellSlice";
 
 const Buy = (props) => {
   const [showPopup, setShowPopup] = useState(false);
   const [quantity, setQuantity] = useState(0);
-  const id = useSelector((state) => state.auth.me.id);
+  const userId = useSelector((state) => state.auth.me.id);
   const dispatch = useDispatch();
   const { ticker, name } = props;
   const [isLoading, setIsLoading] = useState(true);
   const [tickerPriceInfo, setTickerPriceInfo] = useState({});
+  const [userPortfolio, setUserPortfolio] = useState([]);
+  const [userBalance, setUserBalance] = useState(0);
 
   const fetchHolidays = async () => {
     try {
@@ -37,8 +40,8 @@ const Buy = (props) => {
       return filteredHolidays;
     } catch (error) {
       console.error("Error fetching holidays:", error);
-      return [];
     }
+    return [];
   };
 
   const getStockInfo = async (ticker) => {
@@ -49,7 +52,9 @@ const Buy = (props) => {
     let to = `${year}-${month}-${day}`;
 
     const holidays = await fetchHolidays();
-    const estOffset = -4 * 60; // Eastern Time is UTC-5
+    //! UNCHANGE THIS BEFORE MAKING PULL REQUEST
+    const estOffset = -10 * 60; // Eastern Time is UTC-5
+    //! UNCHANGE THE ABOVE OFFSET
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
 
@@ -146,23 +151,34 @@ const Buy = (props) => {
   useEffect(() => {
     const fetchInfoToRender = async () => {
       const priceInfo = await getStockInfo(ticker);
+      const portfolioInfo = await dispatch(fetchUserPortfolio({ userId }));
+      console.log(portfolioInfo.payload);
+      const tickerSpecificPortfolio = portfolioInfo.payload.portfolio.map(
+        (portfolioItem) => {
+          if (portfolioItem.stockTicker === ticker) {
+            return portfolioItem;
+          }
+        }
+      );
+      await setUserPortfolio(tickerSpecificPortfolio);
+      await setUserBalance(portfolioInfo.payload.latestBalance);
 
-      await console.log(priceInfo);
+      await console.log(priceInfo.results);
 
-      setTickerPriceInfo(priceInfo.results.c);
+      setTickerPriceInfo(priceInfo.results[0].c.toFixed(2));
       // or different during after hours
-
+      console.log(setTickerPriceInfo);
       setIsLoading(false);
     };
     fetchInfoToRender();
   }, [dispatch]);
-
+  // todo fetch portfolio
   // todo fetch current price in
   // todo balance redux
   // todo buy redux that sends the post request
-  const price = "100";
+
   const balance = "100000";
-  const maxSliderValue = Math.floor(balance / price) - 1;
+  const maxSliderValue = Math.floor(balance / tickerPriceInfo);
 
   const handleInputChange = (event) => {
     setQuantity(parseInt(event.target.value));
@@ -173,28 +189,28 @@ const Buy = (props) => {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
-        <div className="animate-spin rounded-full h-64 w-64 border-t-8 border-b-8  border-purple-500"></div>
-      </div>
-    );
+    return <div>loading...</div>;
   }
 
   return (
     <div>
+      {console.log(userBalance, userPortfolio)}
       <button
         className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => setShowPopup(true)}
       >
         Buy
       </button>
+      You own: {userPortfolio ? userPortfolio[0]?.quantity : "none"}
       <div>
         {showPopup && (
           <div className="popup-overlay">
             <div className="popup-content">
               <h2>Buy {ticker} Stock</h2>
               <div>Current Price: $ {tickerPriceInfo}</div>
-              <div>Current Balance: $ {balance} </div>
+              <div>Current Balance: $ {userBalance} </div>
+              <div>{ticker} owned: </div>
+              <div>Total Valuation: </div>
               <div>
                 <label htmlFor="quantity">Quantity Slider:</label>
                 <input
@@ -205,7 +221,8 @@ const Buy = (props) => {
                   value={quantity}
                   onChange={handleInputChange}
                 />
-                <span>{quantity}</span>
+                <span>Q: {quantity}</span>
+                <div>Cost: {(tickerPriceInfo * quantity).toFixed(2)}</div>
               </div>
               <button onClick={handleBuy}>Buy</button>
               <button onClick={() => setShowPopup(false)}>Close</button>
