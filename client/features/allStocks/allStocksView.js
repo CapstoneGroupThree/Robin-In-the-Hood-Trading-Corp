@@ -242,9 +242,11 @@ const AllStocksView = () => {
 
   return (
     <div className=" flex flex-col font-medium antialiased font-body h-screen w-full p-2 bg-gradient-to-t from-slate-800 to-indigo-950 ">
-      <div className="flex justify-between text-white items-center m-2 pl-4 pr-4 ">
-        <h1 className="font-medium font-body text-lg">All Stocks</h1>
-        <SearchBar />
+      <div className="flex w-full justify-between text-white items-center pb-2 pl-4 pr-4 ">
+        <h1 className=" whitespace-nowrap font-medium font-body text-lg">
+          All Stocks
+        </h1>
+        <SearchBar className="" />
       </div>
       {console.log(currentPageNameCapInfo)}
 

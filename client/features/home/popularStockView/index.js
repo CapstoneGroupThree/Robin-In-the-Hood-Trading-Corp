@@ -268,7 +268,7 @@ const PopularStocksHomeView = () => {
         const trimmedName = trimName(stockInfo.name);
         return (
           <div key={ticker} className=" popularStocks  h-full flex flex-col ">
-            <div className="stock shadow-slate-900 w-full h-full flex flex-col space-y-2 rounded-lg shadow-lg p-4 border-2 border-indigo-950 bg-gradient-to-bl from-slate-950 to-indigo-950">
+            <div className="stock shadow-slate-900 w-full h-full flex flex-col space-y-2 rounded-lg shadow-lg p-4 pb-2 border-2 border-indigo-950 bg-gradient-to-bl from-slate-950 to-indigo-950">
               <Link
                 to={`/singleStock/${ticker}`}
                 className="text-sky-600 hover:text-sky-900 font-semibold font-body"

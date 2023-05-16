@@ -341,7 +341,9 @@ const WatchListView = () => {
                   })}
               </tbody>
             </table> */}
-            <div>
+            <div
+              style={{ width: "550px", height: "375px", overflow: "hidden" }}
+            >
               <Slider
                 infinite={true}
                 slidesToShow={1}
@@ -354,15 +356,17 @@ const WatchListView = () => {
                   .map(([ticker, stockInfo]) => {
                     const trimmedName = trimName(stockInfo.name);
                     return (
-                      <div key={ticker}>
-                        <div>
-                          <Link to={`/singleStock/${ticker}`}>
-                            {trimmedName}
-                          </Link>
-                        </div>
-                        <div>
-                          {"$" + stockInfo.close.toFixed(2) ||
-                            "$" + stockInfo.preMarket.toFixed(2)}
+                      <div key={ticker} className=" ">
+                        <div className=" flex flex-row space-x-4 text-white">
+                          <div>
+                            <Link to={`/singleStock/${ticker}`}>
+                              {trimmedName}
+                            </Link>
+                          </div>
+                          <div>
+                            {"$" + stockInfo.close.toFixed(2) ||
+                              "$" + stockInfo.preMarket.toFixed(2)}
+                          </div>
                         </div>
                         <ClosePriceChartPage ticker={ticker} />
                       </div>

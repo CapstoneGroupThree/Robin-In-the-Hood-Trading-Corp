@@ -14,9 +14,9 @@ const SearchBar = (props) => {
   };
   //todo tier2 feature
   return (
-    <div>
+    <div className=" w-full flex justify-end  ">
       <form
-        className="searchBar flex items-center space-x-4"
+        className="searchBar flex  bg-transparent place-content-end space-x-4"
         onSubmit={handleSubmit}
       >
         <input
@@ -25,13 +25,13 @@ const SearchBar = (props) => {
           aria-label="Search"
           value={query}
           onChange={handleInputChange}
-          className="flex-grow w-full py-2 px-2 text-black rounded-md border-2 border-sky-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-sky-600"
+          className=" w-2/6 py-2 px-3 text-black rounded-md border-2 border-sky-800 shadow-sm focus:outline-none focus:ring-2"
         ></input>
         {/*On submit we navigate the user to the stock tickers page*/}
         <Link to={`/singleStock/${query}`}>
           <button
             type="submit"
-            className="px-3 py-2 bg-slate-700 text-white rounded-3xl hover:bg-sky-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+            className="px-3 py-2 bg-slate-700 text-white rounded-3xl  focus:outline-none focus:ring-2"
           >
             <i className="fas fa-search"></i>
           </button>
