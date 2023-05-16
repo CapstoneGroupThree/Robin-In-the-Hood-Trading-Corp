@@ -51,4 +51,27 @@ require("dotenv").config();
 // }
 
 // module.exports = { getOpenaiResponse };
-import { Configuration, OpenAIApi } from "openai";
+const { Configuration, OpenAIApi } = require("openai");
+
+const configuration = new Configuration({
+  organization: process.env.ORGANIZATION,
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
+
+async function getOpenaiResponse(req, res, next) {
+  const { messages } = req.body;
+  const completion = await openai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: messages,
+  });
+  const aiResponse = completion.data.choices[0].message;
+  console.log(
+    "🚀 ~ file: openaiController.js:70 ~ getOpenaiResponse ~ aiResponse:",
+    aiResponse
+  );
+  res.json({ assistant: aiResponse.content.trim() });
+}
+
+module.exports = { getOpenaiResponse };
