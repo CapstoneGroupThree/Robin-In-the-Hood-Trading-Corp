@@ -39,6 +39,7 @@ export default function SingleStockView() {
   const [tickerInfo, setTickerInfo] = useState({});
   const [tickerPriceInfo, setTickerPriceInfo] = useState({});
   const [currentChart, setCurrentChart] = useState("stockData");
+  const [marketOpen, setMarketOpen] = useState("");
 
   //! used nager date api to get public holidays
 
@@ -101,6 +102,11 @@ export default function SingleStockView() {
       hour < 16 &&
       !isHoliday;
     console.log(marketOpen);
+    if (marketOpen) {
+      setMarketOpen(true);
+    } else {
+      setMarketOpen(false);
+    }
 
     const isPreMarket =
       dayOfWeek >= 1 &&
@@ -422,3 +428,4 @@ export default function SingleStockView() {
 }
 
 //todo add to watchlist func, stock other info
+//todo if market is closed close access to buy sell feature until next day
