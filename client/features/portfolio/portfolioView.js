@@ -22,8 +22,7 @@ const Portfolio = () => {
 
   return (
     <>
-      <div>Portfolio!</div>
-      <h1>Hello! {me.first_name}</h1>
+      <h1 className="px-4 py-2 text-center">Your Portfolio</h1>
       {console.log("UserId:", userId)}
       <div className="assets h-1/3  border border-gray-400 p-4 rounded bg-gray-100">
         <TotalBalanceChartPage userId={userId} />

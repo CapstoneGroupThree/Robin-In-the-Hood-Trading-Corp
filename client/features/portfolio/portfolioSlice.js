@@ -9,7 +9,6 @@ export const fetchSinglePortfolio = createAsyncThunk(
       const response = await axios.get(
         `http://localhost:8080/api/portfolio/${id}`
       );
-      console.log("Fetch Portfolio Redux Response:", response);
       return response.data.portfolio;
     } catch (error) {
       console.log(error);
