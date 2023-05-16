@@ -38,7 +38,7 @@ export const buyStockForPortfolio = createAsyncThunk(
         }
       );
       //going to return to use successful or not
-      return response.data;
+      return response;
     } catch (err) {
       console.log(err);
     }

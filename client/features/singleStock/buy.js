@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./popup.css";
 import { fetchSingleStockTickerPriceInfo } from "./singleStockViewSlice.js";
-import { fetchUserPortfolio } from "./portfolioBuySellSlice";
+import {
+  buyStockForPortfolio,
+  fetchUserPortfolio,
+} from "./portfolioBuySellSlice";
 
 const Buy = (props) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -14,6 +17,7 @@ const Buy = (props) => {
   const [tickerPriceInfo, setTickerPriceInfo] = useState({});
   const [userPortfolio, setUserPortfolio] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
+  const [reload, setReload] = useState(0);
 
   const fetchHolidays = async () => {
     try {
@@ -171,21 +175,39 @@ const Buy = (props) => {
       setIsLoading(false);
     };
     fetchInfoToRender();
-  }, [dispatch]);
+  }, [dispatch, reload]);
   // todo fetch portfolio
   // todo fetch current price in
   // todo balance redux
   // todo buy redux that sends the post request
 
-  const balance = "100000";
-  const maxSliderValue = Math.floor(balance / tickerPriceInfo);
+  const maxSliderValue = Math.floor(userBalance / tickerPriceInfo);
 
   const handleInputChange = (event) => {
     setQuantity(parseInt(event.target.value));
   };
 
-  const handleBuy = (e) => {
+  const handleBuy = async (e) => {
     e.preventDefault();
+    if (quantity < 1) {
+      alert("Please purchase more stock.");
+      return;
+    }
+    const response = await dispatch(
+      buyStockForPortfolio({
+        userId,
+        stockTicker: ticker,
+        stockName: name,
+        quantity: quantity,
+        purchasePrice: tickerPriceInfo,
+      })
+    );
+    console.log(response);
+    setShowPopup(false);
+    setReload(reload + 1);
+    alert(
+      `Congratulations! Successfully purchased ${quantity} shares of ${ticker}!`
+    );
   };
 
   if (isLoading) {
@@ -201,7 +223,7 @@ const Buy = (props) => {
       >
         Buy
       </button>
-      You own: {userPortfolio ? userPortfolio[0]?.quantity : "none"}
+      You own: {userPortfolio[0] ? userPortfolio[0].quantity : "0"}
       <div>
         {showPopup && (
           <div className="popup-overlay">
