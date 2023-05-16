@@ -234,42 +234,48 @@ const AllStocksView = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-purple-500"></div>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
+        <div className="animate-spin rounded-full h-64 w-64 border-t-8 border-b-8  border-purple-500"></div>
       </div>
     );
   }
 
   return (
-    <div className="font-semibold">
-      <div className="flex justify-between items-center mb-4 border-b border-purple-500 ">
-        <h1>All Stocks</h1>
-        <SearchBar />
+    <div className=" flex flex-col font-medium antialiased font-body h-screen w-full p-2 bg-gradient-to-t from-slate-800 to-indigo-950 ">
+      <div className="flex w-full justify-between text-white items-center pb-2 pl-4 pr-4 ">
+        <h1 className=" whitespace-nowrap font-medium font-body text-lg">
+          All Stocks
+        </h1>
+        <SearchBar className="" />
       </div>
       {console.log(currentPageNameCapInfo)}
 
-      <h3>Popular Stocks</h3>
       {Object.keys(allStocks).length === 0 && <div>Loading stocks...</div>}
       {Object.keys(allStocks).length > 0 && (
-        <table className="w-full table-auto border-collapse border border-purple-500">
-          <thead className="border-b-2 border-purple-500">
+        <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white">
+          <thead className="border-2 border-sky-950">
             <tr>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Symbol</th>
-              <th className="px-4 py-2">Price</th>
-              <th className="px-4 py-2">Today's Change (%)</th>
+              <th className="px-4 py-2 font-semibold">Name</th>
+              <th className="px-4 py-2 font-semibold">Symbol</th>
+              <th className="px-4 py-2 font-semibold">Price</th>
+              <th className="px-4 py-2 font-semibold">Today's Change (%)</th>
             </tr>
           </thead>
           <tbody>
-            {currentPageInfo.map((stock) => {
+            {currentPageInfo.map((stock, index) => {
               // const stockDetail = allStockDetails[stock.T];
               // const marketCap = stockDetail ? stockDetail.marketCap : "N/A";
               return (
-                <tr key={stock.T} className="border-b border-purple-500">
-                  <td className="px-4 py-2 text-center">
+                <tr
+                  key={stock.T}
+                  className={`${
+                    index % 2 === 0 ? "bg-slate-800" : ""
+                  } hover:bg-slate-700 transition-colors duration-200 ease-in-out`}
+                >
+                  <td className="px-4 py-2">
                     <Link
                       to={`/singleStock/${stock.T}`}
-                      className=" hover:text-purple-500 "
+                      className="text-sky-200 hover:text-sky-400 "
                     >
                       {currentPageNameCapInfo[stock.T]
                         ? trimName(currentPageNameCapInfo[stock.T].name)
@@ -320,11 +326,11 @@ const AllStocksView = () => {
         ) : (
           ""
         )}
-        <span className="mr-2">Page: {currentPage}</span>
+        <span className="mr-2 text-white">Page: {currentPage}</span>
         <button
           value="next"
           onClick={handlePageChange}
-          className="bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700"
+          className="bg-sky-950 text-white px-4 py-2 rounded hover:bg-purple-700"
         >
           Next
         </button>

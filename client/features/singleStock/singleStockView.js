@@ -208,8 +208,8 @@ export default function SingleStockView() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-purple-500"></div>
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
+        <div className="animate-spin rounded-full h-64 w-64 border-t-8 border-b-8  border-purple-500"></div>
       </div>
     );
   }
@@ -228,7 +228,7 @@ export default function SingleStockView() {
   // ! uses clearbit Logo API to get logos
   //! potentially might break during weekdays based on different api calls
   return (
-    <div className="font-semibold flex flex-col h-screen justify-between max-h-screen  overflow-hidden">
+    <div className="font-semibold flex flex-col p-4 h-screen justify-between max-h-screen bg-gradient-to-t from-slate-800 to-slate-900 text-white overflow-hidden">
       {console.log("singleStockInfoOpenCLose", singleStockInfo.openClose)}
       {console.log(tickerInfo)}
       {console.log(tickerPriceInfo)}
@@ -236,7 +236,7 @@ export default function SingleStockView() {
       {/* Header */}
       <div className="flex justify-between  items-center mb-2 ">
         <div className="flex items-center">
-          <div className="w-10 h-10 overflow-visible rounded-full mr-4">
+          <div className="w-10 h-10 overflow-visible rounded-md mr-4 ">
             <img
               src={`https://logo.clearbit.com/${tickerInfo.homepage_url}`}
               alt="Company Logo"
@@ -244,7 +244,7 @@ export default function SingleStockView() {
               className="object-cover w-full h-full"
             />
           </div>
-          <h2>{tickerInfo.name}</h2>
+          <h2 className=" text-white">{tickerInfo.name}</h2>
         </div>
         <SearchBar />
       </div>
@@ -288,7 +288,7 @@ export default function SingleStockView() {
             </div>
           </div>
 
-          <h3>{tickerInfo.ticker}</h3>
+          <h3 className="">{tickerInfo.ticker}</h3>
 
           <div className="grid grid-cols-3 gap-1">
             <div>
@@ -334,7 +334,7 @@ export default function SingleStockView() {
               </strong>
             </div>
           </div>
-          <div className=" max-h-fit overflow-auto scroll-style overflow-x-hidden">
+          <div className=" max-h-full overflow-auto scroll-style overflow-x-hidden">
             <p className="content-start ">
               Description: {tickerInfo.description}
             </p>
@@ -342,17 +342,21 @@ export default function SingleStockView() {
         </div>
 
         {/* News */}
-        <div className="  overflow-y-scroll scroll-style  h-5/6 max-h-full w-5/12 border border-purple-500 p-2 rounded-md ">
+        <div className="  overflow-y-scroll scroll-style  h-5/6 max-h-full w-5/12 border border-sky-800 p-2 rounded-md bg-gradient-to-t from-slate-900 to slate-950 text-white shadow-md shadow-black">
           <h2>News</h2>
           <div>
             {console.log("here", tickerNews)}
             {tickerNews && tickerNews.length > 0 ? (
               tickerNews.map((news) => (
-                <div key={news.id}>
+                <div
+                  key={news.id}
+                  className="mb-4 p-4 rounded-lg bg-slate-700 shadow-lg"
+                >
                   <h2>
                     <a
                       href={`${news.article_url}`}
                       alt={`link to ${news.title}`}
+                      className="w-full h-64 object-cover mb-2 rounded"
                     >
                       {news.title}
                     </a>
@@ -363,8 +367,10 @@ export default function SingleStockView() {
                     onError={handleImageError}
                     className="w-32 h-32 object-cover"
                   ></img>
-                  <div>Author: {news.author}</div>
-                  <div>Date Published: {news.published_utc.slice(0, 10)}</div>
+                  <div className="text-sky-500">Author: {news.author}</div>
+                  <div className="text-sky-500">
+                    Published: {news.published_utc.slice(0, 10)}
+                  </div>
                 </div>
               ))
             ) : (
@@ -378,13 +384,13 @@ export default function SingleStockView() {
       <div className=" flex absolute bottom-0 items-center mb-4 footer ">
         {/* <button
           onClick={() => console.log("Buy functionality")}
-          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+          className=" buy-button"
         >
           Buy
         </button>
         <button
           onClick={() => console.log("Sell functionality")}
-          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-3"
+          className="sell-button"
         >
           Sell
         </button> */}
@@ -397,13 +403,11 @@ export default function SingleStockView() {
         <button
           value={tickerInfo.ticker}
           onClick={handleAddToWatchList}
-          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded ml-3"
+          className=" watchlist-button"
         >
           Add to Watchlist
         </button>
-        <div className=" ml-4 text-purple-500">
-          You already own: XXX shares:
-        </div>
+        <div className=" own-shares-text">You already own: XXX shares:</div>
       </div>
       <div className="aibot absolute bottom-0 right-0">
         {/* <img

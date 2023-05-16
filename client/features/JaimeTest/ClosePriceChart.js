@@ -108,7 +108,7 @@ const ClosePriceChart = (props) => {
   return (
     <div
       style={{
-        width: isWidget ? "30%" : "100%",
+        width: isWidget ? "100%" : "100%",
         height: isWidget ? "10vh" : "50vh",
         backgroundColor: "#15202B",
         color: "#FFFFFF",
