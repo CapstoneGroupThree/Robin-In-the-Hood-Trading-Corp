@@ -94,87 +94,162 @@ const EditUserInfo = () => {
 
   if (!editMode) {
     return (
-      <div>
-        <div>User Info</div>
-        <div>Email Address: {me.email}</div>
-        <div>First Name: {me.first_name}</div>
-        <div>Last Name: {me.last_name}</div>
-        <div>Password: ********</div>
-        <button onClick={handleEditModeToggle}>Edit Profile Information</button>
+      <div className=" container flex justify-center items-center h-screen bg-gray-100">
+        <div className=" card p-6 max-w-sm mx-auto bg-gray-600 rounded-xl shadow-lg shadow-black flex items-center space-x-4">
+          <div className="text-center text-white">
+            <div className="text-4xl font-extrabold">User Info</div>
+            <div className="mt-4 flex justify-between">
+              {" "}
+              <span className="text-xl font-bold"> Email Address:</span>{" "}
+              <span className="text-xl"> {me.email}</span>
+            </div>
+            <div className="mt-2 flex justify-between">
+              <span className="text-xl font-bold">First Name:</span>
+              <span className="text-xl">{me.first_name}</span>
+            </div>
+            <div className="mt-2 flex justify-between">
+              <span className="text-xl font-bold">Last Name:</span>
+              <span className="text-xl">{me.last_name}</span>
+            </div>
+            <div className="mt-2 flex justify-between">
+              <span className="text-xl font-bold">Password:</span>
+              <span className="text-xl">********</span>
+            </div>
+            <button
+              className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={handleEditModeToggle}
+            >
+              Edit Profile Information
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div>
-      <div>Edit User Info</div>
-      <form onSubmit={handleProfileSubmit}>
-        <label htmlFor="email">Email Address:</label>
-        <input
-          name="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-        />
-        <label htmlFor="email">First Name:</label>
-        <input
-          name="firstName"
-          value={firstName}
-          onChange={(e) => {
-            setFirstName(e.target.value);
-          }}
-        />
-        <label htmlFor="email">Last Name:</label>
-        <input
-          name="lastName"
-          value={lastName}
-          onChange={(e) => {
-            setLastName(e.target.value);
-          }}
-        />
-
-        <button type="submit">Submit</button>
-      </form>
-      <div>
-        <button onClick={handleEditPasswordToggle}>Change Password</button>
-      </div>
-      {editPasswordMode ? (
-        <div>
-          <form onSubmit={handlePasswordSubmit}>
-            <label htmlFor="oldPassWord">Previous Password:</label>
+    <div className=" container flex justify-center items-center h-screen bg-gray-100">
+      <div className=" card p-6 max-w-sm mx-auto bg-slate-700 rounded-xl shadow-lg shadow-black flex items-center space-x-4">
+        <div className="text-center text-white">
+          <div className="text-4xl font-extrabold border-b-2 border-white-400">
+            Edit User Info
+          </div>
+          <form
+            className="space-y-4 text-gray-600"
+            onSubmit={handleProfileSubmit}
+          >
+            <label className="block text-xl font-bold" htmlFor="email">
+              Email Address:
+            </label>
             <input
-              type="password"
-              name="oldPassword"
-              value={oldPassword}
+              className=" input-field block w-full font-black px-4 py-2 rounded-md border-2 border-gray-300"
+              name="email"
+              value={email}
               onChange={(e) => {
-                setOldPassword(e.target.value);
+                setEmail(e.target.value);
               }}
             />
-            <label htmlFor="newPassWord">New Password:</label>
+            <label className="block text-xl font-bold" htmlFor="firstName">
+              First Name:
+            </label>
             <input
-              type="password"
-              name="newPassword"
-              value={newPassword}
+              className="block w-full px-4 py-2 rounded-md border-2 border-gray-300"
+              name="firstName"
+              value={firstName}
               onChange={(e) => {
-                setNewPassword(e.target.value);
+                setFirstName(e.target.value);
               }}
             />
-            <label htmlFor="confirmPassword">Confirm New Password:</label>
+            <label className="block text-xl font-bold" htmlFor="lastName">
+              Last Name:
+            </label>
             <input
-              type="password"
-              name="confirmPassword"
-              value={confirmPassword}
+              className="block w-full px-4 py-2 rounded-md border-2 border-gray-300"
+              name="lastName"
+              value={lastName}
               onChange={(e) => {
-                setConfirmPassword(e.target.value);
+                setLastName(e.target.value);
               }}
             />
-            <button>Submit Password Change</button>
+            <button
+              className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              type="submit"
+            >
+              Submit
+            </button>
           </form>
+          <div className="mt-4">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              onClick={handleEditPasswordToggle}
+            >
+              Change Password
+            </button>
+          </div>
+          {editPasswordMode ? (
+            <div>
+              <form
+                className="space-y-4 text-gray-600"
+                onSubmit={handlePasswordSubmit}
+              >
+                <label
+                  className="block text-xl font-bold"
+                  htmlFor="oldPassWord"
+                >
+                  Previous Password:
+                </label>
+                <input
+                  className="block w-full px-4 py-2 rounded-md border-2 border-gray-300"
+                  type="password"
+                  name="oldPassword"
+                  value={oldPassword}
+                  onChange={(e) => {
+                    setOldPassword(e.target.value);
+                  }}
+                />
+                <label
+                  className="block text-xl font-bold"
+                  htmlFor="newPassWord"
+                >
+                  New Password:
+                </label>
+                <input
+                  className="block w-full px-4 py-2 rounded-md border-2 border-gray-300"
+                  type="password"
+                  name="newPassword"
+                  value={newPassword}
+                  onChange={(e) => {
+                    setNewPassword(e.target.value);
+                  }}
+                />
+                <label
+                  className="block text-xl font-bold"
+                  htmlFor="confirmPassword"
+                >
+                  Confirm New Password:
+                </label>
+                <input
+                  className="block w-full px-4 py-2 rounded-md border-2 border-gray-300"
+                  type="password"
+                  name="confirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                  }}
+                />
+                <button
+                  className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  type="submit"
+                >
+                  Submit Password Change
+                </button>
+              </form>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
-      ) : (
-        ""
-      )}
+      </div>
     </div>
   );
 };
