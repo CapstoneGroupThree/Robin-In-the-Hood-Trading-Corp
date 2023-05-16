@@ -6,6 +6,8 @@ import singleStockViewSliceReducer from "../features/singleStock/singleStockView
 import popularStocksViewSliceReducer from "../features/home/popularStockView/popularStockViewSlice";
 import watchlistStocksViewSliceReducer from "../features/home/watchListView/watchListViewSlice";
 import portfolioBuySellSliceReducer from "../features/singleStock/portfolioBuySellSlice";
+import portfolioSliceReducer from "../features/portfolio/portfolioSlice";
+import transactionSliceReducer from "../features/portfolio/transactionSlice";
 
 const store = configureStore({
   reducer: {
@@ -15,6 +17,8 @@ const store = configureStore({
     popularStocksView: popularStocksViewSliceReducer,
     watchlistStocksView: watchlistStocksViewSliceReducer,
     portfolioBuySellStock: portfolioBuySellSliceReducer,
+    portfolio: portfolioSliceReducer,
+    transactions: transactionSliceReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });
