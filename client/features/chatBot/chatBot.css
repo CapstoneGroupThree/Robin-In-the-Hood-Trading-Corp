@@ -11,14 +11,14 @@ body {
 
 .chatBotContainer {
   width: 500px; /* adjust this to your needs */
-  height: 800px; /* adjust this to your needs */
+  height: 750px; /* adjust this to your needs */
   position: relative;
-  bottom: 0;
+  bottom: 79px;
   right: 0;
-  border: 1px solid black;
+  border: 1px solid whitesmoke;
   background-color: white;
   border-radius: 10px;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 #chat_container {
