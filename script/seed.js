@@ -2,7 +2,7 @@
 
 const {
   db,
-  models: { User, Watchlist },
+  models: { User, Watchlist, Ticker, TickerName },
 } = require("../server/db");
 
 /**
@@ -10,86 +10,60 @@ const {
  *      match the models, and populates the database.
  */
 async function seed() {
-  await db.sync({ force: true }); // clears db and matches models to tables
+  await db.sync({ force: false, alter: true }); // clears db and matches models to tables
   console.log("db synced!");
 
-  //Using Sequlize transactions to create a watchlist for every user
+  await Ticker.sync({ force: false });
+  await TickerName.sync({ force: false });
+
   let users = [];
   let watchlists = [];
 
-  //Transaction Function
   await db.transaction(async (transaction) => {
-    // Creating Users
     users = await Promise.all([
-      await User.create(
-        {
+      User.findOrCreate({
+        where: {
+          email: "charlie@capstone.com",
+        },
+        defaults: {
           first_name: "charlie",
           last_name: "aloisio",
-          email: "charlie@capstone.com",
           password: "123",
         },
-        { transaction }
-      ),
-      await User.create(
-        {
+        transaction,
+      }),
+      User.findOrCreate({
+        where: {
+          email: "han@capstone.com",
+        },
+        defaults: {
           first_name: "han",
           last_name: "lin",
-          email: "han@capstone.com",
           password: "123",
         },
-        { transaction }
-      ),
-      await User.create(
-        {
-          first_name: "tenzing",
-          last_name: "salaka",
-          email: "tenzing@capstone.com",
-          password: "123",
-        },
-        { transaction }
-      ),
-      await User.create(
-        {
-          first_name: "jaime",
-          last_name: "lopez",
-          email: "jaime@capstone.com",
-          password: "123",
-        },
-        { transaction }
-      ),
-      await User.create(
-        {
-          first_name: "adhemar",
-          last_name: "hernandez",
-          email: "adhemar@capstone.com",
-          password: "123",
-        },
-        { transaction }
-      ),
+        transaction,
+      }),
     ]);
+
     console.log(`seeded ${users.length} users`);
 
-    //Creating Watchlists for each user
     watchlists = await Promise.all(
-      users.map(
-        async (user) =>
-          await Watchlist.create({ userId: user.id }, { transaction })
-      )
+      users.map(async ([user, created]) => {
+        if (!created) {
+          console.log("User skipped - already exists:", user.toJSON());
+          return null;
+        }
+        return Watchlist.create({ userId: user.id }, { transaction });
+      })
     );
+
+    // Filter out null watchlists
+    watchlists = watchlists.filter((watchlist) => watchlist !== null);
+
     console.log(`Created a watchlist for ${watchlists.length} users`);
   });
 
-  // console.log(`seeded ${users.length} users`);
   console.log(`seeded successfully`);
-  // return {
-  //   users: {
-  //     charlie: users[0],
-  //     han: users[1],
-  //     tenzing: users[2],
-  //     jaime: users[3],
-  //     adhemar: users[4],
-  //   },
-  // };
 }
 
 /*
