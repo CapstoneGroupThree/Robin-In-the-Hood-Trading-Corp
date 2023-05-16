@@ -36,6 +36,12 @@ const Navbar = () => {
               All Stocks
             </Link>
             <Link
+              to={"/portfolio"}
+              className="hover:text-blue-500 block  active:bg-gray-500 active:text-white"
+            >
+              Portfolio
+            </Link>
+            <Link
               to="/user/edit"
               className="hover:text-blue-500 block  active:bg-gray-500 active:text-white"
             >

@@ -266,7 +266,7 @@ const AllStocksView = () => {
               // const marketCap = stockDetail ? stockDetail.marketCap : "N/A";
               return (
                 <tr key={stock.T} className="border-b border-purple-500">
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 text-center">
                     <Link
                       to={`/singleStock/${stock.T}`}
                       className=" hover:text-purple-500 "
