@@ -216,7 +216,11 @@ const Buy = (props) => {
   };
 
   if (isLoading) {
-    return <div>loading...</div>;
+    if (marketOpen) {
+      return <div> Loading... </div>;
+    } else {
+      return <div>Buy/Sell Unavailable Outside Market Hours</div>;
+    }
   }
 
   return (
