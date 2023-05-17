@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import "./chatBot.css";
 
-const Chatbot = () => {
+const Chatbot = ({ ticker }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [showChat, setShowChat] = useState(false);
@@ -120,6 +120,25 @@ const Chatbot = () => {
     }
   };
 
+  const handleAdvancedPrompt = async (promptType) => {
+    const symbol = ticker;
+    const response = await fetch(
+      `http://localhost:8080/summary/${symbol}?promptType=${promptType}`
+    );
+
+    if (response.ok) {
+      const data = await response.json();
+
+      // Add the AI's response to the messages array
+      const aiMessage = {
+        id: generateUniqueId(),
+        role: "assistant",
+        content: data.summary,
+      };
+      setMessages((oldMessages) => [...oldMessages, aiMessage]);
+    }
+  };
+
   if (!showChat) {
     return (
       <div>
@@ -165,6 +184,18 @@ const Chatbot = () => {
           </div>
         </div>
       </div>
+      <button onClick={() => handleAdvancedPrompt("type1")}>
+        Stock Backstory
+      </button>
+      <button onClick={() => handleAdvancedPrompt("type2")}>
+        Risk Category
+      </button>
+      <button onClick={() => handleAdvancedPrompt("type3")}>
+        Buy, Hold, Or Sell?
+      </button>
+      <button onClick={() => handleAdvancedPrompt("default")}>
+        Thorough Analysis on {ticker}
+      </button>
       <div className="chatArea">
         <form onSubmit={handleSubmit}>
           <textarea

@@ -84,5 +84,3 @@ async function getOpenaiResponse(req, res, next) {
 }
 
 module.exports = { getOpenaiResponse };
-
-module.exports = { getOpenaiResponse };
