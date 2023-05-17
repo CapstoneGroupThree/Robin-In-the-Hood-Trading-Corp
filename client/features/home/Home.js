@@ -17,7 +17,7 @@ const Home = () => {
   return (
     <div className=" flex flex-col antialiased bg-transparent bg-gradient-to-tr from-slate-800 to-indigo-950 font-body font-medium w-full h-full justify-between overflow-hidden">
       <div className="flex items-center justify-between w-full text-center text-white pl-4 pr-4">
-        <h1 className=" font-medium font-body text-xl">Home</h1>
+        <h1 className=" font-medium font-body text-2xl text-shadow-lg">Home</h1>
         <SearchBar name={displayedName} className="" />
       </div>
       <div className="flex  space-x-4 p-2 pl-4 pr-4 h-screen w-full overflow-hidden   ">

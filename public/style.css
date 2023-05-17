@@ -243,7 +243,8 @@ form div {
 /* Card styling */
 .card {
   padding: 1rem;
-  max-width: 30rem;
+  width: 30rem;
+  max-width: 40rem;
   margin: auto;
 
   border-radius: 0.5rem;
@@ -360,13 +361,13 @@ form div {
 }
 
 .NAV-bg {
-  background-size: 500% 500%;
+  background-size: 400% 400%;
   background-image: linear-gradient(
     135deg,
     rgb(0, 0, 0) 0%,
     rgb(0, 0, 0) 25%,
-    rgb(0, 0, 0) 51%,
-    rgb(255, 255, 255) 100%
+    rgb(1, 35, 54) 51%,
+    rgb(0, 0, 0) 100%
   );
   -webkit-animation: AnimateBG 30s ease infinite;
   animation: AnimateBG 30s ease infinite;

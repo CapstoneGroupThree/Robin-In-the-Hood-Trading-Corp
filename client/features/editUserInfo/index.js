@@ -95,28 +95,29 @@ const EditUserInfo = () => {
   if (!editMode) {
     return (
       <div className=" bg flex justify-center items-center h-screen">
-        <div className=" card p-6 max-w-sm mx-auto bg-gray-600 rounded-xl box-shadow flex items-center space-x-4">
-          <div className="text-center text-white">
-            <div className="text-4xl font-extrabold">User Info</div>
-            <div className="mt-4 flex justify-between">
-              {" "}
-              <span className="text-xl font-bold"> Email Address:</span>{" "}
+        <div className=" card  max-w-sm mx-auto bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 rounded-xl box-shadow flex items-center space-x-4">
+          <div className="  text-center text-white font-body font-thin w-full gap-4">
+            <div className="mb-6 text-4xl font-body font-thin text-sky-500 text-shadow-lg">
+              User Info
+            </div>
+            <div className="mb-4 flex justify-between font-thin text-shadow-lg">
+              <span className="text-xl "> Email Address:</span>
               <span className="text-xl"> {me.email}</span>
             </div>
-            <div className="mt-2 flex justify-between">
-              <span className="text-xl font-bold">First Name:</span>
+            <div className="mb-4 flex justify-between font-thin text-shadow-lg">
+              <span className="text-xl ">First Name:</span>
               <span className="text-xl">{me.first_name}</span>
             </div>
-            <div className="mt-2 flex justify-between">
-              <span className="text-xl font-bold">Last Name:</span>
+            <div className="mb-4 flex justify-between font-thin text-shadow-lg">
+              <span className="text-xl ">Last Name:</span>
               <span className="text-xl">{me.last_name}</span>
             </div>
-            <div className="mt-2 flex justify-between">
-              <span className="text-xl font-bold">Password:</span>
-              <span className="text-xl">********</span>
+            <div className="mb-4 flex justify-between font-thin text-shadow-lg">
+              <span className="text-xl ">Password:</span>
+              <span className="text-xl ">********</span>
             </div>
             <button
-              className=" edit-button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className=" edit-button mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={handleEditModeToggle}
             >
               Edit Profile Information
@@ -129,16 +130,19 @@ const EditUserInfo = () => {
 
   return (
     <div className="  bg flex justify-center items-center h-screen ">
-      <div className=" card p-6 max-w-sm mx-auto bg-slate-700 rounded-xl box-shadow flex items-center space-x-4">
-        <div className="text-center text-white">
-          <div className="text-4xl font-extrabold border-b-2 border-white-400">
+      <div className=" card p-6 max-w-sm mx-auto bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 rounded-xl box-shadow flex items-center space-x-4 ">
+        <div className="  text-center  font-body items-thin ">
+          <div className="text-4xl font-body border-b-2 text-sky-500">
             Edit User Info
           </div>
           <form
-            className="space-y-4 text-gray-600"
+            className="space-y-4 text-gray-600 w-full p-4 flex-col bg-inherit"
             onSubmit={handleProfileSubmit}
           >
-            <label className="block text-xl font-bold" htmlFor="email">
+            <label
+              className="block text-md font-bold text-white"
+              htmlFor="email"
+            >
               Email Address:
             </label>
             <input
@@ -149,22 +153,28 @@ const EditUserInfo = () => {
                 setEmail(e.target.value);
               }}
             />
-            <label className="block text-xl font-bold" htmlFor="firstName">
+            <label
+              className="block text-md font-bold text-white"
+              htmlFor="firstName"
+            >
               First Name:
             </label>
             <input
-              className="block w-full px-4 py-2 rounded-md border-2 border-gray-300"
+              className=" input-field block w-full px-4 py-2 rounded-md border-2 border-gray-300"
               name="firstName"
               value={firstName}
               onChange={(e) => {
                 setFirstName(e.target.value);
               }}
             />
-            <label className="block text-xl font-bold" htmlFor="lastName">
+            <label
+              className="block text-md font-bold text-white"
+              htmlFor="lastName"
+            >
               Last Name:
             </label>
             <input
-              className="block w-full px-4 py-2 rounded-md border-2 border-gray-300"
+              className="input-field block w-full px-4 py-2 rounded-md border-2 border-gray-300"
               name="lastName"
               value={lastName}
               onChange={(e) => {
@@ -187,13 +197,13 @@ const EditUserInfo = () => {
             </button>
           </div>
           {editPasswordMode ? (
-            <div>
+            <div className="">
               <form
-                className="space-y-4 text-gray-600"
+                className="space-y-4 text-gray-600 flex-col"
                 onSubmit={handlePasswordSubmit}
               >
                 <label
-                  className="block text-xl font-bold"
+                  className="block text-md font-bold"
                   htmlFor="oldPassWord"
                 >
                   Previous Password:
@@ -208,7 +218,7 @@ const EditUserInfo = () => {
                   }}
                 />
                 <label
-                  className="block text-xl font-bold"
+                  className="block text-md font-bold"
                   htmlFor="newPassWord"
                 >
                   New Password:
@@ -223,7 +233,7 @@ const EditUserInfo = () => {
                   }}
                 />
                 <label
-                  className="block text-xl font-bold"
+                  className="block text-md font-bold"
                   htmlFor="confirmPassword"
                 >
                   Confirm New Password:
