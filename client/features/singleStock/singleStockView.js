@@ -126,7 +126,7 @@ export default function SingleStockView() {
     const marketOpen =
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
-      (hour > 9 || (hour === 9 && minute >= 30)) &&
+      (hour > 9 || (hour === 9 && minute >= 45)) &&
       hour < 16 &&
       !isHoliday;
     console.log(marketOpen);
@@ -140,7 +140,7 @@ export default function SingleStockView() {
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
       hour >= 0 &&
-      (hour < 9 || (hour === 9 && minute < 30)) &&
+      (hour < 9 || (hour === 9 && minute < 45)) &&
       !isHoliday;
 
     const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
