@@ -522,40 +522,6 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.container {
-  width: 100%;
-}
-
-@media (min-width: 640px) {
-  .container {
-    max-width: 640px;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 768px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    max-width: 1024px;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 1280px;
-  }
-}
-
-@media (min-width: 1536px) {
-  .container {
-    max-width: 1536px;
-  }
-}
-
 .fixed {
   position: fixed;
 }
@@ -1167,10 +1133,6 @@ video {
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
-.to-gray-800 {
-  --tw-gradient-to: #1f2937 var(--tw-gradient-to-position);
-}
-
 .to-gray-900 {
   --tw-gradient-to: #111827 var(--tw-gradient-to-position);
 }
@@ -1654,29 +1616,15 @@ form div {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  width: 100%;
-  background-color: #01116b;
-  opacity: 0.8;
-  background-image: radial-gradient(circle at center center, #0003b1, #4e505c),
-    repeating-radial-gradient(
-      circle at center center,
-      #101020,
-      #141535,
-      11px,
-      transparent 22px,
-      transparent 11px
-    );
-  background-blend-mode: multiply;
+  width: 100vw;
 }
 
 /* Card styling */
 
 .card {
   padding: 1rem;
-  max-width: 20rem;
+  max-width: 30rem;
   margin: auto;
-  background-color: rgba(75, 85, 99, 0.8);
-  /* Slightly transparent dark gray */
   border-radius: 0.5rem;
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
     0 4px 6px -2px rgba(0, 0, 0, 0.05);
@@ -1795,6 +1743,49 @@ form div {
 .box-shadow {
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px,
     rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.NAV-bg {
+  background-size: 500% 500%;
+  background-image: linear-gradient(
+    135deg,
+    rgb(0, 0, 0) 0%,
+    rgb(0, 0, 0) 25%,
+    rgb(0, 0, 0) 51%,
+    rgb(255, 255, 255) 100%
+  );
+  animation: AnimateBG 30s ease infinite;
+}
+
+.bg {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: 300% 300%;
+  background-image: linear-gradient(
+    45deg,
+    #0a0e14 0%,
+    #1e293b 25%,
+    #1e1b4b 51%,
+    #0b0a1b 100%
+  );
+  animation: AnimateBG 20s ease infinite;
+}
+
+@keyframes AnimateBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .hover\:bg-blue-700:hover {
