@@ -9,11 +9,27 @@ const {
  *      match the models, and populates the database.
  */
 async function seed() {
-  await db.sync({ force: false, alter: true });
-  console.log("db synced!");
+  const modelsToKeep = ["ticker", "ticker_name", "user"];
+  const modelNames = Object.keys(db.models);
+  const modelsToDrop = modelNames.filter(
+    (modelName) => !modelsToKeep.includes(modelName)
+  );
 
-  await Ticker.sync({ force: false });
-  await TickerName.sync({ force: false });
+  // Drop and sync only the models not in the modelsToKeep array
+  await Promise.all(
+    modelsToDrop.map((modelName) => {
+      return db.models[modelName].sync({ force: true });
+    })
+  );
+
+  // Sync the models in the modelsToKeep array without dropping
+  await Promise.all(
+    modelsToKeep.map((modelName) => {
+      return db.models[modelName].sync({ force: false });
+    })
+  );
+
+  console.log("db synced!");
 
   let users = [];
   let watchlists = [];
@@ -80,12 +96,22 @@ async function seed() {
     console.log(`seeded ${users.length} users`);
     watchlists = await Promise.all(
       users.map(async ([user]) => {
-        //removed created
-        // if (!created) {
-        //   console.log("User skipped - already exists:", user.toJSON());
-        //   return null;
-        // }
-        return Watchlist.create({ userId: user.id }, { transaction });
+        const [watchlist, created] = await Watchlist.findOrCreate({
+          where: { userId: user.id },
+          defaults: {
+            /* any default values for the watchlist go here */
+          },
+          transaction,
+        });
+
+        if (!created) {
+          console.log(
+            "Watchlist skipped - already exists for user:",
+            user.toJSON()
+          );
+        }
+
+        return watchlist;
       })
     );
 
