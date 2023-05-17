@@ -161,36 +161,37 @@ const Portfolio = () => {
     return getTickerPrice(ticker);
   };
 
-  useEffect(() => {
-    const fetch = async () => {
-      if (portfolio) {
-        console.log(portfolio);
-        const promises = portfolio.map(async (portfolioItem) => {
-          console.log(portfolioItem.stockTicker, portfolioItem.quantity);
-          const tickerInfo = await getStockInfo(portfolioItem.stockTicker);
-          return {
-            ticker: portfolioItem.stockTicker,
-            quantity: portfolioItem.quantity,
-            price: tickerInfo.results[0].c,
-          };
-        });
+  const fetchPortfolioData = async () => {
+    if (portfolio) {
+      console.log(portfolio);
+      const promises = portfolio.map(async (portfolioItem) => {
+        console.log(portfolioItem.stockTicker, portfolioItem.quantity);
+        const tickerInfo = await getStockInfo(portfolioItem.stockTicker);
+        return {
+          ticker: portfolioItem.stockTicker,
+          quantity: portfolioItem.quantity,
+          price: tickerInfo.results[0].c,
+        };
+      });
 
-        const info = await Promise.all(promises);
-        console.log(info);
-        const totalValuation = info.reduce((total, stock) => {
-          const stockValue = stock.quantity * stock.price;
-          return total + stockValue;
-        }, 0);
-        console.log(totalValuation);
-        if (totalValuation !== 0) {
-          //todo
-          dispatch(updatePortfolioValuation({ id: userId, totalValuation }));
-        }
-        setReload(reload + 1);
-        setLoading(false);
+      const info = await Promise.all(promises);
+      console.log(info);
+      const totalValuation = info.reduce((total, stock) => {
+        const stockValue = stock.quantity * stock.price;
+        return total + stockValue;
+      }, 0);
+      console.log(totalValuation);
+      if (totalValuation !== 0) {
+        //todo
+        dispatch(updatePortfolioValuation({ id: userId, totalValuation }));
       }
-    };
-    fetch();
+      setReload(reload + 1);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPortfolioData();
   }, [portfolio]);
 
   if (loading) {
@@ -204,6 +205,9 @@ const Portfolio = () => {
       {console.log("UserId:", userId)}
       <div className="assets h-1/3  border border-gray-400 p-4 rounded bg-gray-100">
         <TotalBalanceChartPage userId={userId} reload={reload} />
+        <button style={{ fontStyle: "italic" }} onClick={fetchPortfolioData}>
+          Refresh Data
+        </button>
       </div>
       {transactions && (
         <table className="w-full table-auto border-collapse border border-purple-500">
