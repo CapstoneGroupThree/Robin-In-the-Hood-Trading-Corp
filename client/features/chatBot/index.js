@@ -39,7 +39,7 @@ const Chatbot = () => {
     const aiMessage = {
       id: generateUniqueId(),
       role: "assistant",
-      content: "AI thinking...",
+      content: "Robin thinking...",
     };
 
     setMessages((oldMessages) => [...oldMessages, userMessage, aiMessage]);
@@ -56,11 +56,11 @@ const Chatbot = () => {
         return currentMessages.map((message) => {
           if (message.id === aiMessage.id) {
             if (message.content.endsWith("...")) {
-              return { ...message, content: "AI thinking." };
+              return { ...message, content: "Robin thinking." };
             } else if (message.content.endsWith("..")) {
-              return { ...message, content: "AI thinking..." };
+              return { ...message, content: "Robin thinking..." };
             } else if (message.content.endsWith(".")) {
-              return { ...message, content: "AI thinking.." };
+              return { ...message, content: "Robin thinking.." };
             }
           }
           return message;
@@ -169,7 +169,7 @@ const Chatbot = () => {
             name="prompt"
             rows="1"
             cols="1"
-            placeholder="Ask AI Chatbot"
+            placeholder="Ask Robin"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={(e) => {
