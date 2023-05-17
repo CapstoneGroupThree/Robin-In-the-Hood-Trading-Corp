@@ -5,6 +5,7 @@ import allStocksReducer from "../features/allStocks/allStocksSlice";
 import singleStockViewSliceReducer from "../features/singleStock/singleStockViewSlice.js";
 import popularStocksViewSliceReducer from "../features/home/popularStockView/popularStockViewSlice";
 import watchlistStocksViewSliceReducer from "../features/home/watchListView/watchListViewSlice";
+import portfolioBuySellSliceReducer from "../features/singleStock/portfolioBuySellSlice";
 import portfolioSliceReducer from "../features/portfolio/portfolioSlice";
 import transactionSliceReducer from "../features/portfolio/transactionSlice";
 
@@ -15,6 +16,7 @@ const store = configureStore({
     singleStockView: singleStockViewSliceReducer,
     popularStocksView: popularStocksViewSliceReducer,
     watchlistStocksView: watchlistStocksViewSliceReducer,
+    portfolioBuySellStock: portfolioBuySellSliceReducer,
     portfolio: portfolioSliceReducer,
     transactions: transactionSliceReducer,
   },

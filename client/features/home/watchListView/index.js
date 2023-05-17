@@ -275,8 +275,8 @@ const WatchListView = () => {
                             </td>
                             <td className="px-4 py-2">{ticker}</td>
                             <td className="px-4 py-2">
-                              {"$" + stockInfo.close.toFixed(2) ||
-                                "$" + stockInfo.preMarket.toFixed(2)}
+                              {"$" + stockInfo.close?.toFixed(2) ||
+                                "$" + stockInfo.preMarket?.toFixed(2)}
                             </td>
                             <td className="px-4 py-2">
                               <button
@@ -364,8 +364,8 @@ const WatchListView = () => {
                             </Link>
                           </div>
                           <div>
-                            {"$" + stockInfo.close.toFixed(2) ||
-                              "$" + stockInfo.preMarket.toFixed(2)}
+                            {"$" + stockInfo.close?.toFixed(2) ||
+                              "$" + stockInfo.preMarket?.toFixed(2)}
                           </div>
                         </div>
                         <ClosePriceChartPage ticker={ticker} />

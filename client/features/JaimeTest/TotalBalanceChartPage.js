@@ -9,10 +9,11 @@ const TotalBalanceChartPage = (props) => {
   const [lastAssets, setLastAssets] = useState(null);
   const [lastBalanceOnly, setLastBalanceOnly] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
-  const { userId } = props;
+  const { userId, reload } = props;
+
   useEffect(() => {
     fetchData();
-  }, [userId]);
+  }, [userId, reload]);
 
   const fetchData = async () => {
     console.log("Fetch userId:", userId);
@@ -53,12 +54,13 @@ const TotalBalanceChartPage = (props) => {
         }}
       >
         {" "}
-        Total Balance: {"$" + lastTotalBalance} (Click to view/hide details)
+        Total Balance: {"$" + lastTotalBalance?.toFixed(2)} (Click to view/hide
+        details)
       </h2>
       {showDetails ? (
         <div>
-          <p>Stock Assets: {"$" + lastAssets}</p>
-          <p>Cash Balance: {"$" + lastBalanceOnly}</p>
+          <p>Stock Assets: {"$" + lastAssets?.toFixed(2)}</p>
+          <p>Cash Balance: {"$" + lastBalanceOnly?.toFixed(2)}</p>
         </div>
       ) : (
         ""

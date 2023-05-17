@@ -286,7 +286,8 @@ const AllStocksView = () => {
                   <td className="px-4 py-2 text-center">
                     $
                     {currentPageNameCapInfo[stock.T]
-                      ? currentPageNameCapInfo[stock.T].price.toFixed(2)
+                      ? currentPageNameCapInfo[stock.T].price?.toFixed(2) ||
+                        " Premarket Price Unavailable"
                       : "loading"}
                   </td>
                   <td className="px-4 py-2 text-center">
