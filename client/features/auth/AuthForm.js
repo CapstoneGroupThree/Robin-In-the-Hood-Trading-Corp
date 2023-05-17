@@ -5,6 +5,7 @@ import { authenticate, setErrorMessage } from "../../app/store";
 import { Link, useNavigate } from "react-router-dom";
 import Login from "./Login";
 import SignUp from "./SignUp";
+import "./authStyle.css";
 
 const AuthForm = ({ name, displayName }) => {
   const { error, setError } = useState("");
@@ -65,7 +66,7 @@ const AuthForm = ({ name, displayName }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="login-page min-h-screen bg-gray-100 flex items-center justify-center">
       {error && <div className="alert alert-danger">{error}</div>}
       <form
         className="text-center bg-gray-600 w-96 h-96 p-10 rounded shadow-md"
