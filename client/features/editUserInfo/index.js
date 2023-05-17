@@ -199,7 +199,7 @@ const EditUserInfo = () => {
           {editPasswordMode ? (
             <div className="">
               <form
-                className="space-y-4 text-gray-600 flex-col"
+                className="space-y-4 text-gray-600 flex-col w-full bg-inherit"
                 onSubmit={handlePasswordSubmit}
               >
                 <label
