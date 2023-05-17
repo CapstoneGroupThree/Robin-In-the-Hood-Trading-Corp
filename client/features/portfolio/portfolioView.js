@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Profiler } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchSinglePortfolio, selectSinglePortfolio } from "./portfolioSlice";
+import {
+  fetchSinglePortfolio,
+  selectSinglePortfolio,
+  updatePortfolioValuation,
+} from "./portfolioSlice";
 import { fetchTransactions, selectTransactions } from "./transactionSlice";
 import { Link } from "react-router-dom";
 import TotalBalanceChartPage from "../JaimeTest/TotalBalanceChartPage";
@@ -14,6 +18,7 @@ const Portfolio = () => {
   const portfolio = useSelector(selectSinglePortfolio);
   const transactions = useSelector(selectTransactions);
   const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(0);
 
   useEffect(() => {
     async function getPortfolioAndTransactions() {
@@ -61,7 +66,7 @@ const Portfolio = () => {
 
     const holidays = await fetchHolidays();
     //! UNCHANGE THIS BEFORE MAKING PULL REQUEST
-    const estOffset = -10 * 60; // Eastern Time is UTC-5
+    const estOffset = -4 * 60; // Eastern Time is UTC-5
     //! UNCHANGE THE ABOVE OFFSET
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
@@ -160,17 +165,28 @@ const Portfolio = () => {
     const fetch = async () => {
       if (portfolio) {
         console.log(portfolio);
-        const promises = portfolio.map((portfolioItem) => {
-          console.log(portfolioItem.stockTicker);
-          return getStockInfo(portfolioItem.stockTicker);
+        const promises = portfolio.map(async (portfolioItem) => {
+          console.log(portfolioItem.stockTicker, portfolioItem.quantity);
+          const tickerInfo = await getStockInfo(portfolioItem.stockTicker);
+          return {
+            ticker: portfolioItem.stockTicker,
+            quantity: portfolioItem.quantity,
+            price: tickerInfo.results[0].c,
+          };
         });
 
         const info = await Promise.all(promises);
         console.log(info);
-        const parsedInfo = info.map((tickerInfo) => {
-          return { [tickerInfo.ticker]: tickerInfo.results[0].c };
-        });
-        console.log(parsedInfo);
+        const totalValuation = info.reduce((total, stock) => {
+          const stockValue = stock.quantity * stock.price;
+          return total + stockValue;
+        }, 0);
+        console.log(totalValuation);
+        if (totalValuation !== 0) {
+          //todo
+          dispatch(updatePortfolioValuation({ id: userId, totalValuation }));
+        }
+        setReload(reload + 1);
         setLoading(false);
       }
     };
@@ -187,7 +203,7 @@ const Portfolio = () => {
       <h1 className="px-4 py-2 text-center">Your Portfolio</h1>
       {console.log("UserId:", userId)}
       <div className="assets h-1/3  border border-gray-400 p-4 rounded bg-gray-100">
-        <TotalBalanceChartPage userId={userId} />
+        <TotalBalanceChartPage userId={userId} reload={reload} />
       </div>
       {transactions && (
         <table className="w-full table-auto border-collapse border border-purple-500">
