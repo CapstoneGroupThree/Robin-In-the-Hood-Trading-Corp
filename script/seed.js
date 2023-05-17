@@ -96,12 +96,22 @@ async function seed() {
     console.log(`seeded ${users.length} users`);
     watchlists = await Promise.all(
       users.map(async ([user]) => {
-        // deleted create
-        // if (!created) {
-        //   console.log("User skipped - already exists:", user.toJSON());
-        //   return null;
-        // }
-        return Watchlist.create({ userId: user.id }, { transaction });
+        const [watchlist, created] = await Watchlist.findOrCreate({
+          where: { userId: user.id },
+          defaults: {
+            /* any default values for the watchlist go here */
+          },
+          transaction,
+        });
+
+        if (!created) {
+          console.log(
+            "Watchlist skipped - already exists for user:",
+            user.toJSON()
+          );
+        }
+
+        return watchlist;
       })
     );
 
