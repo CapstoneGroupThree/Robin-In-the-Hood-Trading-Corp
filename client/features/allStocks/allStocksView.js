@@ -96,7 +96,7 @@ const AllStocksView = () => {
     const marketOpen =
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
-      (hour > 9 || (hour === 9 && minute >= 30)) &&
+      (hour > 9 || (hour === 9 && minute >= 50)) &&
       hour < 16 &&
       !isHoliday;
     console.log(marketOpen);
@@ -105,7 +105,7 @@ const AllStocksView = () => {
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
       hour >= 0 &&
-      (hour < 9 || (hour === 9 && minute < 30)) &&
+      (hour < 9 || (hour === 9 && minute < 50)) &&
       !isHoliday;
 
     const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
@@ -286,7 +286,8 @@ const AllStocksView = () => {
                   <td className="px-4 py-2 text-center">
                     $
                     {currentPageNameCapInfo[stock.T]
-                      ? currentPageNameCapInfo[stock.T].price.toFixed(2)
+                      ? currentPageNameCapInfo[stock.T].price?.toFixed(2) ||
+                        " Premarket Price Unavailable"
                       : "loading"}
                   </td>
                   <td className="px-4 py-2 text-center">

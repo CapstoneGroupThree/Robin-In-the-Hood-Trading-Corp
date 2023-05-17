@@ -88,7 +88,7 @@ const WatchListView = () => {
     const marketOpen =
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
-      (hour > 9 || (hour === 9 && minute >= 30)) &&
+      (hour > 9 || (hour === 9 && minute >= 50)) &&
       hour < 16 &&
       !isHoliday;
     console.log(marketOpen);
@@ -97,7 +97,7 @@ const WatchListView = () => {
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
       hour >= 0 &&
-      (hour < 9 || (hour === 9 && minute < 30)) &&
+      (hour < 9 || (hour === 9 && minute < 50)) &&
       !isHoliday;
 
     const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
@@ -275,8 +275,8 @@ const WatchListView = () => {
                             </td>
                             <td className="px-4 py-2">{ticker}</td>
                             <td className="px-4 py-2">
-                              {"$" + stockInfo.close.toFixed(2) ||
-                                "$" + stockInfo.preMarket.toFixed(2)}
+                              {"$" + stockInfo.close?.toFixed(2) ||
+                                "$" + stockInfo.preMarket?.toFixed(2)}
                             </td>
                             <td className="px-4 py-2">
                               <button
@@ -364,8 +364,8 @@ const WatchListView = () => {
                             </Link>
                           </div>
                           <div>
-                            {"$" + stockInfo.close.toFixed(2) ||
-                              "$" + stockInfo.preMarket.toFixed(2)}
+                            {"$" + stockInfo.close?.toFixed(2) ||
+                              "$" + stockInfo.preMarket?.toFixed(2)}
                           </div>
                         </div>
                         <ClosePriceChartPage ticker={ticker} />
