@@ -342,7 +342,7 @@ const WatchListView = () => {
               </tbody>
             </table> */}
             <div
-              style={{ width: "550px", height: "375px", overflow: "hidden" }}
+              style={{ width: "725px", height: "375px", overflow: "hidden" }}
             >
               <Slider
                 infinite={true}

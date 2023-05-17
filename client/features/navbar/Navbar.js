@@ -13,13 +13,15 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex flex-col max-h-screen items-center font-body text-white font-semibold">
-      <div className="flex items-center border-b-2 w-full border-sky-800 pb-4">
+    <div className="flex flex-col max-h-screen items-center w-full font-body text-white font-normal ">
+      <div className="flex items-center border-b-4 w-full border-sky-500 border-opacity-20 pb-4">
         <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
 
-        <h1 className="ml-4">Robin In the Hood {"(RITH)"}</h1>
+        <h1 className="ml-4 font-body text-xl text-shadow-lg">
+          Robin In the Hood {"(RITH)"}
+        </h1>
       </div>
-      <nav className="w-full text-lg ">
+      <nav className="w-full text-xl text-shadow-lg ">
         {isLoggedIn ? (
           <div className="flex flex-col items-center place-content-evenly ">
             {/* The navbar will show these links after you log in */}
@@ -37,7 +39,7 @@ const Navbar = () => {
               Edit User Profile
             </Link>
 
-            <hr className=" w-52 fixed bottom-8  border-t-2 border-sky-800 pb-4 " />
+            <hr className=" w-56 fixed bottom-8  border-t-4 border-sky-500 border-opacity-20 pb-4 " />
             <div className="fixed bottom-0 pb-4">
               <button
                 type="button"

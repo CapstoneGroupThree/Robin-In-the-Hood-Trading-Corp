@@ -249,7 +249,16 @@ export default function SingleStockView() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
-        <div className="animate-spin rounded-full h-64 w-64 border-t-8 border-b-8  border-purple-500"></div>
+        <div class="lds-roller">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
     );
   }
@@ -276,13 +285,13 @@ export default function SingleStockView() {
   // ! uses clearbit Logo API to get logos
   //! potentially might break during weekdays based on different api calls
   return (
-    <div className="font-semibold flex flex-col p-4 h-screen justify-between max-h-screen bg-gradient-to-t from-slate-800 to-slate-900 text-white overflow-hidden">
+    <div className="font-semibold flex flex-col pt-1 pl-4 pr-4 pb-4 h-screen justify-between max-h-screen singleStock-bg text-white overflow-hidden">
       {console.log("singleStockInfoOpenCLose", singleStockInfo.openClose)}
       {console.log(tickerInfo)}
       {console.log(tickerPriceInfo)}
 
       {/* Header */}
-      <div className="flex justify-between  items-center mb-2 ">
+      <div className="flex  items-center mb-2 ">
         <div className="flex items-center">
           <div className="w-10 h-10 overflow-visible rounded-md mr-4 ">
             <img

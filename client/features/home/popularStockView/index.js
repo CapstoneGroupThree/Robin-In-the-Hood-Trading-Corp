@@ -23,41 +23,41 @@ const PopularStocksHomeView = () => {
     "AAPL",
     "BAC",
     "GE",
-    "GS",
-    "JNJ",
-    "JPM",
-    "MCD",
-    "MSFT",
-    "NFLX",
-    "NVDA",
-    "PFE",
-    "PG",
-    "TSLA",
-    "KO",
-    "DIS",
-    "V",
-    "BABA",
-    "AMD",
-    "CSCO",
-    "XOM",
-    "F",
-    "INTC",
-    "NKE",
-    "PYPL",
-    "ADBE",
-    "GOOG",
-    "AXP",
-    "T",
-    "BA",
-    "CVX",
-    "DAL",
-    "GM",
-    "IBM",
-    "MA",
-    "MRK",
-    "PEP",
-    "VZ",
-    "WMT",
+    // "GS",
+    // "JNJ",
+    // "JPM",
+    // "MCD",
+    // "MSFT",
+    // "NFLX",
+    // "NVDA",
+    // "PFE",
+    // "PG",
+    // "TSLA",
+    // "KO",
+    // "DIS",
+    // "V",
+    // "BABA",
+    // "AMD",
+    // "CSCO",
+    // "XOM",
+    // "F",
+    // "INTC",
+    // "NKE",
+    // "PYPL",
+    // "ADBE",
+    // "GOOG",
+    // "AXP",
+    // "T",
+    // "BA",
+    // "CVX",
+    // "DAL",
+    // "GM",
+    // "IBM",
+    // "MA",
+    // "MRK",
+    // "PEP",
+    // "VZ",
+    // "WMT",
   ];
 
   //! used nager date api to get public holidays
@@ -259,7 +259,20 @@ const PopularStocksHomeView = () => {
   }, [popularStocks]);
 
   if (isLoading) {
-    return <div>Yeah its loading woooooooo nice graphics here please</div>;
+    return (
+      <div className="flex items-center justify-center min-h-full bg-gradient-to-t from-slate-800 to-slate-900">
+        <div class="lds-roller">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
   }
   const page = "popular";
   return (
@@ -268,7 +281,7 @@ const PopularStocksHomeView = () => {
         const trimmedName = trimName(stockInfo.name);
         return (
           <div key={ticker} className=" popularStocks  h-full flex flex-col ">
-            <div className="stock shadow-slate-900 w-full h-full flex flex-col space-y-2 rounded-lg shadow-lg p-4 pb-2 border-2 border-indigo-950 bg-gradient-to-bl from-slate-950 to-indigo-950">
+            <div className="stock shadow-slate-900 w-full h-full flex flex-col space-y-2 rounded-lg shadow-lg text-shadow-default p-4 pb-2 border-2 border-indigo-950 bg-gradient-to-bl from-slate-950 to-indigo-950">
               <Link
                 to={`/singleStock/${ticker}`}
                 className="text-sky-600 hover:text-sky-900 font-semibold font-body"
@@ -276,10 +289,10 @@ const PopularStocksHomeView = () => {
                 <h2> {trimmedName}</h2>
               </Link>
 
-              <div className="flex justify-between ">
+              <div className="flex justify-between font-body font-medium">
                 <div>
                   <p className="text-gray-500 text-sm">Ticker: {ticker}</p>
-                  <p className="text-gray-500 text-sm">
+                  <p className="text-sky-700 text-sm ">
                     Price:{" "}
                     {"$" + stockInfo.close.toFixed(2) ||
                       "$" + stockInfo.preMarket.toFixed(2)}
