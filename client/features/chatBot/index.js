@@ -159,29 +159,35 @@ const Chatbot = ({ ticker }) => {
 
     if (response.ok) {
       const data = await response.json();
-      console.log(data.assistant);
+      console.log(data);
+      const parsedData = data.assistant;
+      console.log(parsedData);
 
-      // Update the thinking message with the AI's response
-      let index = 0;
-      const interval = setInterval(() => {
-        if (index < data.assistant.length - 1) {
-          setMessages((currentMessages) => {
-            const updatedMessages = currentMessages.map((message) =>
-              message.id === aiThinkingMessage.id
-                ? {
-                    ...message,
-                    content: message.content + data.assistant[index],
-                  }
-                : message
-            );
-            console.log(updatedMessages);
-            return updatedMessages;
-          });
-          index++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 10);
+      if (parsedData) {
+        let index = -1;
+        const interval = setInterval(() => {
+          if (index < parsedData.length - 1) {
+            setMessages((currentMessages) => {
+              const updatedMessages = currentMessages.map((message) =>
+                message.id === aiThinkingMessage.id
+                  ? {
+                      ...message,
+                      content:
+                        index === 0
+                          ? parsedData[index]
+                          : message.content + parsedData[index],
+                    }
+                  : message
+              );
+              console.log(updatedMessages);
+              return updatedMessages;
+            });
+            index++;
+          } else {
+            clearInterval(interval);
+          }
+        }, 10);
+      }
     }
   };
 
