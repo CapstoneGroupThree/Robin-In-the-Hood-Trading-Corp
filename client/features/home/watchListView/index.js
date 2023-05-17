@@ -88,7 +88,7 @@ const WatchListView = () => {
     const marketOpen =
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
-      (hour > 9 || (hour === 9 && minute >= 45)) &&
+      (hour > 9 || (hour === 9 && minute >= 50)) &&
       hour < 16 &&
       !isHoliday;
     console.log(marketOpen);
@@ -97,7 +97,7 @@ const WatchListView = () => {
       dayOfWeek >= 1 &&
       dayOfWeek <= 5 &&
       hour >= 0 &&
-      (hour < 9 || (hour === 9 && minute < 45)) &&
+      (hour < 9 || (hour === 9 && minute < 50)) &&
       !isHoliday;
 
     const getMostRecentTradingDay = (date, marketOpen, isPreMarket) => {
