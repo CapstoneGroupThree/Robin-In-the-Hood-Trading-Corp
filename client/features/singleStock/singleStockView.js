@@ -220,24 +220,30 @@ export default function SingleStockView() {
     }
     return name;
   };
+
+  const fetchInfoToRender = async () => {
+    const info = await dispatch(fetchSingleStockInfo({ ticker }));
+    const news = await dispatch(fetchSingleStockNews({ ticker }));
+
+    // await console.log(info.payload);
+    // await console.log(news.payload);
+    // await console.log(priceInfo);
+    setTickerInfo(info.payload);
+    setTickerNews(news.payload.results);
+    setIsLoading(false);
+
+    // console.log(tickerInfo);
+    // console.log(tickerNews);
+  };
+
+  const fetchPriceInfoToRender = async () => {
+    const priceInfo = await getStockInfo(ticker);
+    setTickerPriceInfo(priceInfo);
+  };
+
   useEffect(() => {
-    const fetchInfoToRender = async () => {
-      const priceInfo = await getStockInfo(ticker);
-      const info = await dispatch(fetchSingleStockInfo({ ticker }));
-      const news = await dispatch(fetchSingleStockNews({ ticker }));
-
-      // await console.log(info.payload);
-      // await console.log(news.payload);
-      // await console.log(priceInfo);
-      setTickerInfo(info.payload);
-      setTickerNews(news.payload.results);
-      setTickerPriceInfo(priceInfo);
-
-      // console.log(tickerInfo);
-      // console.log(tickerNews);
-      setIsLoading(false);
-    };
     fetchInfoToRender();
+    fetchPriceInfoToRender();
   }, [dispatch]);
 
   if (isLoading) {
@@ -325,7 +331,10 @@ export default function SingleStockView() {
                 className="chart-button"
                 onClick={() => setCurrentChart("closePrice")}
               >
-                2-Hour Price Chart
+                2-Hour Price Chart (Delayed)
+              </button>
+              <button className="chart-button" onClick={fetchPriceInfoToRender}>
+                Refresh Price Data
               </button>
             </div>
           </div>
