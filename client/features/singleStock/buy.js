@@ -18,6 +18,7 @@ const Buy = (props) => {
   const [userPortfolio, setUserPortfolio] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
   const [reload, setReload] = useState(0);
+  const [marketOpen, setMarketOpen] = useState(false);
 
   const fetchHolidays = async () => {
     try {
@@ -80,6 +81,11 @@ const Buy = (props) => {
       hour < 16 &&
       !isHoliday;
     console.log(marketOpen);
+    if (marketOpen === true) {
+      setMarketOpen(true);
+    } else {
+      setMarketOpen(false);
+    }
 
     const isPreMarket =
       dayOfWeek >= 1 &&
@@ -218,7 +224,14 @@ const Buy = (props) => {
       {console.log(userBalance, userPortfolio)}
       <button
         className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => setShowPopup(true)}
+        onClick={() => {
+          console.log(marketOpen);
+          if (marketOpen) {
+            setShowPopup(true);
+          } else {
+            alert("Buy feature is not available outside trading hours.");
+          }
+        }}
       >
         Buy
       </button>
