@@ -495,7 +495,8 @@ export default function SingleStockView() {
           alt="your AI chat assistant"
           className="w-20 h-20"
         ></img> */}
-        <Chatbot />
+        {console.log(ticker)}
+        <Chatbot ticker={ticker} />
       </div>
     </div>
   );

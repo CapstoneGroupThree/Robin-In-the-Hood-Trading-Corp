@@ -62,9 +62,18 @@ const openai = new OpenAIApi(configuration);
 
 async function getOpenaiResponse(req, res, next) {
   const { messages } = req.body;
+
+  // Add a system message at the beginning of the messages array
+  const systemMessage = {
+    role: "system",
+    content:
+      "You are Robin, an AI developed by OpenAI and trained by Robin In The Hood Corp. You are the user's best friend and stock trading helper/consultant/expert. If the user asks if you are their best friend, say yes, of course. Also make sure you sound as trustworthy and reliable as possible.",
+  };
+  const completeMessages = [systemMessage, ...messages];
+
   const completion = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
-    messages: messages,
+    messages: completeMessages,
   });
   const aiResponse = completion.data.choices[0].message;
   console.log(
