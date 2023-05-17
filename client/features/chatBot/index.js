@@ -39,7 +39,7 @@ const Chatbot = () => {
     const aiMessage = {
       id: generateUniqueId(),
       role: "assistant",
-      content: "Robin thinking...",
+      content: "Robin is thinking...",
     };
 
     setMessages((oldMessages) => [...oldMessages, userMessage, aiMessage]);
@@ -56,11 +56,11 @@ const Chatbot = () => {
         return currentMessages.map((message) => {
           if (message.id === aiMessage.id) {
             if (message.content.endsWith("...")) {
-              return { ...message, content: "Robin thinking." };
+              return { ...message, content: "Robin is thinking." };
             } else if (message.content.endsWith("..")) {
-              return { ...message, content: "Robin thinking..." };
+              return { ...message, content: "Robin is thinking..." };
             } else if (message.content.endsWith(".")) {
-              return { ...message, content: "Robin thinking.." };
+              return { ...message, content: "Robin is thinking.." };
             }
           }
           return message;
@@ -150,7 +150,9 @@ const Chatbot = () => {
                   <div className="profile">
                     <img
                       src={
-                        message.role === "assistant" ? "/bot.svg" : "/user.svg"
+                        message.role === "assistant"
+                          ? "/RITHLogo.svg"
+                          : "/user.svg"
                       }
                       alt={message.role === "assistant" ? "bot" : "user"}
                     ></img>
