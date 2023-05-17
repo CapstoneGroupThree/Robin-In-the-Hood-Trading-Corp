@@ -235,13 +235,22 @@ const AllStocksView = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
-        <div className="animate-spin rounded-full h-64 w-64 border-t-8 border-b-8  border-purple-500"></div>
+        <div class="lds-roller">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className=" flex flex-col font-medium antialiased font-body h-screen w-full p-2 bg-gradient-to-t from-slate-800 to-indigo-950 ">
+    <div className=" flex flex-col font-medium antialiased font-body h-screen w-full p-2 allStock-bg ">
       <div className="flex w-full justify-between text-white items-center pb-2 pl-4 pr-4 ">
         <h1 className=" whitespace-nowrap font-medium font-body text-lg">
           All Stocks

@@ -129,8 +129,8 @@ const EditUserInfo = () => {
   }
 
   return (
-    <div className="  bg flex justify-center items-center h-screen ">
-      <div className=" card p-6 max-w-sm mx-auto bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 rounded-xl box-shadow flex items-center space-x-4 ">
+    <div className="  bg flex justify-center items-center min-h-screen ">
+      <div className=" card p-6 max-w-sm mx-auto bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 rounded-xl box-shadow flex justify-around items-center space-x-4 ">
         <div className="  text-center  font-body items-thin ">
           <div className="text-4xl font-body border-b-2 text-sky-500">
             Edit User Info
@@ -255,9 +255,7 @@ const EditUserInfo = () => {
                 </button>
               </form>
             </div>
-          ) : (
-            ""
-          )}
+          ) : null}
         </div>
       </div>
     </div>

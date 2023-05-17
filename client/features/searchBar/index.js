@@ -14,7 +14,7 @@ const SearchBar = (props) => {
   };
   //todo tier2 feature
   return (
-    <div className=" w-full flex justify-end  ">
+    <div className=" w-full flex justify-end  pl-44  ">
       <form
         className="searchBar flex  bg-transparent place-content-end space-x-4"
         onSubmit={handleSubmit}
