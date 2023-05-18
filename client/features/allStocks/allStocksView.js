@@ -234,7 +234,7 @@ const AllStocksView = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-slate-950 via-slate-800 to-slate-950">
         <div class="lds-roller">
           <div></div>
           <div></div>
@@ -257,6 +257,24 @@ const AllStocksView = () => {
         </h1>
         <SearchBar className="" />
       </div>
+
+      {/* ticker tape */}
+      <div className="ticker-wrap mb-2">
+        <div className="ticker">
+          {currentPageInfo.map((stock) => {
+            const change = changePercentageFunc(stock.o, stock.c);
+            const changeClass =
+              change >= 0 ? "ticker__item--positive" : "ticker__item--negative";
+
+            return (
+              <div className={`ticker__item ${changeClass}`} key={stock.T}>
+                {stock.T}: {change}%
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {console.log(currentPageNameCapInfo)}
 
       {Object.keys(allStocks).length === 0 && <div>Loading stocks...</div>}
@@ -329,7 +347,8 @@ const AllStocksView = () => {
           <button
             value="prev"
             onClick={handlePageChange}
-            className="mr-2 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700"
+            class="AS-button"
+            role="button"
           >
             Prev
           </button>
@@ -340,7 +359,8 @@ const AllStocksView = () => {
         <button
           value="next"
           onClick={handlePageChange}
-          className="bg-sky-950 text-white px-4 py-2 rounded hover:bg-purple-700"
+          class="AS-button"
+          role="button"
         >
           Next
         </button>

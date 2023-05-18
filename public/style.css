@@ -361,12 +361,13 @@ form div {
 }
 
 .NAV-bg {
-  background-size: 400% 400%;
+  background-size: 300% 300%;
   background-image: linear-gradient(
     135deg,
     rgb(0, 0, 0) 0%,
-    rgb(0, 0, 0) 25%,
-    rgb(1, 35, 54) 51%,
+    rgb(0, 0, 0) 20%,
+    rgb(1, 47, 73) 51%,
+    rgb(0, 0, 0) 81%,
     rgb(0, 0, 0) 100%
   );
   -webkit-animation: AnimateBG 30s ease infinite;
@@ -551,3 +552,129 @@ form div {
     transform: rotate(360deg);
   }
 }
+
+/* all-Stock styling */
+
+.AS-button {
+  appearance: none;
+  background-color: #005cd4;
+  border: 2px solid #1a1a1a;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #e4e4e4;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  min-height: 60px;
+  min-width: 0;
+  outline: none;
+  padding: 16px 24px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 6rem;
+  will-change: transform;
+}
+
+.AS-button:disabled {
+  pointer-events: none;
+}
+
+.AS-button:hover {
+  color: #fff;
+  background-color: #1a1a1a;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.AS-button:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@-webkit-keyframes ticker {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+@keyframes ticker {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+    visibility: visible;
+  }
+
+  100% {
+    -webkit-transform: translate3d(-100%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.ticker-wrap {
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+  height: 4rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding-left: 100%;
+  box-sizing: content-box;
+
+  .ticker {
+    display: inline-block;
+    height: 4rem;
+    color: white;
+    width: 100%;
+    line-height: 4rem;
+    white-space: nowrap;
+    padding-right: 100%;
+    box-sizing: content-box;
+
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-name: ticker;
+    animation-name: ticker;
+    -webkit-animation-duration: 30s;
+    animation-duration: 30s;
+
+    .ticker__item {
+      display: inline-block;
+
+      padding: 0 2rem;
+      font-size: 2rem;
+      color: white;
+    }
+    .ticker__item--positive {
+      color: green;
+      text-shadow: 0 0 10px green;
+    }
+
+    .ticker__item--negative {
+      color: red;
+      text-shadow: 0 0 10px red;
+    }
+  }
+}
+
+/* all-Stock styling */
