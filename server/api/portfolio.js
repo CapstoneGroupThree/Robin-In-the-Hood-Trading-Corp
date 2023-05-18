@@ -93,6 +93,13 @@ app.post("/transaction", async (req, res) => {
     }
     //if the user can afford proceed
     if (portfolioEntry) {
+      console.log(portfolioEntry);
+      //calculate average purchase price
+      portfolioEntry.purchasePrice =
+        (portfolioEntry.quantity * portfolioEntry.purchasePrice +
+          purchasePrice * quantity) /
+        (portfolioEntry.quantity + quantity);
+      console.log(portfolioEntry.purchasePrice);
       portfolioEntry.quantity += quantity;
       await portfolioEntry.save();
     } else {

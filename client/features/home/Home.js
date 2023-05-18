@@ -230,7 +230,7 @@ const Home = () => {
           {/* <div className=" assets gradient-home h-1/3 text-white border border-indigo-950 border-opacity-20 p-4 rounded bg-gradient-to-tr from-slate-800 to-slate-900 shadow-md shadow-slate-900 "> */}
           <div className="assets h-2/5 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-800 to-gray-900 box-shadow">
             <button
-              style={{ fontStyle: "italic" }}
+              className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={fetchPortfolioData}
             >
               Refresh Data

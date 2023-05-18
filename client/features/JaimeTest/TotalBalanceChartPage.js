@@ -14,7 +14,7 @@ const TotalBalanceChartPage = (props) => {
 
   useEffect(() => {
     fetchData();
-  }, [userId, reload]);
+  }, [reload]);
 
   const fetchData = async () => {
     console.log("Fetch userId:", userId);
