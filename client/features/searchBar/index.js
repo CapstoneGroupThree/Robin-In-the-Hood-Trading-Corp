@@ -116,12 +116,9 @@ const SearchBar = (props) => {
         ></input>
         {/*On submit we navigate the user to the stock tickers page*/}
         {/* <Link to={`/singleStock/${query}`}> */}
-        <button
-          type="submit"
-          className="px-3 py-2 bg-slate-700 text-white rounded-3xl  focus:outline-none focus:ring-2"
-        >
+        <div className="px-3 py-2 bg-slate-700 text-white rounded-3xl  focus:outline-none focus:ring-2">
           <i className="fas fa-search"></i>
-        </button>
+        </div>
 
         {/* </Link> */}
         {/* <span className="notificationBell mr-2">
