@@ -12,7 +12,7 @@ export default function Login() {
         />
         <label
           htmlFor="floatingInput"
-          className="block text-gray-700 text-sm font-bold mb-2"
+          className="block text-gray-700 font-semibold mb-2"
         >
           Email address
         </label>
@@ -27,7 +27,7 @@ export default function Login() {
         />
         <label
           htmlFor="floatingPassword"
-          className="block text-gray-700 text-sm font-bold mb-2"
+          className="block text-gray-700 font-semibold mb-2"
         >
           Password
         </label>

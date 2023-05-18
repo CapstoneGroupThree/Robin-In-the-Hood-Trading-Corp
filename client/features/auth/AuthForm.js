@@ -53,23 +53,25 @@ const AuthForm = ({ name, displayName }) => {
     if (name === "login") {
       return (
         <p className="text-secondary">
-          Don't have an {<Link to="/signup">account</Link>}?
+          Don't have an account? {<Link to="/signup">Sign Up</Link>}?
         </p>
       );
     } else {
       return (
         <p className="text-secondary">
-          Already have an {<Link to="/login">account</Link>}?
+          Already have an account? {<Link to="/login">Log In</Link>}?
         </p>
       );
     }
   };
 
   return (
-    <div className="login-page min-h-screen bg-gray-100 flex items-center justify-center">
+    //Changed bg-gray-700 on div and form to bg-transparent
+    <div className="login-page min-h-screen bg-transparent flex items-center justify-center">
       {error && <div className="alert alert-danger">{error}</div>}
       <form
-        className="text-center bg-gray-600 w-96 h-96 p-10 rounded shadow-md"
+        /* took out shadow-md from className */
+        className="text-center flex flex-col bg-transparent w-96 h-96 p-10 rounded "
         onSubmit={handleSubmit}
         name={name}
       >
