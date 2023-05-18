@@ -33,8 +33,21 @@ router.get("/:symbol", async (req, res) => {
         symbol: {
           [Op.startsWith]: symbol,
         },
+        "$ticker_name.name$": {
+          [Op.ne]: null,
+        },
       },
-      include: [TickerName],
+      include: [
+        {
+          model: TickerName,
+          where: {
+            name: {
+              [Op.ne]: null,
+            },
+          },
+          required: true,
+        },
+      ],
       limit: 5,
     });
 

@@ -1,0 +1,28 @@
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 639px;
+  z-index: 999;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  right: 1px;
+  list-style: none;
+  width: 35%;
+  max-height: 200px;
+  overflow-y: auto;
+  color: black;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}

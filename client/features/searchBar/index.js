@@ -1,18 +1,73 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { fetchSearchResults, selectSearchResults } from "./searchSlice";
+import "./search.css";
 
 const SearchBar = (props) => {
   const [query, setQuery] = useState("");
+  const [queryResults, setQueryResults] = useState([]);
+  const dispatch = useDispatch();
+  const [error, setError] = useState(null);
   const { name } = props;
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setQuery("");
   };
-  const handleInputChange = (event) => {
-    setQuery(event.target.value);
+
+  const searchResults = useSelector(selectSearchResults);
+  // console.log(searchResults);
+
+  useEffect(() => {
+    if (searchResults.status === "failed") {
+      console.error(searchResults.error);
+      setQueryResults([]);
+      setError("No Corresponding Ticker Info Was Found");
+    } else if (searchResults.status === "succeeded") {
+      console.log(searchResults.data);
+      setQueryResults(searchResults.data);
+      setError(null);
+    }
+  }, [searchResults]);
+
+  const handleInputChange = async (event) => {
+    const queryInput = event.target.value.toUpperCase();
+    setQuery(queryInput);
+    // console.log(queryInput);
+    dispatch(fetchSearchResults({ symbol: queryInput }));
   };
-  //todo tier2 feature
+
+  const renderDropdown = () => {
+    if (error) {
+      return (
+        <ul className="dropdown-menu">
+          <li className="dropdown-item">{error}</li>
+        </ul>
+      );
+    }
+
+    if (Array.isArray(queryResults) && queryResults.length > 0) {
+      return (
+        <ul className="dropdown-menu">
+          {queryResults.map((result) => (
+            <li key={result.id} className="dropdown-item">
+              <Link to={`/singleStock/${result.symbol}`}>
+                {console.log(result)}
+                <span>{result.symbol + " : "}</span>
+                {result.ticker_name && result.ticker_name.name.length > 40
+                  ? `${result.ticker_name.name.substring(0, 40)}...`
+                  : result.ticker_name && result.ticker_name.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    return null;
+  };
+
+  //todo we can check the backend during the query to see if it is a legit ~~~
   return (
     <div className=" w-full flex justify-end  pl-44  ">
       <form
@@ -28,14 +83,15 @@ const SearchBar = (props) => {
           className=" w-2/6 py-2 px-3 text-black rounded-md border-2 border-sky-800 shadow-sm focus:outline-none focus:ring-2"
         ></input>
         {/*On submit we navigate the user to the stock tickers page*/}
-        <Link to={`/singleStock/${query}`}>
-          <button
-            type="submit"
-            className="px-3 py-2 bg-slate-700 text-white rounded-3xl  focus:outline-none focus:ring-2"
-          >
-            <i className="fas fa-search"></i>
-          </button>
-        </Link>
+        {/* <Link to={`/singleStock/${query}`}> */}
+        <button
+          type="submit"
+          className="px-3 py-2 bg-slate-700 text-white rounded-3xl  focus:outline-none focus:ring-2"
+        >
+          <i className="fas fa-search"></i>
+        </button>
+
+        {/* </Link> */}
         {/* <span className="notificationBell mr-2">
           <img
             src="/notificationBell.png"
@@ -53,6 +109,7 @@ const SearchBar = (props) => {
             <span className=" text-white font-body ">{name}</span>
           </span>
         </Link>
+        <div>{renderDropdown()}</div>
       </form>
     </div>
   );
