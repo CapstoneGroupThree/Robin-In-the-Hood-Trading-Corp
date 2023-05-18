@@ -372,9 +372,11 @@ export default function SingleStockView() {
             <div>
               <strong>
                 Premarket:{" $"}
-                {tickerPriceInfo?.preMarket ??
-                  tickerPriceInfo?.open ??
-                  singleStockInfo?.openClose?.open}
+                {formatNumber(
+                  tickerPriceInfo?.preMarket ??
+                    tickerPriceInfo?.open ??
+                    singleStockInfo?.openClose?.open
+                )}
               </strong>
             </div>
             <div>

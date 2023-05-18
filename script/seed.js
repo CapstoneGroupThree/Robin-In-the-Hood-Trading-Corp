@@ -14,11 +14,11 @@ async function seed() {
   const modelsToDrop = modelNames.filter(
     (modelName) => !modelsToKeep.includes(modelName)
   );
-
+  // ! change this force to true to drop all tables that aren't in models to keep array, we can keep at false to keep our trading history"
   // Drop and sync only the models not in the modelsToKeep array
   await Promise.all(
     modelsToDrop.map((modelName) => {
-      return db.models[modelName].sync({ force: true });
+      return db.models[modelName].sync({ force: false });
     })
   );
 
