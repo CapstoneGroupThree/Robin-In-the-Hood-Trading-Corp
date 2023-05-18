@@ -52,7 +52,7 @@ export default function SingleStockView() {
 
   useEffect(() => {
     const fetchInfoToRender = async () => {
-      const priceInfo = await getStockInfo(ticker);
+      // const priceInfo = await getStockInfo(ticker);
       const portfolioInfo = await dispatch(fetchUserPortfolio({ userId: id }));
       console.log(portfolioInfo.payload);
       const tickerSpecificPortfolio = portfolioInfo.payload.portfolio.filter(
@@ -64,9 +64,8 @@ export default function SingleStockView() {
 
       // await console.log(priceInfo.results);
 
-      setTickerPriceInfo(priceInfo.results[0].c.toFixed(2));
-      // or different during after hours
-      console.log(setTickerPriceInfo);
+      // setTickerPriceInfo(priceInfo.results[0].c.toFixed(2));
+      // console.log(setTickerPriceInfo);
       setIsLoading(false);
     };
     fetchInfoToRender();
