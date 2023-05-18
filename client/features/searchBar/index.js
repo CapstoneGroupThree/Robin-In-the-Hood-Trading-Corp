@@ -21,7 +21,7 @@ const SearchBar = (props) => {
       >
         <input
           type="search"
-          placeholder="Search Name/Ticker"
+          placeholder="Search Ticker"
           aria-label="Search"
           value={query}
           onChange={handleInputChange}
@@ -36,21 +36,23 @@ const SearchBar = (props) => {
             <i className="fas fa-search"></i>
           </button>
         </Link>
-        <span className="notificationBell mr-2">
+        {/* <span className="notificationBell mr-2">
           <img
             src="/notificationBell.png"
             alt="default profile picture"
             className="w-4 h-4"
           ></img>
-        </span>
-        <span className="profilePic&Name flex items-center space-x-2">
-          <img
-            src="/defaultPFP.avif"
-            alt="default profile picture"
-            className="w-4 h-4 rounded-full"
-          ></img>
-          <span className=" text-white font-body ">{name}</span>
-        </span>
+        </span> */}
+        <Link to={`/user/edit`}>
+          <span className="profilePic&Name flex items-center space-x-2">
+            <img
+              src="/defaultPFP.avif"
+              alt="default profile picture"
+              className="w-4 h-4 rounded-full"
+            ></img>
+            <span className=" text-white font-body ">{name}</span>
+          </span>
+        </Link>
       </form>
     </div>
   );
