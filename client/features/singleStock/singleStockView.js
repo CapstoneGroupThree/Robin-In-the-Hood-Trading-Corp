@@ -26,12 +26,21 @@ export default function SingleStockView() {
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [userPortfolio, setUserPortfolio] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
-
+  const [prevTicker, setPrevTicker] = useState(ticker);
   // const allState = useSelector((state) => state);
   // console.log("All state:", allState);
   const handleTransactionComplete = (status) => {
     setTransactionStatus(status);
   };
+
+  useEffect(() => {
+    if (prevTicker !== ticker) {
+      // Refresh the page only if the `ticker` parameter changes
+      window.location.reload();
+    }
+    // Update the previous ticker value
+    setPrevTicker(ticker);
+  }, [ticker, prevTicker]);
 
   console.log(id);
 
