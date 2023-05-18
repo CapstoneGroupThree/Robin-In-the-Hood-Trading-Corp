@@ -9,6 +9,7 @@ const TotalBalanceChartPage = (props) => {
   const [lastAssets, setLastAssets] = useState(null);
   const [lastBalanceOnly, setLastBalanceOnly] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
+  const [startingBalance, setStartingBalnce] = useState(100000);
   const { userId, reload } = props;
 
   useEffect(() => {
@@ -29,6 +30,7 @@ const TotalBalanceChartPage = (props) => {
     setLastTotalBalance(balances[balances.length - 1]);
     setLastAssets(data[data.length - 1].assets);
     setLastBalanceOnly(data[data.length - 1].balance);
+    setStartingBalnce(data[data.length - 1].startingBalance);
 
     const chartData = {
       labels: labels,
@@ -53,10 +55,26 @@ const TotalBalanceChartPage = (props) => {
           setShowDetails(!showDetails);
         }}
       >
-        {" "}
         Total Balance: {"$" + lastTotalBalance?.toFixed(2)} (Click to view/hide
-        details)
+        details) Percentage Change:{" "}
+        <span
+          className={
+            lastTotalBalance - startingBalance >= 0
+              ? "positive-change"
+              : "negative-change"
+          }
+        >
+          {(
+            ((lastTotalBalance - startingBalance) / startingBalance) *
+            100
+          ).toFixed(2)}
+          {lastTotalBalance - startingBalance >= 0
+            ? " % \u2191\u2191"
+            : " % \u2193\u2193"}
+          {" $ " + Math.abs(lastTotalBalance - startingBalance).toFixed(2)}
+        </span>
       </h2>
+
       {showDetails ? (
         <div>
           <p>Stock Assets: {"$" + lastAssets?.toFixed(2)}</p>

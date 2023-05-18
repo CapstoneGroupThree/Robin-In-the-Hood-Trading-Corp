@@ -171,10 +171,11 @@ const Home = () => {
       const promises = portfolio.map(async (portfolioItem) => {
         console.log(portfolioItem.stockTicker, portfolioItem.quantity);
         const tickerInfo = await getStockInfo(portfolioItem.stockTicker);
+        console.log(tickerInfo);
         return {
           ticker: portfolioItem.stockTicker,
           quantity: portfolioItem.quantity,
-          price: tickerInfo.results[0].c,
+          price: tickerInfo.close || tickerInfo.results[0].c,
         };
       });
 

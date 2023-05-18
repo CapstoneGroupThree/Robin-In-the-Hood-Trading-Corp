@@ -551,3 +551,11 @@ form div {
     transform: rotate(360deg);
   }
 }
+
+.positive-change {
+  color: green;
+}
+
+.negative-change {
+  color: red;
+}
