@@ -237,7 +237,7 @@ const WatchListView = () => {
   return (
     <div>
       <h2
-        className=" text-white text-lg cursor-pointer pb-2"
+        className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         onClick={handlePopUpClick}
       >
         WatchList (Click to View)

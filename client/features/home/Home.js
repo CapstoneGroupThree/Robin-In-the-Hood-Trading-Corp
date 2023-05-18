@@ -188,6 +188,7 @@ const Home = () => {
       console.log(totalValuation);
       if (totalValuation !== 0) {
         //todo
+        console.log("sneaky", totalValuation, portfolio);
         dispatch(updatePortfolioValuation({ id: userId, totalValuation }));
       }
       setReload(reload + 1);
@@ -220,6 +221,7 @@ const Home = () => {
   //todo need to get it working on my route pull
   return (
     <div className=" flex flex-col antialiased bg-transparent home-bg font-body font-medium w-full h-full justify-between overflow-hidden">
+      {console.log(portfolio)}
       <div className="flex items-center justify-between w-full text-center text-white pl-4 pr-4">
         <h1 className=" font-medium font-body text-2xl text-shadow-lg">Home</h1>
         <SearchBar name={displayedName} className="" />
