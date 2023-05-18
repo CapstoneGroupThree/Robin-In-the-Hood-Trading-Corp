@@ -606,26 +606,11 @@ form div {
 
 @-webkit-keyframes ticker {
   0% {
-    -webkit-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
     visibility: visible;
   }
 
   100% {
-    -webkit-transform: translate3d(-100%, 0, 0);
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-@keyframes ticker {
-  0% {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    visibility: visible;
-  }
-
-  100% {
-    -webkit-transform: translate3d(-100%, 0, 0);
     transform: translate3d(-100%, 0, 0);
   }
 }
@@ -643,24 +628,16 @@ form div {
     display: inline-block;
     height: 4rem;
     color: white;
-    width: 100%;
+    width: 300%;
+    /* animation: ticker 60s linear infinite; */
     line-height: 4rem;
     white-space: nowrap;
     padding-right: 100%;
     box-sizing: content-box;
 
-    -webkit-animation-iteration-count: infinite;
-    animation-iteration-count: infinite;
-    -webkit-animation-timing-function: linear;
-    animation-timing-function: linear;
-    -webkit-animation-name: ticker;
-    animation-name: ticker;
-    -webkit-animation-duration: 30s;
-    animation-duration: 30s;
-
     .ticker__item {
       display: inline-block;
-
+      font-family: "Lato Numbers", sans-serif;
       padding: 0 2rem;
       font-size: 2rem;
       color: white;

@@ -1273,6 +1273,14 @@ video {
   font-family: "system-ui";
 }
 
+.font-head {
+  font-family: Source Sans Pro, sans-serif;
+}
+
+.font-numbers {
+  font-family: Lato, sans-serif;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -2073,17 +2081,6 @@ form div {
   box-sizing: border-box;
 }
 
-@keyframes ticker {
-  0% {
-    transform: translate3d(0, 0, 0);
-    visibility: visible;
-  }
-
-  100% {
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
 .ticker-wrap {
   bottom: 0;
   width: 100%;
@@ -2096,17 +2093,15 @@ form div {
     display: inline-block;
     height: 4rem;
     color: white;
-    width: 100%;
+    width: 300%;
+    /* animation: ticker 60s linear infinite; */
     line-height: 4rem;
     white-space: nowrap;
     padding-right: 100%;
     box-sizing: content-box;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    animation-name: ticker;
-    animation-duration: 30s;
     .ticker__item {
       display: inline-block;
+      font-family: "Lato Numbers", sans-serif;
       padding: 0 2rem;
       font-size: 2rem;
       color: white;

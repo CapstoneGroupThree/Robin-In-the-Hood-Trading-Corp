@@ -25,16 +25,28 @@ const Navbar = () => {
         {isLoggedIn ? (
           <div className="flex flex-col items-center place-content-evenly ">
             {/* The navbar will show these links after you log in */}
-            <Link to="/home" className="hover:text-blue-500 block">
+            <Link
+              to="/home"
+              className="hover:text-blue-500 block font-head text-xl"
+            >
               Home
             </Link>
-            <Link to="/allStocks" className="hover:text-blue-500 block ">
+            <Link
+              to="/allStocks"
+              className="hover:text-blue-500 block font-head text-xl"
+            >
               All Stocks
             </Link>
-            <Link to={"/portfolio"} className="hover:text-blue-500 block ">
+            <Link
+              to={"/portfolio"}
+              className="hover:text-blue-500 block font-head text-xl"
+            >
               Portfolio
             </Link>
-            <Link to="/user/edit" className="hover:text-blue-500 block ">
+            <Link
+              to="/user/edit"
+              className="hover:text-blue-500 block font-head text-xl"
+            >
               {" "}
               Edit User Profile
             </Link>

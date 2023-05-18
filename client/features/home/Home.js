@@ -218,9 +218,9 @@ const Home = () => {
   //todo create a search bar feature for pages that need it
   //todo need to get it working on my route pull
   return (
-    <div className=" flex flex-col antialiased bg-transparent home-bg font-body font-medium w-full h-full justify-between overflow-hidden">
+    <div className=" flex flex-col antialiased bg-transparent home-bg w-full h-full justify-between overflow-hidden">
       <div className="flex items-center justify-between align-middle w-full text-center text-white pl-4 pr-4  ">
-        <h1 className=" font-medium font-body text-2xl text-shadow-lg">Home</h1>
+        <h1 className=" font-head text-2xl text-shadow-lg">Home</h1>
         <SearchBar name={displayedName} className="" />
       </div>
       <div className="flex  space-x-4 p-2 pl-4 pr-4 h-screen w-full overflow-hidden   ">
@@ -241,7 +241,7 @@ const Home = () => {
           </div>
         </div>
         <div className="popularStocks h-5/6 w-1/2 flex flex-col  pt-4 pl-2 pr-2 border border-slate-600 rounded bg-gradient-to-b from-slate-900 via-slate-700 to-slate-900 box-shadow">
-          <h2 className=" text-xl text-white font-medium pl-2">
+          <h2 className=" text-xl text-white font-numbers font-semibold pl-2">
             {" "}
             Popular Stocks
           </h2>

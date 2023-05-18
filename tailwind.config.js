@@ -4,6 +4,8 @@ module.exports = {
     fontFamily: {
       display: ["Helvetica"],
       body: ['"system-ui"'],
+      head: ["Source Sans Pro", "sans-serif"],
+      numbers: ["Lato", "sans-serif"],
     },
     extend: {
       animation: {
