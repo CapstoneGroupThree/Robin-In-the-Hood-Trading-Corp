@@ -52,7 +52,6 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="flex flex-col items-center ">
-            {/* The navbar will show these links before you log in */}
             <Link to="/login" className="hover:text-blue-500 block">
               Login
             </Link>

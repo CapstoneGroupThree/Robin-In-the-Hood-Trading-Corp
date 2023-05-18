@@ -66,8 +66,8 @@ const AuthForm = ({ name, displayName }) => {
   };
 
   return (
-    //Changed bg-gray-700 on div and form to bg-transparent
-    <div className="login-page min-h-screen bg-transparent flex items-center justify-center">
+    //Changed bg-gray-700 on div and form to bg-transparent - removed justify start
+    <div className="login-page min-h-screen w-screen bg-transparent flex items-center justify-center">
       {error && <div className="alert alert-danger">{error}</div>}
       <form
         /* took out shadow-md from className */
