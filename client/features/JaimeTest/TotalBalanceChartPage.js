@@ -14,7 +14,7 @@ const TotalBalanceChartPage = (props) => {
 
   useEffect(() => {
     fetchData();
-  }, [userId, reload]);
+  }, [reload]);
 
   const fetchData = async () => {
     console.log("Fetch userId:", userId);
@@ -51,6 +51,7 @@ const TotalBalanceChartPage = (props) => {
   return (
     <div>
       <h2
+        className="button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => {
           setShowDetails(!showDetails);
         }}

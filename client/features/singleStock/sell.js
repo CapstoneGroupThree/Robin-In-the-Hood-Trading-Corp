@@ -267,8 +267,18 @@ const Sell = (props) => {
                 <span>Q: {quantity}</span>
                 <div>Sale Value: {(tickerPriceInfo * quantity).toFixed(2)}</div>
               </div>
-              <button onClick={handleBuy}>Sell</button>
-              <button onClick={() => setShowPopup(false)}>Close</button>
+              <button
+                className="button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={handleBuy}
+              >
+                Sell
+              </button>
+              <button
+                className="button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => setShowPopup(false)}
+              >
+                Close
+              </button>
             </div>
           </div>
         )}
