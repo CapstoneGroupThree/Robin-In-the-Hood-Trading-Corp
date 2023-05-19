@@ -234,7 +234,7 @@ const Home = () => {
           {/* <div className=" assets gradient-home h-1/3 text-white border border-indigo-950 border-opacity-20 p-4 rounded bg-gradient-to-tr from-slate-800 to-slate-900 shadow-md shadow-slate-900 "> */}
           <div className="assets relative h-2/5 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900  p-4 rounded box-shadow ">
             <button
-              className="refresh-button absolute top-2 right-2 z-10"
+              className="refresh-button absolute top-4 right-4 z-10"
               onClick={fetchPortfolioData}
             >
               <FontAwesomeIcon icon={faSyncAlt} /> Refresh
