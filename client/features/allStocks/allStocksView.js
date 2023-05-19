@@ -169,8 +169,8 @@ const AllStocksView = () => {
     if (!isLoading) {
       anime({
         targets: ".ticker",
-        translateX: ["-25%", "-5000%"],
-        duration: 10000000,
+        translateX: ["-25%", "-1000%"],
+        duration: 600000,
         loop: true,
         direction: "normal",
         easing: "linear",
@@ -276,7 +276,7 @@ const AllStocksView = () => {
         <SearchBar className="" />
       </div>
       {/* ticker tape */}
-      <div className="ticker-wrap">
+      <div className="ticker-wrap mb-2">
         <div className="ticker">
           {[...Array(2)].map((_, i) =>
             currentPageInfo.map((stock, index) => (

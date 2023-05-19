@@ -6,6 +6,7 @@ module.exports = {
       body: ['"system-ui"'],
       head: ["Source Sans Pro", "sans-serif"],
       numbers: ["Lato", "sans-serif"],
+      subway: ["Subway Ticker", "sans-serif"],
     },
     extend: {
       animation: {

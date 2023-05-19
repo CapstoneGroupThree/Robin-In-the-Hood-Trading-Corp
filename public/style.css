@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Subway Ticker";
+  src: url("./fonts/SubwayTicker-q1Z5.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   font-family: sans-serif;
 }
@@ -637,8 +644,8 @@ form div {
 
     .ticker__item {
       display: inline-block;
-      font-family: "Lato Numbers", sans-serif;
-      padding: 0 2rem;
+      font-family: "Subway Ticker", sans-serif;
+      padding: 0 1rem;
       font-size: 2rem;
       color: white;
     }
