@@ -55,6 +55,7 @@ const TotalBalanceChartPage = (props) => {
         onClick={() => {
           setShowDetails(!showDetails);
         }}
+        className=" font-numbers font-semibold"
       >
         Total Balance: {"$" + lastTotalBalance?.toFixed(2)} (Click to view/hide
         details) Percentage Change:{" "}
@@ -78,8 +79,12 @@ const TotalBalanceChartPage = (props) => {
 
       {showDetails ? (
         <div>
-          <p>Stock Assets: {"$" + lastAssets?.toFixed(2)}</p>
-          <p>Cash Balance: {"$" + lastBalanceOnly?.toFixed(2)}</p>
+          <p className="font-numbers">
+            Stock Assets: {"$" + lastAssets?.toFixed(2)}
+          </p>
+          <p className="font-numbers">
+            Cash Balance: {"$" + lastBalanceOnly?.toFixed(2)}
+          </p>
         </div>
       ) : (
         ""

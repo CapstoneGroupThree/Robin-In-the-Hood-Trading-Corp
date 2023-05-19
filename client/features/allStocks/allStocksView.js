@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 // import "./styles.css";
 import SearchBar from "../searchBar";
 import Chatbot from "../chatBot";
+import anime from "animejs";
 
 const AllStocksView = () => {
   const dispatch = useDispatch();
@@ -164,6 +165,23 @@ const AllStocksView = () => {
     return { marketOpen, from, to };
   };
 
+  useEffect(() => {
+    if (!isLoading) {
+      anime({
+        targets: ".ticker",
+        translateX: ["-25%", "-1000%"],
+        duration: 600000,
+        loop: true,
+        direction: "normal",
+        easing: "linear",
+        loopComplete: function (anim) {
+          anim.reset();
+          anim.play();
+        },
+      });
+    }
+  }, [isLoading]);
+
   const getTickerPrice = async (ticker, marketOpen, from, to) => {
     let tickerPriceInfo = await dispatch(
       fetchAllStockTickerPriceSingle({
@@ -234,8 +252,8 @@ const AllStocksView = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
-        <div className="lds-roller">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-slate-950 via-slate-800 to-slate-950">
+        <div class="lds-roller">
           <div></div>
           <div></div>
           <div></div>
@@ -252,22 +270,41 @@ const AllStocksView = () => {
   return (
     <div className=" flex flex-col font-medium antialiased font-body h-screen w-full p-2 allStock-bg ">
       <div className="flex w-full justify-between text-white items-center pb-2 pl-4 pr-4 ">
-        <h1 className=" whitespace-nowrap font-medium font-body text-lg">
+        <h1 className=" whitespace-nowrap font-medium font-numbers text-2xl text-shadow-default">
           All Stocks
         </h1>
         <SearchBar className="" />
       </div>
-      {console.log(currentPageNameCapInfo)}
+      {/* ticker tape */}
+      <div className="ticker-wrap mb-2">
+        <div className="ticker">
+          {[...Array(2)].map((_, i) =>
+            currentPageInfo.map((stock, index) => (
+              <div
+                className={`ticker__item ${
+                  changePercentageFunc(stock.o, stock.c) >= 0
+                    ? "ticker__item--positive"
+                    : "ticker__item--negative"
+                }`}
+                key={stock.T + i + index} // ensure keys are unique
+              >
+                {stock.T} {changePercentageFunc(stock.o, stock.c)}%
+              </div>
+            ))
+          )}
+        </div>
+      </div>
 
+      {console.log(currentPageNameCapInfo)}
       {Object.keys(allStocks).length === 0 && <div>Loading stocks...</div>}
       {Object.keys(allStocks).length > 0 && (
         <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white">
           <thead className="border-2 border-sky-950">
             <tr>
-              <th className="px-4 py-2 font-semibold">Name</th>
-              <th className="px-4 py-2 font-semibold">Symbol</th>
-              <th className="px-4 py-2 font-semibold">Price</th>
-              <th className="px-4 py-2 font-semibold">Today's Change (%)</th>
+              <th className="px-4 py-2 font-numbers">Name</th>
+              <th className="px-4 py-2 font-numbers">Symbol</th>
+              <th className="px-4 py-2 font-numbers">Price</th>
+              <th className="px-4 py-2 font-numbers">Today's Change (%)</th>
             </tr>
           </thead>
           <tbody>
@@ -284,22 +321,24 @@ const AllStocksView = () => {
                   <td className="px-4 py-2">
                     <Link
                       to={`/singleStock/${stock.T}`}
-                      className="text-sky-200 hover:text-sky-400 "
+                      className="text-sky-200 hover:text-sky-400 font-numbers "
                     >
                       {currentPageNameCapInfo[stock.T]
                         ? trimName(currentPageNameCapInfo[stock.T].name)
                         : "loading"}
                     </Link>
                   </td>
-                  <td className="px-4 py-2 text-center">{stock.T}</td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-2 text-center font-numbers">
+                    {stock.T}
+                  </td>
+                  <td className="px-4 py-2 text-center font-numbers">
                     $
                     {currentPageNameCapInfo[stock.T]
                       ? currentPageNameCapInfo[stock.T].price?.toFixed(2) ||
                         " Premarket Price Unavailable"
                       : "loading"}
                   </td>
-                  <td className="px-4 py-2 text-center">
+                  <td className="px-4 py-2 text-center font-numbers">
                     {changePercentageFunc(stock.o, stock.c)}%
                   </td>
                 </tr>
@@ -329,7 +368,8 @@ const AllStocksView = () => {
           <button
             value="prev"
             onClick={handlePageChange}
-            className="mr-2 bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-700"
+            class="AS-button"
+            role="button"
           >
             Prev
           </button>
@@ -340,7 +380,8 @@ const AllStocksView = () => {
         <button
           value="next"
           onClick={handlePageChange}
-          className="bg-sky-950 text-white px-4 py-2 rounded hover:bg-purple-700"
+          class="AS-button"
+          role="button"
         >
           Next
         </button>
