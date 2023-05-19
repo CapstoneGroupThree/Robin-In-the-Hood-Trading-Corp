@@ -244,7 +244,7 @@ const Home = () => {
           </div>
         </div>
         <div className="popularStocks h-5/6 w-1/2 flex flex-col  pt-4 pl-2 pr-2 border border-slate-600 rounded bg-gradient-to-b from-slate-900 via-slate-700 to-slate-900 box-shadow">
-          <h2 className=" text-xl text-white font-numbers font-semibold pl-2">
+          <h2 className="text-center text-xl text-white font-numbers font-semibold pl-2">
             {" "}
             Popular Stocks
           </h2>

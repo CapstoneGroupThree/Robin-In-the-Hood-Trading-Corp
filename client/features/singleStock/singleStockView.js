@@ -19,6 +19,8 @@ import Sell from "./sell.js";
 import { fetchUserPortfolio } from "./portfolioBuySellSlice.js";
 
 export default function SingleStockView() {
+  const username = useSelector((state) => state.auth.me.first_name);
+  const displayedName = username.toUpperCase();
   const dispatch = useDispatch();
   const { ticker } = useParams();
   const id = useSelector((state) => state.auth.me.id);
@@ -311,7 +313,7 @@ export default function SingleStockView() {
           </div>
           <h2 className=" text-white">{tickerInfo.name}</h2>
         </div>
-        <SearchBar />
+        <SearchBar name={displayedName} />
       </div>
 
       {/* Main  */}
@@ -413,7 +415,7 @@ export default function SingleStockView() {
 
         {/* News */}
         <div className="  overflow-y-scroll scroll-style  h-5/6 max-h-full w-5/12 border border-sky-800 p-2 rounded-md bg-gradient-to-t from-slate-900 to slate-950 text-white shadow-md shadow-black">
-          <h2>News</h2>
+          <h2 className="flex items-center justify-center">News</h2>
           <div>
             {console.log("here", tickerNews)}
             {tickerNews && tickerNews.length > 0 ? (

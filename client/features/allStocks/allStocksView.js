@@ -13,6 +13,8 @@ import Chatbot from "../chatBot";
 import anime from "animejs";
 
 const AllStocksView = () => {
+  const username = useSelector((state) => state.auth.me.first_name);
+  const displayedName = username.toUpperCase();
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
   const [currentPageInfo, setCurrentPageInfo] = useState([]);
@@ -273,7 +275,7 @@ const AllStocksView = () => {
         <h1 className=" whitespace-nowrap font-medium font-numbers text-2xl text-shadow-default">
           All Stocks
         </h1>
-        <SearchBar className="" />
+        <SearchBar name={displayedName} className="" />
       </div>
       {/* ticker tape */}
       <div className="ticker-wrap mb-2">
@@ -318,7 +320,7 @@ const AllStocksView = () => {
                     index % 2 === 0 ? "bg-slate-800" : ""
                   } hover:bg-slate-700 transition-colors duration-200 ease-in-out`}
                 >
-                  <td className="px-4 py-2">
+                  <td className="px-4 py-2 text-center">
                     <Link
                       to={`/singleStock/${stock.T}`}
                       className="text-sky-200 hover:text-sky-400 font-numbers "
