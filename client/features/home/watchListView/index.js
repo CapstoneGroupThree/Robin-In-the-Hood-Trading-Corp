@@ -237,11 +237,28 @@ const WatchListView = () => {
   return (
     <div>
       <h2
-        className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="relative text-white font-bold py-2 px-4 rounded cursor-pointer transition-all duration-300 ease-in-out ml-[-15.5px]"
         onClick={handlePopUpClick}
       >
-        WatchList (Click to View)
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">
+          Watch{" "}
+        </span>
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">
+          List
+        </span>
+        <span className="absolute top-0 left-0 w-full h-full opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out bg-gray-800 rounded" />
+        <span className="absolute -bottom-4 right-0 text-xs text-gray-400">
+          Click Above to View Watch List
+        </span>
+        <style jsx>{`
+          h2:hover span {
+            background-clip: text;
+            -webkit-background-clip: text;
+            background-image: linear-gradient(to right, #5ca9fb, #7e57c2);
+          }
+        `}</style>
       </h2>
+
       {popupVisible && (
         <div className="">
           <div className={overlayClasses} onClick={handleOverlayClick}></div>
@@ -341,7 +358,10 @@ const WatchListView = () => {
                   })}
               </tbody>
             </table> */}
-            <div style={{ width: "750px", height: "40vh", overflow: "hidden" }}>
+            <div
+              className="slider-container"
+              style={{ width: "750px", height: "40vh", overflow: "hidden" }}
+            >
               <Slider
                 infinite={true}
                 slidesToShow={1}
@@ -354,16 +374,18 @@ const WatchListView = () => {
                   .map(([ticker, stockInfo]) => {
                     const trimmedName = trimName(stockInfo.name);
                     return (
-                      <div key={ticker} className=" ">
-                        <div className=" flex flex-row space-x-4 text-white">
-                          <div>
-                            <Link to={`/singleStock/${ticker}`}>
-                              {trimmedName}
-                            </Link>
-                          </div>
-                          <div>
-                            {"$" + stockInfo.close?.toFixed(2) ||
-                              "$" + stockInfo.preMarket?.toFixed(2)}
+                      <div key={ticker} className="slider-item">
+                        <div className="flex flex-row space-x-4 text-white items-center cursor-pointer">
+                          <Link
+                            to={`/singleStock/${ticker}`}
+                            className="slider-link"
+                          >
+                            {trimmedName}
+                          </Link>
+                          <div className="slider-price">
+                            {"$" +
+                              (stockInfo.close?.toFixed(2) ||
+                                stockInfo.preMarket?.toFixed(2))}
                           </div>
                         </div>
                         <ClosePriceChartPage ticker={ticker} />

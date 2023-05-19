@@ -223,7 +223,7 @@ const Home = () => {
     <div className=" flex flex-col antialiased bg-transparent home-bg w-full h-full justify-between overflow-hidden">
       {console.log(portfolio)}
       <div className="flex items-center justify-between align-middle w-full text-center text-white pl-4 pr-4  ">
-        <h1 className=" font-head text-2xl text-shadow-lg">Home</h1>
+        <h1 className=" font-head text-3xl text-shadow-lg">Home</h1>
         <SearchBar name={displayedName} className="" />
       </div>
       <div className="flex  space-x-4 p-2 pl-4 pr-4 h-screen w-full overflow-hidden   ">
@@ -244,9 +244,14 @@ const Home = () => {
           </div>
         </div>
         <div className="popularStocks h-5/6 w-1/2 flex flex-col  pt-4 pl-2 pr-2 border border-slate-600 rounded bg-gradient-to-b from-slate-900 via-slate-700 to-slate-900 box-shadow">
-          <h2 className="text-center text-xl text-white font-numbers font-semibold pl-2">
-            {" "}
-            Popular Stocks
+          <h2 className="text-center relative mt-2 text-xl font-numbers font-semibold pl-2">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+              Popular{" "}
+            </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500">
+              Stocks
+            </span>
+            <span className="absolute top-0 left-0 w-full h-full opacity-0 " />
           </h2>
 
           <div className="popularStocksHomeView  flex-grow p-4  rounded ">
