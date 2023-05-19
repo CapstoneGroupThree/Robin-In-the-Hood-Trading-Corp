@@ -26,17 +26,33 @@ export default function SingleStockView() {
   const [transactionStatus, setTransactionStatus] = useState(null);
   const [userPortfolio, setUserPortfolio] = useState([]);
   const [userBalance, setUserBalance] = useState(0);
-
+  const [prevTicker, setPrevTicker] = useState(ticker);
+  const [isLoading, setIsLoading] = useState(true);
+  const [tickerNews, setTickerNews] = useState([]);
+  const [tickerInfo, setTickerInfo] = useState({});
+  const [tickerPriceInfo, setTickerPriceInfo] = useState({});
+  const [currentChart, setCurrentChart] = useState("stockData");
+  const [marketOpen, setMarketOpen] = useState("");
   // const allState = useSelector((state) => state);
   // console.log("All state:", allState);
   const handleTransactionComplete = (status) => {
     setTransactionStatus(status);
   };
 
+  useEffect(() => {
+    if (prevTicker !== ticker) {
+      // Refresh the page only if the `ticker` parameter changes
+      window.location.reload();
+    }
+    // Update the previous ticker value
+    setPrevTicker(ticker);
+  }, [ticker, prevTicker]);
+
   console.log(id);
 
   useEffect(() => {
     const fetchInfoToRender = async () => {
+      // const priceInfo = await getStockInfo(ticker);
       const portfolioInfo = await dispatch(fetchUserPortfolio({ userId: id }));
       console.log(portfolioInfo.payload);
       const tickerSpecificPortfolio = portfolioInfo.payload.portfolio.filter(
@@ -46,11 +62,10 @@ export default function SingleStockView() {
       await setUserPortfolio(tickerSpecificPortfolio);
       await setUserBalance(portfolioInfo.payload.latestBalance);
 
-      await console.log(priceInfo.results);
+      // await console.log(priceInfo.results);
 
-      setTickerPriceInfo(priceInfo.results[0].c.toFixed(2));
-      // or different during after hours
-      console.log(setTickerPriceInfo);
+      // setTickerPriceInfo(priceInfo.results[0].c.toFixed(2));
+      // console.log(setTickerPriceInfo);
       setIsLoading(false);
     };
     fetchInfoToRender();
@@ -61,13 +76,6 @@ export default function SingleStockView() {
     e.target.onerror = null; // Prevents infinite loop if the default image URL is also broken
     e.target.src = "/404sorryCat.avif";
   };
-
-  const [isLoading, setIsLoading] = useState(true);
-  const [tickerNews, setTickerNews] = useState([]);
-  const [tickerInfo, setTickerInfo] = useState({});
-  const [tickerPriceInfo, setTickerPriceInfo] = useState({});
-  const [currentChart, setCurrentChart] = useState("stockData");
-  const [marketOpen, setMarketOpen] = useState("");
 
   //! used nager date api to get public holidays
 
@@ -249,7 +257,7 @@ export default function SingleStockView() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
-        <div class="lds-roller">
+        <div className="lds-roller">
           <div></div>
           <div></div>
           <div></div>
@@ -372,9 +380,11 @@ export default function SingleStockView() {
             <div>
               <strong>
                 Premarket:{" $"}
-                {tickerPriceInfo?.preMarket ??
-                  tickerPriceInfo?.open ??
-                  singleStockInfo?.openClose?.open}
+                {formatNumber(
+                  tickerPriceInfo?.preMarket ??
+                    tickerPriceInfo?.open ??
+                    singleStockInfo?.openClose?.open
+                )}
               </strong>
             </div>
             <div>

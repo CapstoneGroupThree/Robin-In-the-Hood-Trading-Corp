@@ -17,12 +17,19 @@ app.get("/balance/:userId", async (req, res) => {
 
   const startingBalance = 100000; //or more or less~
   // If there's no balance history for this user, create an initial balance entry, all users should have 100 grand to start
-  while (balanceHistory.length < 2) {
-    balanceHistory = await TotalBalanceHistory.create({
-      userId,
-      balance: startingBalance,
-      assets: 0,
-    });
+  if (balanceHistory.length === 0) {
+    await TotalBalanceHistory.bulkCreate([
+      {
+        userId,
+        balance: startingBalance,
+        assets: 0,
+      },
+      {
+        userId,
+        balance: startingBalance,
+        assets: 0,
+      },
+    ]);
   }
 
   res.json(balanceHistory);

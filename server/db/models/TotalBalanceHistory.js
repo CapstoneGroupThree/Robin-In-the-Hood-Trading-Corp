@@ -20,6 +20,11 @@ const TotalBalanceHistory = db.define("totalBalanceHistory", {
     allowNull: false,
     defaultValue: 0,
   },
+  startingBalance: {
+    type: Sequelize.FLOAT,
+    allowNull: false,
+    defaultValue: 100000,
+  },
   timestamp: {
     type: Sequelize.DATE,
     allowNull: false,
