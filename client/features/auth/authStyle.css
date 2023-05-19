@@ -1,4 +1,22 @@
-.login-page {
-  background: url("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjhhYWM1OWVjM2JmNjMwOGZlYzViMzRlMWZkOGUyMTA5ZTk1ZjE2YSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/JtBZm3Getg3dqxK0zP/giphy-downsized-large.gif");
+.auth-container {
+  background-image: url("https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjhhYWM1OWVjM2JmNjMwOGZlYzViMzRlMWZkOGUyMTA5ZTk1ZjE2YSZlcD12MV9pbnRlcm5hbF9naWZzX2dpZklkJmN0PWc/JtBZm3Getg3dqxK0zP/giphy-downsized-large.gif");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
   background-size: cover;
+}
+.gradient-auth {
+  background-image: linear-gradient(
+    45deg,
+    #0a0e14 0%,
+    #240e61 15%,
+    #114286 30%,
+    #240e61 51%,
+    #093674 70%,
+    #240e61 85%,
+    #010102 100%
+  );
+}
+.testimonials {
+  padding: 30px;
 }

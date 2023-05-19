@@ -12,7 +12,7 @@ export default function SignUp() {
         />
         <label
           htmlFor="floatingFirstName"
-          className="block text-red-600 font-semibold"
+          className="block tracking-widest text-white font-semibold"
         >
           First Name
         </label>
@@ -28,7 +28,7 @@ export default function SignUp() {
         />
         <label
           htmlFor="floatingLastName"
-          className="block text-red-600 font-semibold"
+          className="block tracking-widest text-white font-semibold"
         >
           Last Name
         </label>
@@ -43,9 +43,9 @@ export default function SignUp() {
         />
         <label
           htmlFor="floatingEmail"
-          className="block text-red-600 font-semibold"
+          className="block tracking-widest text-white font-semibold"
         >
-          Email address
+          Email Address
         </label>
       </div>
       <div className="form-floating mb-2">
@@ -58,7 +58,7 @@ export default function SignUp() {
         />
         <label
           htmlFor="floatingPassword"
-          className="block text-red-600 font-semibold"
+          className="block tracking-widest text-white font-semibold"
         >
           Password
         </label>

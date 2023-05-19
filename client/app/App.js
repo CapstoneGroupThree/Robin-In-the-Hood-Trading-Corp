@@ -19,7 +19,7 @@ const App = () => {
           {/* <h1>Yolo</h1> */}
         </div>
       ) : (
-        <main className="w-5/6">
+        <main className="">
           <AppRoutes />
         </main>
       )}

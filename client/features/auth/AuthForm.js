@@ -52,38 +52,96 @@ const AuthForm = ({ name, displayName }) => {
   const handleNoAccount = () => {
     if (name === "login") {
       return (
-        <p className="text-secondary">
-          Don't have an account? {<Link to="/signup">Sign Up</Link>}?
+        <p className="text-secondary tracking-widest text-white font-semibold">
+          Don't have an account?{" "}
+          {
+            <Link className="italic text-red-600 tracking-widest" to="/signup">
+              Sign Up
+            </Link>
+          }
         </p>
       );
     } else {
       return (
-        <p className="text-secondary">
-          Already have an account? {<Link to="/login">Log In</Link>}?
+        <p className="text-secondary tracking-widest text-white font-semibold">
+          Already have an account?{" "}
+          {
+            <Link className="italic text-red-600 tracking-widest" to="/login">
+              Log In
+            </Link>
+          }
         </p>
       );
     }
   };
 
   return (
-    //Changed bg-gray-700 on div and form to bg-transparent - removed justify start
-    <div className="login-page min-h-screen w-screen bg-transparent flex items-center justify-center">
-      {error && <div className="alert alert-danger">{error}</div>}
-      <form
-        /* took out shadow-md from className */
-        className="text-center flex flex-col bg-transparent w-96 h-96 p-10 rounded "
-        onSubmit={handleSubmit}
-        name={name}
-      >
-        {name === "login" ? <Login /> : <SignUp />}
-        <button
-          type="submit"
-          className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mt-4"
+    <div className="flex flex-row auth-container min-h-screen w-screen">
+      <div className="flex flex-col justify-center items-center bg-transparent backdrop-filter backdrop-blur">
+        {error && <div className="alert alert-danger">{error}</div>}
+        <form
+          /* took out shadow-md from className */
+          className="flex flex-col justify-center text-center bg-transparent backdrop-filter backdrop-blur text-lg rounded"
+          onSubmit={handleSubmit}
+          name={name}
         >
-          {displayName}
-        </button>
-        {handleNoAccount()}
-      </form>
+          {name === "login" ? <Login /> : <SignUp />}
+          <button
+            type="submit"
+            className="bg-slate-500 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded mt-2"
+          >
+            {displayName}
+          </button>
+          {handleNoAccount()}
+        </form>
+      </div>
+      <div className="flex flex-col items-center justify-end flex-grow">
+        <h1 className="flex items-center block tracking-widest mb-4 text-white text-xl font-semibold bg-transparent backdrop-filter backdrop-blur">
+          Created By Future Employees of Google, Amazon, META and more!:
+        </h1>
+        <ul className="flex flex-row items-center gap-4 bg-transparent backdrop-filter backdrop-blur text-xl pt-5">
+          <li>
+            <Link
+              className="block hover:text-slate-400 tracking-widest text-white font-semibold pb-5"
+              to={"https://www.linkedin.com/in/charlie-aloisio/"}
+            >
+              Charlie Aloisio
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="block hover:text-slate-400 tracking-widest text-white font-semibold pb-5"
+              to={"https://www.linkedin.com/in/hlin/"}
+            >
+              Han Yu Lin
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="block hover:text-slate-400 tracking-widest text-white font-semibold pb-5"
+              to={"https://www.linkedin.com/in/tenzingsalaka/"}
+            >
+              Tenzing Salaka
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="block hover:text-slate-400 tracking-widest text-white font-semibold pb-5"
+              to={"https://www.linkedin.com/in/jaimelopez40/"}
+            >
+              Jaime Lopez
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="block hover:text-slate-400 tracking-widest text-white font-semibold pb-5"
+              to={"https://www.linkedin.com/in/adhemarhernandez/"}
+            >
+              Adhemar Hernandez
+            </Link>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
