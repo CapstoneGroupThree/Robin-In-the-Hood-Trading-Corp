@@ -68,26 +68,27 @@ const Navbar = () => {
               to="/home"
               className="hover:text-blue-500 block font-head text-xl"
             >
-              Home
+              <i className="fa-solid fa-house-user"></i> {" Home"}
             </Link>
             <Link
               to="/allStocks"
               className="hover:text-blue-500 block font-head text-xl"
             >
-              All Stocks
+              <i className="fa-solid fa-money-bill-1-wave"></i> {" All Stocks"}
             </Link>
             <Link
               to={"/portfolio"}
               className="hover:text-blue-500 block font-head text-xl"
             >
-              Portfolio
+              <i className="fa-solid fa-rocket"></i>
+              {" Portfolio"}
             </Link>
             <Link
               to="/user/edit"
               className="hover:text-blue-500 block font-head text-xl"
             >
-              {" "}
-              Edit User Profile
+              <i className="fa-solid fa-user-pen"></i>
+              {" Edit User Profile"}
             </Link>
 
             <hr className=" w-56 fixed bottom-8  border-t-4 border-sky-500 border-opacity-20 pb-4 " />
@@ -97,7 +98,8 @@ const Navbar = () => {
                 className="hover:text-blue-500  active:bg-gray-500 active:text-white "
                 onClick={logoutAndRedirectHome}
               >
-                Logout
+                <i className="fa-solid fa-right-from-bracket"></i>
+                {" Logout"}
               </button>
             </div>
           </div>
