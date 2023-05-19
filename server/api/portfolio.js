@@ -14,6 +14,7 @@ app.get("/:userId", async (req, res) => {
   // Fetch all portfolio entries for user
   const portfolio = await Portfolio.findAll({
     where: { userId },
+    order: [["updatedAt", "DESC"]],
   });
 
   // Fetch the most ****recent total balance for the user

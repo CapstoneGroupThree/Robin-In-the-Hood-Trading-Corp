@@ -233,17 +233,17 @@ const Portfolio = () => {
       <button
         className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => {
-          setShowPurchases(!showPurchases);
-          setShowPortfolio(!showPortfolio);
+          setShowPurchases(true);
+          setShowPortfolio(false);
         }}
       >
-        Show Purchase History
+        Toggle Purchase History
       </button>
       <button
         className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => {
-          setShowPurchases(!showPurchases);
-          setShowPortfolio(!showPortfolio);
+          setShowPurchases(false);
+          setShowPortfolio(true);
         }}
       >
         Show Portfolio Assets
@@ -312,6 +312,7 @@ const Portfolio = () => {
             </tr>
           </thead>
           <tbody>
+            {console.log(transactions)}
             {transactions &&
               transactions.map((t) => {
                 return (
