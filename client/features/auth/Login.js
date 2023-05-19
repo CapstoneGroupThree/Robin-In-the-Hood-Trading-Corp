@@ -36,7 +36,7 @@ export default function Login() {
         <label className="inline-flex items-center mt-2">
           <input
             type="checkbox"
-            className="form-checkbox h-5 w-5 text-purple-600"
+            className="form-checkbox h-5 w-6 text-purple-600"
             value="remember-me"
           />
           <span className="ml-2 tracking-widest text-white font-semibold">
