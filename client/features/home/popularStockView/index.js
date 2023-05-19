@@ -286,13 +286,13 @@ const PopularStocksHomeView = () => {
                 to={`/singleStock/${ticker}`}
                 className="text-sky-600 hover:text-sky-900 font-semibold font-body"
               >
-                <h2 className="font-semibold font-body"> {trimmedName}</h2>
+                <h2 className="font-semibold slider-link"> {trimmedName}</h2>
               </Link>
 
               <div className="flex justify-between font-body font-medium">
                 <div>
-                  <p className="text-gray-500 text-sm">Ticker: {ticker}</p>
-                  <p className="text-sky-700 text-sm ">
+                  <p className="text-gray-400 text-sm">Ticker: {ticker}</p>
+                  <p className="text-white text-sm">
                     Price:{" "}
                     {"$" + stockInfo.close.toFixed(2) ||
                       "$" + stockInfo.preMarket.toFixed(2)}

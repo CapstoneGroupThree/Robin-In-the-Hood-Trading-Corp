@@ -662,3 +662,36 @@ form div {
 }
 
 /* all-Stock styling */
+.slider-container {
+  position: relative;
+}
+
+.slider-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider-link {
+  color: #3498db; /* Update with your desired bluish color */
+  font-weight: bold;
+  font-size: 16px; /* Update with the desired font size */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.slider-link:hover {
+  color: #2980b9; /* Update with your desired hover color */
+}
+
+.slider-price {
+  color: white;
+  font-size: 16px; /* Update with the desired font size */
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.slider-price:hover {
+  color: lightblue; /* Update with your desired hover color */
+}
