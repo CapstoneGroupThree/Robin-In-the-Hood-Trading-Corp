@@ -1,46 +1,67 @@
-import React from 'react';
+import React from "react";
 export default function SignUp() {
   return (
     <>
       <div className="form-floating mb-2">
         <input
           type="text"
-          className="form-control"
+          className="form-control shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="floatingFirstName"
           name="firstName"
           placeholder="John"
         />
-        <label htmlFor="floatingFirstName">First Name</label>
+        <label
+          htmlFor="floatingFirstName"
+          className="block tracking-widest text-white font-semibold"
+        >
+          First Name
+        </label>
       </div>
       <div className="form-floating mb-2">
         <input
           type="text"
-          className="form-control"
+          //Changed className from form-control to same input className from Login-Page
+          className="form-control shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="floatingLastName"
           name="lastName"
           placeholder="Doe"
         />
-        <label htmlFor="floatingLastName">Last Name</label>
+        <label
+          htmlFor="floatingLastName"
+          className="block tracking-widest text-white font-semibold"
+        >
+          Last Name
+        </label>
       </div>
       <div className="form-floating mb-2">
         <input
           type="email"
-          className="form-control"
+          className="form-control shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="floatingEmail"
           name="email"
           placeholder="name@example.com"
         />
-        <label htmlFor="floatingEmail">Email address</label>
+        <label
+          htmlFor="floatingEmail"
+          className="block tracking-widest text-white font-semibold"
+        >
+          Email Address
+        </label>
       </div>
       <div className="form-floating mb-2">
         <input
           type="password"
-          className="form-control"
+          className="form-control shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="floatingPassword"
           name="password"
           placeholder="Password"
         />
-        <label htmlFor="floatingPassword">Password</label>
+        <label
+          htmlFor="floatingPassword"
+          className="block tracking-widest text-white font-semibold"
+        >
+          Password
+        </label>
       </div>
     </>
   );

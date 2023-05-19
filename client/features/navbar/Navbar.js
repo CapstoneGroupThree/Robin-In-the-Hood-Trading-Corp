@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../app/store";
+import AuthForm from "../auth/AuthForm";
 import { resetPortfolio } from "../portfolio/portfolioSlice";
 
 const Navbar = () => {
@@ -102,7 +103,6 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="flex flex-col items-center ">
-            {/* The navbar will show these links before you log in */}
             <Link to="/login" className="hover:text-blue-500 block">
               Login
             </Link>
