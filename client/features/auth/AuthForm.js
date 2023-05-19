@@ -77,7 +77,7 @@ const AuthForm = ({ name, displayName }) => {
 
   return (
     <div className="flex flex-row auth-container min-h-screen w-screen">
-      <div className="flex flex-col justify-center items-center bg-transparent backdrop-filter backdrop-blur">
+      <div className="flex flex-col justify-center items-center bg-transparent backdrop-filter backdrop-blur border-4 border-red-600">
         <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
 
         {/* <h1 className="ml-4 font-body text-xl text-shadow-lg" style={}> */}

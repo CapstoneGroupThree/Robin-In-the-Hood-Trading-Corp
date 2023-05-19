@@ -217,7 +217,7 @@ const Portfolio = () => {
   }
 
   return (
-    <>
+    <div className="portfolio-bg">
       {console.log("portfolio", portfolio)}
       <h1 className="px-4 py-2 text-center">Your Portfolio</h1>
       {console.log("UserId:", userId)}
@@ -348,7 +348,7 @@ const Portfolio = () => {
       </div> */}
       {console.log("Our React Portfolio:", portfolio)}
       {console.log("Our React Transactions", transactions)}
-    </>
+    </div>
   );
 };
 
