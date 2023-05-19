@@ -63,7 +63,10 @@ const TotalBalanceChartPage = (props) => {
         }`}
         // onClick={toggleDetails}
       >
-        Total Balance: {"$" + (lastTotalBalance?.toFixed(2) || "0.00")}{" "}
+        Total Balance:{" "}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-100">
+          {"$" + (lastTotalBalance?.toFixed(2) || "0.00")}
+        </span>{" "}
         {lastTotalBalance - startingBalance >= 0 ? (
           <>
             <i className="fa-solid fa-circle-up text-green-500"></i>{" "}
@@ -80,7 +83,7 @@ const TotalBalanceChartPage = (props) => {
               : "negative-change"
           }`}
         >
-          <span className="percentage">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 to-pink-100">
             {(
               ((lastTotalBalance - startingBalance) / startingBalance) *
               100
@@ -96,7 +99,7 @@ const TotalBalanceChartPage = (props) => {
               <i className="fa-solid fa-circle-down text-red-500"></i>
             </>
           )}
-          <span className="money">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 to-pink-100">
             {" $" + Math.abs(lastTotalBalance - startingBalance).toFixed(2)}
           </span>
         </span>
