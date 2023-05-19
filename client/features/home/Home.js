@@ -171,10 +171,11 @@ const Home = () => {
       const promises = portfolio.map(async (portfolioItem) => {
         console.log(portfolioItem.stockTicker, portfolioItem.quantity);
         const tickerInfo = await getStockInfo(portfolioItem.stockTicker);
+        console.log(tickerInfo);
         return {
           ticker: portfolioItem.stockTicker,
           quantity: portfolioItem.quantity,
-          price: tickerInfo.results[0].c,
+          price: tickerInfo.close || tickerInfo.results[0].c,
         };
       });
 
@@ -187,6 +188,7 @@ const Home = () => {
       console.log(totalValuation);
       if (totalValuation !== 0) {
         //todo
+        console.log("sneaky", totalValuation, portfolio);
         dispatch(updatePortfolioValuation({ id: userId, totalValuation }));
       }
       setReload(reload + 1);
@@ -219,6 +221,7 @@ const Home = () => {
   //todo need to get it working on my route pull
   return (
     <div className=" flex flex-col antialiased bg-transparent home-bg w-full h-full justify-between overflow-hidden">
+      {console.log(portfolio)}
       <div className="flex items-center justify-between align-middle w-full text-center text-white pl-4 pr-4  ">
         <h1 className=" font-head text-2xl text-shadow-lg">Home</h1>
         <SearchBar name={displayedName} className="" />
@@ -229,7 +232,7 @@ const Home = () => {
           {/* <div className=" assets gradient-home h-1/3 text-white border border-indigo-950 border-opacity-20 p-4 rounded bg-gradient-to-tr from-slate-800 to-slate-900 shadow-md shadow-slate-900 "> */}
           <div className="assets h-2/5 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 box-shadow">
             <button
-              style={{ fontStyle: "italic" }}
+              className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={fetchPortfolioData}
             >
               Refresh Data

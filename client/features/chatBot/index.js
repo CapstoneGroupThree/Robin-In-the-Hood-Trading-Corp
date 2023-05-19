@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import "./chatBot.css";
 
-const Chatbot = () => {
+const Chatbot = ({ ticker }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [showChat, setShowChat] = useState(false);
@@ -39,7 +39,7 @@ const Chatbot = () => {
     const aiMessage = {
       id: generateUniqueId(),
       role: "assistant",
-      content: "AI thinking...",
+      content: "Robin is thinking...",
     };
 
     setMessages((oldMessages) => [...oldMessages, userMessage, aiMessage]);
@@ -56,11 +56,11 @@ const Chatbot = () => {
         return currentMessages.map((message) => {
           if (message.id === aiMessage.id) {
             if (message.content.endsWith("...")) {
-              return { ...message, content: "AI thinking." };
+              return { ...message, content: "Robin is thinking." };
             } else if (message.content.endsWith("..")) {
-              return { ...message, content: "AI thinking..." };
+              return { ...message, content: "Robin is thinking..." };
             } else if (message.content.endsWith(".")) {
-              return { ...message, content: "AI thinking.." };
+              return { ...message, content: "Robin is thinking.." };
             }
           }
           return message;
@@ -120,6 +120,77 @@ const Chatbot = () => {
     }
   };
 
+  const handleAdvancedPrompt = async (promptType) => {
+    const symbol = ticker;
+
+    // Create the AI's thinking message
+    const aiThinkingMessage = {
+      id: generateUniqueId(),
+      role: "assistant",
+      content: "Robin is thinking very hard...",
+    };
+
+    // Add the thinking very hard message to the messages array
+    setMessages((oldMessages) => [...oldMessages, aiThinkingMessage]);
+
+    // Set up the transition dots and typing effect
+    const loadingDots = setInterval(() => {
+      setMessages((currentMessages) => {
+        return currentMessages.map((message) => {
+          if (message.id === aiThinkingMessage.id) {
+            if (message.content.endsWith("...")) {
+              return { ...message, content: "Robin is thinking very hard." };
+            } else if (message.content.endsWith("..")) {
+              return { ...message, content: "Robin is thinking very hard..." };
+            } else if (message.content.endsWith(".")) {
+              return { ...message, content: "Robin is thinking very hard.." };
+            }
+          }
+          return message;
+        });
+      });
+    }, 500);
+
+    const response = await fetch(
+      `http://localhost:8080/polygon/summary/${symbol}?promptType=${promptType}`
+    );
+
+    clearInterval(loadingDots);
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log(data);
+      const parsedData = data.assistant;
+      console.log(parsedData);
+
+      if (parsedData) {
+        let index = -1;
+        const interval = setInterval(() => {
+          if (index < parsedData.length - 1) {
+            setMessages((currentMessages) => {
+              const updatedMessages = currentMessages.map((message) =>
+                message.id === aiThinkingMessage.id
+                  ? {
+                      ...message,
+                      content:
+                        index === 0
+                          ? parsedData[index]
+                          : message.content + parsedData[index],
+                    }
+                  : message
+              );
+              console.log(updatedMessages);
+              return updatedMessages;
+            });
+            index++;
+          } else {
+            clearInterval(interval);
+          }
+        }, 10);
+      }
+    }
+  };
+
   if (!showChat) {
     return (
       <div>
@@ -136,6 +207,25 @@ const Chatbot = () => {
   return (
     <div>
       <div className="chatBotContainer">
+        {ticker ? (
+          <div style={{ color: "black" }}>
+            <button onClick={() => handleAdvancedPrompt("type1")}>
+              {ticker} Backstory {" |* "}
+            </button>
+            <button onClick={() => handleAdvancedPrompt("type2")}>
+              Risk Category{" |* "}
+            </button>
+            <button onClick={() => handleAdvancedPrompt("type3")}>
+              Buy, Hold, Or Sell?
+            </button>
+            <button onClick={() => handleAdvancedPrompt("default")}>
+              Thorough Analysis on {ticker}
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
+
         <div>
           <div id="chat_container" ref={chatContainerRef}>
             {messages.map((message, index) => (
@@ -150,7 +240,9 @@ const Chatbot = () => {
                   <div className="profile">
                     <img
                       src={
-                        message.role === "assistant" ? "/bot.svg" : "/user.svg"
+                        message.role === "assistant"
+                          ? "/RITHLogo.svg"
+                          : "/user.svg"
                       }
                       alt={message.role === "assistant" ? "bot" : "user"}
                     ></img>
@@ -163,13 +255,14 @@ const Chatbot = () => {
           </div>
         </div>
       </div>
+
       <div className="chatArea">
         <form onSubmit={handleSubmit}>
           <textarea
             name="prompt"
             rows="1"
             cols="1"
-            placeholder="Ask AI Chatbot"
+            placeholder="Ask Robin"
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             onKeyDown={(e) => {

@@ -9,7 +9,6 @@ import { fetchTransactions, selectTransactions } from "./transactionSlice";
 import { Link } from "react-router-dom";
 import TotalBalanceChartPage from "../JaimeTest/TotalBalanceChartPage";
 import { fetchSingleStockTickerPriceInfo } from "../singleStock/singleStockViewSlice.js";
-import { fetchUserPortfolio } from "../singleStock/portfolioBuySellSlice";
 
 const Portfolio = () => {
   const me = useSelector((state) => state.auth.me);
@@ -19,6 +18,8 @@ const Portfolio = () => {
   const transactions = useSelector(selectTransactions);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(0);
+  const [showPortfolio, setShowPortfolio] = useState(true);
+  const [showPurchases, setShowPurchases] = useState(false);
 
   useEffect(() => {
     async function getPortfolioAndTransactions() {
@@ -170,7 +171,7 @@ const Portfolio = () => {
         return {
           ticker: portfolioItem.stockTicker,
           quantity: portfolioItem.quantity,
-          price: tickerInfo.results[0].c,
+          price: tickerInfo.close || tickerInfo.results[0].c,
         };
       });
 
@@ -182,7 +183,7 @@ const Portfolio = () => {
       }, 0);
       console.log(totalValuation);
       if (totalValuation !== 0) {
-        //todo
+        //todo this is just going through weird for some reason
         dispatch(updatePortfolioValuation({ id: userId, totalValuation }));
       }
       setReload(reload + 1);
@@ -195,7 +196,24 @@ const Portfolio = () => {
   }, [portfolio]);
 
   if (loading) {
-    return <div>loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
+        <div className="lds-roller">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+
+      // <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
+      //   <div className="animate-spin rounded-full h-64 w-64 border-t-8 border-b-8  border-purple-500"></div>
+      // </div>
+    );
   }
 
   return (
@@ -205,11 +223,85 @@ const Portfolio = () => {
       {console.log("UserId:", userId)}
       <div className="assets h-1/3  border border-gray-400 p-4 rounded bg-gray-100">
         <TotalBalanceChartPage userId={userId} reload={reload} />
-        <button style={{ fontStyle: "italic" }} onClick={fetchPortfolioData}>
+        <button
+          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={fetchPortfolioData}
+        >
           Refresh Data
         </button>
       </div>
-      {transactions && (
+      <button
+        className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => {
+          setShowPurchases(true);
+          setShowPortfolio(false);
+        }}
+      >
+        Toggle Purchase History
+      </button>
+      <button
+        className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        onClick={() => {
+          setShowPurchases(false);
+          setShowPortfolio(true);
+        }}
+      >
+        Show Portfolio Assets
+      </button>
+      {portfolio && showPortfolio ? (
+        <div>
+          <table className="w-full table-auto border-collapse border border-purple-500">
+            <thead className="border-b-2 border-purple-500">
+              <tr>
+                <th className="px-4 py-2">Ticker</th>
+                <th className="px-4 py-2">Company</th>
+                <th className="px-4 py-2">Quantity</th>
+                <th className="px-4 py-2">Average Purchase Price</th>
+                <th className="px-4 py-2">Last Purchased:</th>
+              </tr>
+            </thead>
+            <tbody>
+              {portfolio &&
+                portfolio.map((portfolioItem) => {
+                  return (
+                    <tr
+                      key={portfolioItem.id}
+                      className="border-b border-purple-500"
+                    >
+                      <td className="px-4 py-2 text-center">
+                        {portfolioItem.stockTicker}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        {portfolioItem.stockName.length > 30
+                          ? portfolioItem.stockName.slice(0, 30) + "..."
+                          : portfolioItem.stockName}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        {portfolioItem.quantity}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        {portfolioItem.purchasePrice}
+                      </td>
+                      <td className="px-4 py-2 text-center">
+                        {new Date(portfolioItem.updatedAt).toLocaleString(
+                          "en-US",
+                          {
+                            dateStyle: "short",
+                            timeStyle: "short",
+                          }
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        ""
+      )}
+
+      {transactions && showPurchases && (
         <table className="w-full table-auto border-collapse border border-purple-500">
           <thead className="border-b-2 border-purple-500">
             <tr>
@@ -220,6 +312,7 @@ const Portfolio = () => {
             </tr>
           </thead>
           <tbody>
+            {console.log(transactions)}
             {transactions &&
               transactions.map((t) => {
                 return (
@@ -237,7 +330,10 @@ const Portfolio = () => {
                     </td>
                     <td className="px-4 py-2 text-center">${t.price}</td>
                     <td className="px-4 py-2 text-center">
-                      {t.transaction_time.slice(0, 10)}
+                      {new Date(t.transaction_time).toLocaleString("en-US", {
+                        dateStyle: "short",
+                        timeStyle: "short",
+                      })}
                     </td>
                   </tr>
                 );

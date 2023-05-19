@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../app/store";
+import { resetPortfolio } from "../portfolio/portfolioSlice";
 
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id);
@@ -9,6 +10,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const logoutAndRedirectHome = () => {
     dispatch(logout());
+    dispatch(resetPortfolio());
     navigate("/login");
   };
 
@@ -17,9 +19,45 @@ const Navbar = () => {
       <div className="flex items-center border-b-4 w-full border-sky-500 border-opacity-20 pb-4">
         <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
 
-        <h1 className="ml-4 font-body text-xl text-shadow-lg">
-          Robin In the Hood {"(RITH)"}
+        {/* <h1 className="ml-4 font-body text-xl text-shadow-lg" style={}> */}
+        <h1
+          style={{
+            fontFamily: "Futura, 'Trebuchet MS', Arial, sans-serif",
+            fontSize: "21px",
+            fontStyle: "normal",
+            fontVariant: "normal",
+            fontWeight: 400,
+            lineHeight: "30px",
+          }}
+        >
+          Robin In the Hood
         </h1>
+        {/* <h1
+          style={{
+            fontFamily:
+              'Garamond, Baskerville, "Baskerville Old Face", "Hoefler Text", "Times New Roman", serif',
+            fontSize: "21px",
+            fontStyle: "bold",
+            fontVariant: "normal",
+            fontWeight: 400,
+            lineHeight: "30px",
+          }}
+        >
+          Robin In the Hood
+        </h1>
+        <h1
+          style={{
+            fontFamily:
+              'Baskerville, "Baskerville Old Face", "Hoefler Text", Garamond, "Times New Roman", serif',
+            fontSize: "21px",
+            fontStyle: "bold",
+            fontVariant: "normal",
+            fontWeight: 400,
+            lineHeight: "30px",
+          }}
+        >
+          Robin In the Hood
+        </h1> */}
       </div>
       <nav className="w-full text-xl text-shadow-lg ">
         {isLoggedIn ? (

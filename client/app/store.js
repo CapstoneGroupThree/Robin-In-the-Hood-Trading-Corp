@@ -8,6 +8,7 @@ import watchlistStocksViewSliceReducer from "../features/home/watchListView/watc
 import portfolioBuySellSliceReducer from "../features/singleStock/portfolioBuySellSlice";
 import portfolioSliceReducer from "../features/portfolio/portfolioSlice";
 import transactionSliceReducer from "../features/portfolio/transactionSlice";
+import searchResultsSliceReducer from "../features/searchBar/searchSlice";
 
 const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
     portfolioBuySellStock: portfolioBuySellSliceReducer,
     portfolio: portfolioSliceReducer,
     transactions: transactionSliceReducer,
+    searchResults: searchResultsSliceReducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 });

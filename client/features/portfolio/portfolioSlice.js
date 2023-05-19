@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
+import { logout } from "../auth/authSlice";
 //Fetch Portfolio
 export const fetchSinglePortfolio = createAsyncThunk(
   "singlePortfolio",
@@ -35,13 +35,22 @@ export const updatePortfolioValuation = createAsyncThunk(
 export const portfolioSlice = createSlice({
   name: "singlePortfolio",
   initialState: [],
-  reducers: {},
+  reducers: {
+    resetPortfolio: (state) => {
+      return []; // Reset the portfolio state to an empty array
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchSinglePortfolio.fulfilled, (state, action) => {
       return action.payload;
     });
+    builder.addCase(logout, (state) => {
+      return []; // Reset the portfolio state to an empty array
+    });
   },
 });
+
+export const { resetPortfolio } = portfolioSlice.actions;
 
 export const selectSinglePortfolio = (state) => state.portfolio;
 

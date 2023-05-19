@@ -216,7 +216,11 @@ const Buy = (props) => {
   };
 
   if (isLoading) {
-    return <div>loading...</div>;
+    if (marketOpen) {
+      return <div> Loading... </div>;
+    } else {
+      return <div>Buy/Sell Unavailable Outside Market Hours</div>;
+    }
   }
 
   return (
@@ -267,8 +271,18 @@ const Buy = (props) => {
                 <span>Q: {quantity}</span>
                 <div>Cost: {(tickerPriceInfo * quantity).toFixed(2)}</div>
               </div>
-              <button onClick={handleBuy}>Buy</button>
-              <button onClick={() => setShowPopup(false)}>Close</button>
+              <button
+                className="button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={handleBuy}
+              >
+                Buy
+              </button>
+              <button
+                className="button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => setShowPopup(false)}
+              >
+                Close
+              </button>
             </div>
           </div>
         )}
