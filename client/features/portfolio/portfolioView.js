@@ -217,11 +217,11 @@ const Portfolio = () => {
   }
 
   return (
-    <div className="portfolio-bg">
+    <div className="flex flex-col portfolio-bg">
       {console.log("portfolio", portfolio)}
-      <h1 className="px-4 py-2 text-center">Your Portfolio</h1>
+      <h1 className="px-4 py-2 text-center text-white">Your Portfolio</h1>
       {console.log("UserId:", userId)}
-      <div className="assets h-1/3  border border-gray-400 p-4 rounded bg-gray-100">
+      <div className="assets h-2/5 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 box-shadow">
         <TotalBalanceChartPage userId={userId} reload={reload} />
         <button
           className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -230,7 +230,7 @@ const Portfolio = () => {
           Refresh Data
         </button>
       </div>
-      <button
+      {/* <button
         className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         onClick={() => {
           setShowPurchases(true);
@@ -247,17 +247,35 @@ const Portfolio = () => {
         }}
       >
         Show Portfolio Assets
-      </button>
+      </button> */}
       {portfolio && showPortfolio ? (
         <div>
+          <button
+            className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => {
+              setShowPurchases(true);
+              setShowPortfolio(false);
+            }}
+          >
+            Toggle Purchase History
+          </button>
+          <button
+            className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={() => {
+              setShowPurchases(false);
+              setShowPortfolio(true);
+            }}
+          >
+            Show Portfolio Assets
+          </button>
           <table className="w-full table-auto border-collapse border border-purple-500">
             <thead className="border-b-2 border-purple-500">
               <tr>
-                <th className="px-4 py-2">Ticker</th>
-                <th className="px-4 py-2">Company</th>
-                <th className="px-4 py-2">Quantity</th>
-                <th className="px-4 py-2">Average Purchase Price</th>
-                <th className="px-4 py-2">Last Purchased:</th>
+                <th className="px-4 py-2 text-white">Ticker</th>
+                <th className="px-4 py-2 text-white">Company</th>
+                <th className="px-4 py-2 text-white">Quantity</th>
+                <th className="px-4 py-2 text-white">Average Purchase Price</th>
+                <th className="px-4 py-2 text-white">Last Purchased:</th>
               </tr>
             </thead>
             <tbody>
@@ -268,21 +286,21 @@ const Portfolio = () => {
                       key={portfolioItem.id}
                       className="border-b border-purple-500"
                     >
-                      <td className="px-4 py-2 text-center">
+                      <td className="px-4 py-2 text-center text-white">
                         {portfolioItem.stockTicker}
                       </td>
-                      <td className="px-4 py-2 text-center">
+                      <td className="px-4 py-2 text-center text-white">
                         {portfolioItem.stockName.length > 30
                           ? portfolioItem.stockName.slice(0, 30) + "..."
                           : portfolioItem.stockName}
                       </td>
-                      <td className="px-4 py-2 text-center">
+                      <td className="px-4 py-2 text-center text-white">
                         {portfolioItem.quantity}
                       </td>
-                      <td className="px-4 py-2 text-center">
+                      <td className="px-4 py-2 text-center text-white">
                         {portfolioItem.purchasePrice}
                       </td>
-                      <td className="px-4 py-2 text-center">
+                      <td className="px-4 py-2 text-center text-white">
                         {new Date(portfolioItem.updatedAt).toLocaleString(
                           "en-US",
                           {
