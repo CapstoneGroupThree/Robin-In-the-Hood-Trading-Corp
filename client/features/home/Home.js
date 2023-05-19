@@ -223,7 +223,7 @@ const Home = () => {
     <div className=" flex flex-col antialiased bg-transparent home-bg w-full h-full justify-between overflow-hidden">
       {console.log(portfolio)}
       <div className="flex items-center justify-between align-middle w-full text-center text-white pl-4 pr-4  ">
-        <h1 className=" font-head text-2xl text-shadow-lg">Home</h1>
+        <h1 className=" font-head text-3xl text-shadow-lg">Home</h1>
         <SearchBar name={displayedName} className="" />
       </div>
       <div className="flex  space-x-4 p-2 pl-4 pr-4 h-screen w-full overflow-hidden   ">
