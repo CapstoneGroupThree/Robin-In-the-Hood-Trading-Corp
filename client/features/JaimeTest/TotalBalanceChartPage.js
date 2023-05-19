@@ -64,7 +64,7 @@ const TotalBalanceChartPage = (props) => {
         // onClick={toggleDetails}
       >
         Total Balance:{" "}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-100">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-100 to-pink-100">
           {"$" + (lastTotalBalance?.toFixed(2) || "0.00")}
         </span>{" "}
         {lastTotalBalance - startingBalance >= 0 ? (
