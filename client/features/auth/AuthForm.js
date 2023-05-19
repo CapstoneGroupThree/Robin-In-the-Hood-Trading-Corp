@@ -77,12 +77,16 @@ const AuthForm = ({ name, displayName }) => {
 
   return (
     <div className="flex flex-row auth-container min-h-screen w-screen">
-      <div className="flex flex-col justify-center items-center bg-transparent backdrop-filter backdrop-blur">
-        <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
-
+      <div
+        className="flex flex-col justify-center items-center bg-transparent backdrop-filter backdrop-blur w-3/8"
+        style={{ width: "15%" }}
+      >
+        {" "}
         {/* <h1 className="ml-4 font-body text-xl text-shadow-lg" style={}> */}
         <h1
           style={{
+            display: "flex",
+            alignItems: "center",
             color: "white",
             fontFamily: "Futura, 'Trebuchet MS', Arial, sans-serif",
             fontSize: "21px",
@@ -92,6 +96,7 @@ const AuthForm = ({ name, displayName }) => {
             lineHeight: "30px",
           }}
         >
+          <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
           Robin In the Hood
         </h1>
         {error && <div className="alert alert-danger">{error}</div>}
@@ -113,8 +118,14 @@ const AuthForm = ({ name, displayName }) => {
       </div>
       <div className="flex flex-col items-center justify-end flex-grow">
         <h1 className="flex items-center block tracking-widest mb-4 text-white text-xl font-semibold bg-transparent backdrop-filter backdrop-blur">
-          Created By Future Employees of Google, Amazon, META and more!:
+          Created By Future Employees of Top Tech Companies Like
+          <img src="/amazon.png" alt="amazon" className="w-10 h-10"></img>{" "}
+          <img src="/apple.png" alt="apple" className="w-10 h-10"></img>{" "}
+          <img src="/google.png" alt="google" className="w-10 h-10"></img>{" "}
+          <img src="/microsoft.png" alt="microsoft" className="w-10 h-10"></img>{" "}
+          and Yours!
         </h1>
+
         <ul className="flex flex-row items-center gap-4 bg-transparent backdrop-filter backdrop-blur text-xl pt-5">
           <li>
             <Link
