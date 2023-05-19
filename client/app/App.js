@@ -19,9 +19,9 @@ const App = () => {
           {/* <h1>Yolo</h1> */}
         </div>
       ) : (
-        <main className="">
+        <div>
           <AppRoutes />
-        </main>
+        </div>
       )}
     </div>
   );
