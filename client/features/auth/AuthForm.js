@@ -78,6 +78,22 @@ const AuthForm = ({ name, displayName }) => {
   return (
     <div className="flex flex-row auth-container min-h-screen w-screen">
       <div className="flex flex-col justify-center items-center bg-transparent backdrop-filter backdrop-blur">
+        <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
+
+        {/* <h1 className="ml-4 font-body text-xl text-shadow-lg" style={}> */}
+        <h1
+          style={{
+            color: "white",
+            fontFamily: "Futura, 'Trebuchet MS', Arial, sans-serif",
+            fontSize: "21px",
+            fontStyle: "normal",
+            fontVariant: "normal",
+            fontWeight: 400,
+            lineHeight: "30px",
+          }}
+        >
+          Robin In the Hood
+        </h1>
         {error && <div className="alert alert-danger">{error}</div>}
         <form
           /* took out shadow-md from className */
