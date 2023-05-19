@@ -286,7 +286,7 @@ const PopularStocksHomeView = () => {
                 to={`/singleStock/${ticker}`}
                 className="text-sky-600 hover:text-sky-900 font-semibold font-body"
               >
-                <h2> {trimmedName}</h2>
+                <h2 className="font-semibold font-body"> {trimmedName}</h2>
               </Link>
 
               <div className="flex justify-between font-body font-medium">

@@ -9,6 +9,7 @@ import { me } from "./store";
 import EditUserInfo from "../features/editUserInfo";
 import Chatbot from "../features/chatBot";
 import Portfolio from "../features/portfolio/portfolioView";
+import AnimationComponent from "../images/animeTest";
 
 /**
  * COMPONENT
@@ -33,6 +34,7 @@ const AppRoutes = () => {
           <Route path="/user/edit" element={<EditUserInfo />} />
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/animeTest" element={<AnimationComponent />} />
         </Routes>
       ) : (
         <Routes>

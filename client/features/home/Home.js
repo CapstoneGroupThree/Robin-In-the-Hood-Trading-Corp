@@ -198,8 +198,8 @@ const Home = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
-        <div className="lds-roller">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-950 via-slate-800 to-slate-950">
+        <div class="lds-roller">
           <div></div>
           <div></div>
           <div></div>
@@ -220,17 +220,17 @@ const Home = () => {
   //todo create a search bar feature for pages that need it
   //todo need to get it working on my route pull
   return (
-    <div className=" flex flex-col antialiased bg-transparent home-bg font-body font-medium w-full h-full justify-between overflow-hidden">
+    <div className=" flex flex-col antialiased bg-transparent home-bg w-full h-full justify-between overflow-hidden">
       {console.log(portfolio)}
-      <div className="flex items-center justify-between w-full text-center text-white pl-4 pr-4">
-        <h1 className=" font-medium font-body text-2xl text-shadow-lg">Home</h1>
+      <div className="flex items-center justify-between align-middle w-full text-center text-white pl-4 pr-4  ">
+        <h1 className=" font-head text-2xl text-shadow-lg">Home</h1>
         <SearchBar name={displayedName} className="" />
       </div>
       <div className="flex  space-x-4 p-2 pl-4 pr-4 h-screen w-full overflow-hidden   ">
         <div className="w-1/2 h-5/6 max-h-screen flex flex-col space-y-4  ">
           {/* <div className="assets h-1/3  border border-gray-400 p-4 rounded bg-gray-100"> */}
           {/* <div className=" assets gradient-home h-1/3 text-white border border-indigo-950 border-opacity-20 p-4 rounded bg-gradient-to-tr from-slate-800 to-slate-900 shadow-md shadow-slate-900 "> */}
-          <div className="assets h-2/5 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-800 to-gray-900 box-shadow">
+          <div className="assets h-2/5 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 box-shadow">
             <button
               className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               onClick={fetchPortfolioData}
@@ -239,12 +239,12 @@ const Home = () => {
             </button>
             <TotalBalanceChartPage userId={userId} reload={reload} />
           </div>
-          <div className="watchlist h-3/5 w-full bg-gradient-to-tr border border-slate-600  from-slate-800 to-slate-900  p-4 rounded box-shadow ">
+          <div className="watchlist h-3/5 w-full border border-slate-600  bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900  p-4 rounded box-shadow ">
             <WatchListView />
           </div>
         </div>
-        <div className="popularStocks h-5/6 w-1/2 flex flex-col  pt-4 pl-2 pr-2 border border-slate-600 rounded bg-gradient-to-t from-slate-800 to-gray-900 box-shadow">
-          <h2 className=" text-xl text-white font-medium pl-2">
+        <div className="popularStocks h-5/6 w-1/2 flex flex-col  pt-4 pl-2 pr-2 border border-slate-600 rounded bg-gradient-to-b from-slate-900 via-slate-700 to-slate-900 box-shadow">
+          <h2 className=" text-xl text-white font-numbers font-semibold pl-2">
             {" "}
             Popular Stocks
           </h2>
