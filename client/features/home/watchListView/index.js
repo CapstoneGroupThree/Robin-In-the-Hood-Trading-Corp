@@ -237,7 +237,7 @@ const WatchListView = () => {
   return (
     <div>
       <h2
-        className="relative text-white font-bold py-2 px-4 rounded cursor-pointer transition-all duration-300 ease-in-out ml-[-15.5px]"
+        className="relative font-bold py-2 px-4 rounded cursor-pointer transition-all duration-300 ease-in-out ml-[-15.5px]"
         onClick={handlePopUpClick}
       >
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">
@@ -246,7 +246,7 @@ const WatchListView = () => {
         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">
           List
         </span>
-        <span className="absolute top-0 left-0 w-full h-full opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out bg-gray-800 rounded" />
+        <span className="absolute top-0 left-0 w-full h-full opacity-0  transition-opacity duration-300 ease-in-out bg-gray-800 rounded" />
         <span className="absolute -bottom-4 right-0 text-xs text-gray-400">
           Click Above to View Watch List
         </span>

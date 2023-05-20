@@ -713,3 +713,24 @@ form div {
 .slider-price:hover {
   color: lightblue; /* Update with your desired hover color */
 }
+
+.refresh-button {
+  background-color: #2f80ed;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 4px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-image: linear-gradient(to right, #9f7aea, #51a3ff);
+  /* Add vendor prefixes for broader browser support */
+  background-image: -webkit-linear-gradient(right, #9f7aea, #51a3ff);
+  background-image: -moz-linear-gradient(right, #9f7aea, #51a3ff);
+  background-image: -o-linear-gradient(right, #9f7aea, #51a3ff);
+  background-image: -ms-linear-gradient(right, #9f7aea, #51a3ff);
+}
+
+.refresh-button:hover {
+  background-color: #2b6cb0;
+}

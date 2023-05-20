@@ -9,6 +9,8 @@ import { fetchTransactions, selectTransactions } from "./transactionSlice";
 import { Link } from "react-router-dom";
 import TotalBalanceChartPage from "../JaimeTest/TotalBalanceChartPage";
 import { fetchSingleStockTickerPriceInfo } from "../singleStock/singleStockViewSlice.js";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Portfolio = () => {
   const me = useSelector((state) => state.auth.me);
@@ -223,11 +225,8 @@ const Portfolio = () => {
       {console.log("UserId:", userId)}
       <div className="assets h-2/5 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 box-shadow">
         <TotalBalanceChartPage userId={userId} reload={reload} />
-        <button
-          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={fetchPortfolioData}
-        >
-          Refresh Data
+        <button className="refresh-button" onClick={fetchPortfolioData}>
+          <FontAwesomeIcon icon={faSyncAlt} /> Refresh
         </button>
       </div>
       {/* <button

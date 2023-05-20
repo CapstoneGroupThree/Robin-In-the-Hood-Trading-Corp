@@ -16,11 +16,9 @@ const Navbar = () => {
   };
 
   return (
-    <div className="flex flex-col max-h-screen items-center w-full font-body text-white font-normal ">
-      <div className="flex items-center border-b-4 w-full border-sky-500 border-opacity-20 pb-4">
-        <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
-
-        {/* <h1 className="ml-4 font-body text-xl text-shadow-lg" style={}> */}
+    <div className="flex justify-center flex-col max-h-screen items-center w-full font-body text-white font-normal ">
+      <div className="ml-[-15px] flex items-center justify-center border-b-4 w-full border-sky-500 border-opacity-20 pb-4">
+        <img src="/RITHLogo.png" alt="logo" className="w-10 h-10 mr-3"></img>
         <h1
           style={{
             fontFamily: "Futura, 'Trebuchet MS', Arial, sans-serif",
@@ -29,11 +27,13 @@ const Navbar = () => {
             fontVariant: "normal",
             fontWeight: 400,
             lineHeight: "30px",
+            textAlign: "center",
           }}
         >
           Robin In the Hood
         </h1>
-        {/* <h1
+      </div>
+      {/* <h1
           style={{
             fontFamily:
               'Garamond, Baskerville, "Baskerville Old Face", "Hoefler Text", "Times New Roman", serif',
@@ -59,7 +59,7 @@ const Navbar = () => {
         >
           Robin In the Hood
         </h1> */}
-      </div>
+
       <nav className="w-full text-xl text-shadow-lg ">
         {isLoggedIn ? (
           <div className="flex flex-col items-center place-content-evenly ">
@@ -68,26 +68,27 @@ const Navbar = () => {
               to="/home"
               className="hover:text-blue-500 block font-head text-xl"
             >
-              Home
+              <i className="fa-solid fa-house-user"></i> {" Home"}
             </Link>
             <Link
               to="/allStocks"
               className="hover:text-blue-500 block font-head text-xl"
             >
-              All Stocks
+              <i className="fa-solid fa-money-bill-1-wave"></i> {" All Stocks"}
             </Link>
             <Link
               to={"/portfolio"}
               className="hover:text-blue-500 block font-head text-xl"
             >
-              Portfolio
+              <i className="fa-solid fa-rocket"></i>
+              {" Portfolio"}
             </Link>
             <Link
               to="/user/edit"
               className="hover:text-blue-500 block font-head text-xl"
             >
-              {" "}
-              Edit User Profile
+              <i className="fa-solid fa-user-pen"></i>
+              {" Edit User Profile"}
             </Link>
 
             <hr className=" w-56 fixed bottom-8  border-t-4 border-sky-500 border-opacity-20 pb-4 " />
@@ -97,7 +98,8 @@ const Navbar = () => {
                 className="hover:text-blue-500  active:bg-gray-500 active:text-white "
                 onClick={logoutAndRedirectHome}
               >
-                Logout
+                <i className="fa-solid fa-right-from-bracket"></i>
+                {" Logout"}
               </button>
             </div>
           </div>
