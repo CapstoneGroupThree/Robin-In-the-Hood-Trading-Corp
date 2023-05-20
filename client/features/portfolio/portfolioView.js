@@ -12,6 +12,9 @@ import { fetchSingleStockTickerPriceInfo } from "../singleStock/singleStockViewS
 
 const Portfolio = () => {
   const me = useSelector((state) => state.auth.me);
+  const yourName =
+    me.first_name.slice(0, 1).toUpperCase() +
+    me.first_name.slice(1).toLowerCase();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.me.id);
   const portfolio = useSelector(selectSinglePortfolio);
@@ -219,7 +222,15 @@ const Portfolio = () => {
   return (
     <div className="flex flex-col portfolio-bg">
       {console.log("portfolio", portfolio)}
-      <h1 className="px-4 py-2 text-center text-white">Your Portfolio</h1>
+      <h1
+        className="px-4 py-2 text-center text-white"
+        style={{
+          fontSize: "25px",
+          borderBottom: "4px solid black",
+        }}
+      >
+        Hello {yourName}!
+      </h1>
       {console.log("UserId:", userId)}
       <div className="assets h-2/5 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 box-shadow">
         <TotalBalanceChartPage userId={userId} reload={reload} />
@@ -248,26 +259,37 @@ const Portfolio = () => {
       >
         Show Portfolio Assets
       </button> */}
+      <h2
+        className="px-4 py-2 text-center text-white"
+        style={{
+          fontSize: "25px",
+          borderBottom: "4px solid black",
+        }}
+      >
+        Transactions Table
+      </h2>
+      <div>
+        <button
+          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {
+            setShowPurchases(true);
+            setShowPortfolio(false);
+          }}
+        >
+          Toggle Purchase History
+        </button>
+        <button
+          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {
+            setShowPurchases(false);
+            setShowPortfolio(true);
+          }}
+        >
+          Show Portfolio Assets
+        </button>
+      </div>
       {portfolio && showPortfolio ? (
         <div>
-          <button
-            className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => {
-              setShowPurchases(true);
-              setShowPortfolio(false);
-            }}
-          >
-            Toggle Purchase History
-          </button>
-          <button
-            className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => {
-              setShowPurchases(false);
-              setShowPortfolio(true);
-            }}
-          >
-            Show Portfolio Assets
-          </button>
           <table className="w-full table-auto border-collapse border border-purple-500">
             <thead className="border-b-2 border-purple-500">
               <tr>
@@ -319,45 +341,51 @@ const Portfolio = () => {
         ""
       )}
 
-      {transactions && showPurchases && (
-        <table className="w-full table-auto border-collapse border border-purple-500">
-          <thead className="border-b-2 border-purple-500">
-            <tr>
-              <th className="px-4 py-2">Ticker</th>
-              <th className="px-4 py-2">Transaction Type</th>
-              <th className="px-4 py-2">Price</th>
-              <th className="px-4 py-2">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {console.log(transactions)}
-            {transactions &&
-              transactions.map((t) => {
-                return (
-                  <tr key={t.id} className="border-b border-purple-500">
-                    <td className="px-4 py-2 text-center">
-                      <Link
-                        to={`/singleStock/${t.stockTicker}`}
-                        className=" hover:text-purple-500 "
-                      >
-                        {t.stockTicker}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-2 text-center">
-                      Quantity: {t.quantity} | Type: {t.transaction_type}
-                    </td>
-                    <td className="px-4 py-2 text-center">${t.price}</td>
-                    <td className="px-4 py-2 text-center">
-                      {new Date(t.transaction_time).toLocaleString("en-US", {
-                        dateStyle: "short",
-                        timeStyle: "short",
-                      })}
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+      {transactions && showPurchases ? (
+        <div>
+          <table className="w-full table-auto border-collapse border border-purple-500">
+            <thead className="border-b-2 border-purple-500">
+              <tr>
+                <th className="px-4 py-2 text-white">Ticker</th>
+                <th className="px-4 py-2 text-white">Transaction Type</th>
+                <th className="px-4 py-2 text-white">Price</th>
+                <th className="px-4 py-2 text-white">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {console.log(transactions)}
+              {transactions &&
+                transactions.map((t) => {
+                  return (
+                    <tr key={t.id} className="border-b border-purple-500">
+                      <td className="px-4 py-2 text-center text-white">
+                        <Link
+                          to={`/singleStock/${t.stockTicker}`}
+                          className=" hover:text-purple-500 "
+                        >
+                          {t.stockTicker}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-2 text-center text-white">
+                        Quantity: {t.quantity} | Type: {t.transaction_type}
+                      </td>
+                      <td className="px-4 py-2 text-center text-white">
+                        ${t.price}
+                      </td>
+                      <td className="px-4 py-2 text-center text-white">
+                        {new Date(t.transaction_time).toLocaleString("en-US", {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        ""
       )}
       {/* <div>
         {portfolio.map((port) => {
