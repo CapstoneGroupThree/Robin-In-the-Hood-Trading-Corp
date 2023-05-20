@@ -14,6 +14,9 @@ import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Portfolio = () => {
   const me = useSelector((state) => state.auth.me);
+  const yourName =
+    me.first_name.slice(0, 1).toUpperCase() +
+    me.first_name.slice(1).toLowerCase();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.me.id);
   const portfolio = useSelector(selectSinglePortfolio);
@@ -221,13 +224,23 @@ const Portfolio = () => {
   return (
     <div className="flex flex-col portfolio-bg">
       {console.log("portfolio", portfolio)}
-      <h1 className="px-4 py-2 text-center text-white">Your Portfolio</h1>
+      <h1
+        className="px-4 py-2 text-center text-white"
+        style={{
+          fontSize: "25px",
+        }}
+      >
+        Hello {yourName}!
+      </h1>
       {console.log("UserId:", userId)}
-      <div className="assets h-2/5 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 box-shadow">
-        <TotalBalanceChartPage userId={userId} reload={reload} />
-        <button className="refresh-button" onClick={fetchPortfolioData}>
+      <div className="assets relative h-1/3 border border-slate-600 w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 p-4 rounded box-shadow">
+        <button
+          className="refresh-button absolute top-4 right-4 z-10"
+          onClick={fetchPortfolioData}
+        >
           <FontAwesomeIcon icon={faSyncAlt} /> Refresh
         </button>
+        <TotalBalanceChartPage userId={userId} reload={reload} />
       </div>
       {/* <button
         className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -247,51 +260,62 @@ const Portfolio = () => {
       >
         Show Portfolio Assets
       </button> */}
+      <div className="border-t border-gray-500 my-8"></div>
+      <div className="flex flex-row items-center justify-evenly">
+        <button
+          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {
+            setShowPurchases(true);
+            setShowPortfolio(false);
+          }}
+        >
+          Toggle Purchase History
+        </button>
+        <button
+          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {
+            setShowPurchases(false);
+            setShowPortfolio(true);
+          }}
+        >
+          Show Portfolio Assets
+        </button>
+      </div>
       {portfolio && showPortfolio ? (
         <div>
-          <button
-            className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => {
-              setShowPurchases(true);
-              setShowPortfolio(false);
-            }}
-          >
-            Toggle Purchase History
-          </button>
-          <button
-            className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={() => {
-              setShowPurchases(false);
-              setShowPortfolio(true);
-            }}
-          >
-            Show Portfolio Assets
-          </button>
-          <table className="w-full table-auto border-collapse border border-purple-500">
-            <thead className="border-b-2 border-purple-500">
+          <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900">
+            <thead className="border-2 border-sky-950">
               <tr>
-                <th className="px-4 py-2 text-white">Ticker</th>
-                <th className="px-4 py-2 text-white">Company</th>
-                <th className="px-4 py-2 text-white">Quantity</th>
-                <th className="px-4 py-2 text-white">Average Purchase Price</th>
-                <th className="px-4 py-2 text-white">Last Purchased:</th>
+                <th className="px-4 py-2 font-numbers text-white">Ticker</th>
+                <th className="px-4 py-2 font-numbers text-white">Company</th>
+                <th className="px-4 py-2 font-numbers text-white">Quantity</th>
+                <th className="px-4 py-2 font-numbers text-white">
+                  Average Purchase Price
+                </th>
+                <th className="px-4 py-2 font-numbers text-white">
+                  Last Purchased:
+                </th>
               </tr>
             </thead>
             <tbody>
               {portfolio &&
-                portfolio.map((portfolioItem) => {
+                portfolio.map((portfolioItem, index) => {
                   return (
                     <tr
                       key={portfolioItem.id}
-                      className="border-b border-purple-500"
+                      className={`${
+                        index % 2 === 0 ? "bg-slate-800" : ""
+                      } hover:bg-slate-700 transition-colors duration-200 ease-in-out`}
                     >
                       <td className="px-4 py-2 text-center text-white">
                         {portfolioItem.stockTicker}
                       </td>
-                      <td className="px-4 py-2 text-center text-white">
-                        {portfolioItem.stockName.length > 30
-                          ? portfolioItem.stockName.slice(0, 30) + "..."
-                          : portfolioItem.stockName}
+                      <td className="px-4 py-2 text-center text-sky-200 hover:text-sky-400 font-numbers">
+                        <Link to={`/singleStock/${portfolioItem.stockTicker}`}>
+                          {portfolioItem.stockName.length > 30
+                            ? portfolioItem.stockName.slice(0, 30) + "..."
+                            : portfolioItem.stockName}
+                        </Link>
                       </td>
                       <td className="px-4 py-2 text-center text-white">
                         {portfolioItem.quantity}
@@ -318,45 +342,56 @@ const Portfolio = () => {
         ""
       )}
 
-      {transactions && showPurchases && (
-        <table className="w-full table-auto border-collapse border border-purple-500">
-          <thead className="border-b-2 border-purple-500">
-            <tr>
-              <th className="px-4 py-2">Ticker</th>
-              <th className="px-4 py-2">Transaction Type</th>
-              <th className="px-4 py-2">Price</th>
-              <th className="px-4 py-2">Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {console.log(transactions)}
-            {transactions &&
-              transactions.map((t) => {
-                return (
-                  <tr key={t.id} className="border-b border-purple-500">
-                    <td className="px-4 py-2 text-center">
-                      <Link
-                        to={`/singleStock/${t.stockTicker}`}
-                        className=" hover:text-purple-500 "
-                      >
-                        {t.stockTicker}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-2 text-center">
-                      Quantity: {t.quantity} | Type: {t.transaction_type}
-                    </td>
-                    <td className="px-4 py-2 text-center">${t.price}</td>
-                    <td className="px-4 py-2 text-center">
-                      {new Date(t.transaction_time).toLocaleString("en-US", {
-                        dateStyle: "short",
-                        timeStyle: "short",
-                      })}
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+      {transactions && showPurchases ? (
+        <div>
+          <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900">
+            <thead className="border-b-2 border-purple-500">
+              <tr>
+                <th className="px-4 py-2 text-white">Ticker</th>
+                <th className="px-4 py-2 text-white">Transaction Type</th>
+                <th className="px-4 py-2 text-white">Price</th>
+                <th className="px-4 py-2 text-white">Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {console.log(transactions)}
+              {transactions &&
+                transactions.map((t, index) => {
+                  return (
+                    <tr
+                      key={t.id}
+                      className={`${
+                        index % 2 === 0 ? "bg-slate-800" : ""
+                      } hover:bg-slate-700 transition-colors duration-200 ease-in-out`}
+                    >
+                      <td className="px-4 py-2 text-center text-white">
+                        <Link
+                          to={`/singleStock/${t.stockTicker}`}
+                          className=" text-sky-200 hover:text-sky-400 font-numbers "
+                        >
+                          {t.stockTicker}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-2 text-center text-white">
+                        Quantity: {t.quantity} | Type: {t.transaction_type}
+                      </td>
+                      <td className="px-4 py-2 text-center text-white">
+                        ${t.price}
+                      </td>
+                      <td className="px-4 py-2 text-center text-white">
+                        {new Date(t.transaction_time).toLocaleString("en-US", {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        ""
       )}
       {/* <div>
         {portfolio.map((port) => {
