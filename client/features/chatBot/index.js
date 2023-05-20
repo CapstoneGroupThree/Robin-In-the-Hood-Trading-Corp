@@ -207,25 +207,6 @@ const Chatbot = ({ ticker }) => {
   return (
     <div>
       <div className="chatBotContainer">
-        {ticker ? (
-          <div style={{ color: "black" }}>
-            <button onClick={() => handleAdvancedPrompt("type1")}>
-              {ticker} Backstory {" |* "}
-            </button>
-            <button onClick={() => handleAdvancedPrompt("type2")}>
-              Risk Category{" |* "}
-            </button>
-            <button onClick={() => handleAdvancedPrompt("type3")}>
-              Buy, Hold, Or Sell?
-            </button>
-            <button onClick={() => handleAdvancedPrompt("default")}>
-              Thorough Analysis on {ticker}
-            </button>
-          </div>
-        ) : (
-          ""
-        )}
-
         <div>
           <div id="chat_container" ref={chatContainerRef}>
             {messages.map((message, index) => (
@@ -257,7 +238,30 @@ const Chatbot = ({ ticker }) => {
       </div>
 
       <div className="chatArea">
+        <div className="buttonContainer">
+          {ticker ? (
+            <div style={{ color: "black" }}>
+              <button onClick={() => handleAdvancedPrompt("type1")}>
+                {ticker} Backstory
+              </button>
+              <button onClick={() => handleAdvancedPrompt("type2")}>
+                {ticker} Risk Category Analysis
+              </button>
+              <button onClick={() => handleAdvancedPrompt("type3")}>
+                Buy, Hold, Or Sell?
+              </button>
+              <button onClick={() => handleAdvancedPrompt("default")}>
+                Thorough Analysis on {ticker}
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
         <form onSubmit={handleSubmit}>
+          <button type="submit">
+            <img src="/send.svg" />
+          </button>
           <textarea
             name="prompt"
             rows="1"
@@ -272,16 +276,14 @@ const Chatbot = ({ ticker }) => {
               }
             }}
           ></textarea>
-          <button type="submit">
-            <img src="/send.svg" />
-          </button>
+
+          <img
+            onClick={() => setShowChat(false)}
+            src="/aiChatRB.png"
+            alt="your AI chat assistant "
+            className="w-20 h-20"
+          ></img>
         </form>
-        <img
-          onClick={() => setShowChat(false)}
-          src="/aiChatRB.png"
-          alt="your AI chat assistant "
-          className="w-20 h-20"
-        ></img>
       </div>
     </div>
   );

@@ -10,8 +10,8 @@ body {
 }
 
 .chatBotContainer {
-  width: 500px; /* adjust this to your needs */
-  height: 750px; /* adjust this to your needs */
+  width: 500px; /* Adjust this to your desired width */
+  height: 800px; /* Adjust this to your desired height */
   position: relative;
   bottom: 79px;
   right: 0;
@@ -24,23 +24,12 @@ body {
 #chat_container {
   flex: 1;
   width: 100%;
-  height: 100%;
-  overflow-y: scroll;
-
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-
-  padding-bottom: 20px;
-  scroll-behavior: smooth;
-  overflow: auto;
+  /* gap: 10px;
+  padding: 10px; */
 }
-/*/ #chat_container::-webkit-scrollbar {
-  display: none;
-} */
 
 .wrapper {
   width: 100%;
@@ -103,45 +92,6 @@ body {
   display: none;
 }
 
-form {
-  width: 50%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 10px;
-  background: #e0f0ff;
-
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-}
-
-textarea {
-  width: 88%;
-
-  color: #353535;
-  font-size: 18px;
-  position: absolute;
-  right: 0;
-  bottom: 1;
-  padding: 10px;
-  background: transparent;
-  border-radius: 5px;
-  border: none;
-  outline: none;
-}
-
-.chat-container {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 300px;
-  height: 500px;
-  border: 1px solid black;
-  background-color: white;
-  padding: 10px;
-  overflow: hidden;
-  border-radius: 10px;
-}
 .chatArea {
   position: absolute;
   bottom: 0;
@@ -149,17 +99,17 @@ textarea {
   width: 100%;
   background: #e0f0ff;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
+  flex-direction: column;
+  align-items: flex-start; /* Updated: align items to flex-start */
+  padding: 5px;
 }
 
 form {
-  position: relative;
-  flex: 1;
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 3px;
+  width: 100%; /* Added: set width to 100% */
 }
 
 textarea {
@@ -171,18 +121,59 @@ textarea {
   border-radius: 5px;
   border: none;
   outline: none;
+  width: 100%; /* Added: set width to 100% */
 }
 
 button {
   outline: 0;
   border: 0;
-  right: -100;
-  bottom: 20;
-  cursor: pointer;
   background: transparent;
 }
 
 form img {
   width: 30px;
   height: 30px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.buttonContainer button {
+  margin: 1px;
+  padding: 10px 20px;
+  border: none;
+  outline: none;
+  color: #ffffff;
+  background-color: #5bc0de;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.buttonContainer button:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 100%;
+  background-color: #5bc0de;
+  transform: skew(-45deg);
+}
+
+.buttonContainer button:hover {
+  background-color: #38b2d1;
+}
+
+.buttonContainer button:active {
+  background-color: #2794aa;
+}
+
+.buttonContainer button:focus {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #5bc0de;
 }
