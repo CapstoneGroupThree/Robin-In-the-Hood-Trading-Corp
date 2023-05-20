@@ -112,7 +112,8 @@ const SearchBar = (props) => {
           aria-label="Search"
           value={query}
           onChange={handleInputChange}
-          className=" w-2/6 py-2 px-3 text-black bg-slate-700 rounded-md border border-slate-900 shadow-sm focus:outline-none focus:ring-2"
+          className="py-2 px-3 text-black bg-slate-700 rounded-md border border-slate-900 shadow-sm focus:outline-none focus:ring-2"
+          style={{ width: "440px" }}
         ></input>
         {/*On submit we navigate the user to the stock tickers page*/}
         {/* <Link to={`/singleStock/${query}`}> */}

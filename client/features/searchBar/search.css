@@ -1,14 +1,14 @@
 .dropdown-menu {
   position: absolute;
-  top: 100%;
-  left: 639px;
+  top: 65px;
+  left: 67.3%;
   z-index: 999;
   background-color: white;
   border: 1px solid #ccc;
   border-radius: 4px;
   right: 1px;
   list-style: none;
-  width: 35%;
+  width: 22%;
   max-height: 200px;
   overflow-y: auto;
   color: black;

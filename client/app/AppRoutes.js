@@ -36,7 +36,7 @@ const AppRoutes = () => {
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/animeTest" element={<AnimationComponent />} />
-          <Route path="/checkout" element={<StripeConts />} />
+          <Route path="/shop/robinbucks" element={<StripeConts />} />
         </Routes>
       ) : (
         <Routes>

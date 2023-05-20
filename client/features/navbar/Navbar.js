@@ -87,7 +87,9 @@ const Navbar = () => {
                 style={{ width: "220px" }} // Fixed width for the link
               >
                 <i className="fa-solid fa-house-user mr-3"></i>
-                <span className="font-head text-xl">Home</span>
+                <span className="font-head text-xl" style={{ height: "30px" }}>
+                  Home
+                </span>
               </Link>
               <Link
                 to="/allStocks"
@@ -99,7 +101,9 @@ const Navbar = () => {
                 style={{ width: "220px" }} // Fixed width for the link
               >
                 <i className="fa-solid fa-money-bill-1-wave mr-3"></i>
-                <span className="font-head text-xl">All Stocks</span>
+                <span className="font-head text-xl" style={{ height: "30px" }}>
+                  All Stocks
+                </span>
               </Link>
               <Link
                 to="/portfolio"
@@ -111,7 +115,23 @@ const Navbar = () => {
                 style={{ width: "220px" }} // Fixed width for the link
               >
                 <i className="fa-solid fa-rocket mr-4"></i>
-                <span className="font-head text-xl">Portfolio</span>
+                <span className="font-head text-xl" style={{ height: "30px" }}>
+                  Portfolio
+                </span>
+              </Link>
+              <Link
+                to="/shop/robinbucks"
+                className={`hover:text-blue-500 flex items-center mb-3 ${
+                  isActiveLink("/shop/robinbucks")
+                    ? "active-link edit-button ml-[-10px]"
+                    : ""
+                }`}
+                style={{ width: "220px" }} // Fixed width for the link
+              >
+                <i className="fa-solid fa-store mr-3"></i>
+                <span className="font-head text-xl" style={{ height: "30px" }}>
+                  Cash Shop
+                </span>
               </Link>
               <Link
                 to="/user/edit"
@@ -123,7 +143,9 @@ const Navbar = () => {
                 style={{ width: "220px" }} // Fixed width for the link
               >
                 <i className="fa-solid fa-user-pen mr-3"></i>
-                <span className="font-head text-xl">Edit User</span>
+                <span className="font-head text-xl" style={{ height: "30px" }}>
+                  Edit User
+                </span>
               </Link>
             </div>
 
