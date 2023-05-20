@@ -19,7 +19,7 @@ const Navbar = () => {
 
   useEffect(() => {
     navigate("/home");
-  }, [navigate]);
+  }, []);
 
   const isActiveLink = (pathname) => {
     return location.pathname === pathname;
