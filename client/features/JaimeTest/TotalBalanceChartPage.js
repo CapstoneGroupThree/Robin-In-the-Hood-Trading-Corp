@@ -2,19 +2,24 @@
 
 import React, { useEffect, useState } from "react";
 import TotalBalanceChart from "./TotalBalanceChart";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const TotalBalanceChartPage = (props) => {
   const [lastTotalBalance, setLastTotalBalance] = useState(null);
   const [balanceData, setBalanceData] = useState(null);
   const [lastAssets, setLastAssets] = useState(null);
   const [lastBalanceOnly, setLastBalanceOnly] = useState(null);
-  const [showDetails, setShowDetails] = useState(false);
+  const [showDetails, setShowDetails] = useState(true);
   const [startingBalance, setStartingBalnce] = useState(100000);
   const { userId, reload } = props;
 
   useEffect(() => {
     fetchData();
   }, [reload]);
+
+  const toggleDetails = () => {
+    setShowDetails(!showDetails);
+  };
 
   const fetchData = async () => {
     console.log("Fetch userId:", userId);
@@ -49,45 +54,65 @@ const TotalBalanceChartPage = (props) => {
   };
 
   return (
-    <div>
+    <div style={{ height: "250px" }}>
       <h2
-        className="button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        onClick={() => {
-          setShowDetails(!showDetails);
-        }}
-        className=" font-numbers font-semibold"
+        className={`relative mt-[-8px] font-bold py-2 px-4 rounded cursor-pointer transition-all duration-300 ease-in-out ml-[-15.5px] ${
+          showDetails
+            ? "text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500"
+            : "text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500"
+        }`}
+        // onClick={toggleDetails}
       >
-        Total Balance: {"$" + lastTotalBalance?.toFixed(2)} (Click to view/hide
-        details) Percentage Change:{" "}
+        Total Balance:{" "}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-100 to-pink-100">
+          {"$" + (lastTotalBalance?.toFixed(2) || "0.00")}
+        </span>{" "}
+        {lastTotalBalance - startingBalance >= 0 ? (
+          <>
+            <i className="fa-solid fa-circle-up text-green-500"></i>{" "}
+          </>
+        ) : (
+          <>
+            <i className="fa-solid fa-circle-down text-red-500"></i>{" "}
+          </>
+        )}
         <span
-          className={
+          className={`${
             lastTotalBalance - startingBalance >= 0
               ? "positive-change"
               : "negative-change"
-          }
+          }`}
         >
-          {(
-            ((lastTotalBalance - startingBalance) / startingBalance) *
-            100
-          ).toFixed(2)}
-          {lastTotalBalance - startingBalance >= 0
-            ? " % \u2191\u2191"
-            : " % \u2193\u2193"}
-          {" $ " + Math.abs(lastTotalBalance - startingBalance).toFixed(2)}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 to-pink-100">
+            {(
+              ((lastTotalBalance - startingBalance) / startingBalance) *
+              100
+            ).toFixed(2)}
+            {" % "}
+          </span>
+          {lastTotalBalance - startingBalance >= 0 ? (
+            <>
+              <i className="fa-solid fa-circle-up text-green-500"></i>
+            </>
+          ) : (
+            <>
+              <i className="fa-solid fa-circle-down text-red-500"></i>
+            </>
+          )}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 to-pink-100">
+            {" $" + Math.abs(lastTotalBalance - startingBalance).toFixed(2)}
+          </span>
         </span>
+        <span className="absolute top-0 left-0 w-full h-full opacity-0  transition-opacity duration-300 ease-in-out bg-gray-800 rounded" />
       </h2>
 
-      {showDetails ? (
-        <div>
+      {showDetails && (
+        <div style={{ marginTop: "-10px" }}>
           <p className="font-numbers">
-            Stock Assets: {"$" + lastAssets?.toFixed(2)}
-          </p>
-          <p className="font-numbers">
-            Cash Balance: {"$" + lastBalanceOnly?.toFixed(2)}
+            {/* Stock Assets: {"$" + (lastAssets?.toFixed(2) || "0.00")} */}
+            Cash Balance: {"$" + (lastBalanceOnly?.toFixed(2) || "0.00")}
           </p>
         </div>
-      ) : (
-        ""
       )}
 
       {balanceData ? (
