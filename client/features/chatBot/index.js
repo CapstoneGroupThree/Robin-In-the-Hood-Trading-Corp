@@ -207,25 +207,6 @@ const Chatbot = ({ ticker }) => {
   return (
     <div>
       <div className="chatBotContainer">
-        {ticker ? (
-          <div style={{ color: "black" }}>
-            <button onClick={() => handleAdvancedPrompt("type1")}>
-              {ticker} Backstory {" |* "}
-            </button>
-            <button onClick={() => handleAdvancedPrompt("type2")}>
-              Risk Category{" |* "}
-            </button>
-            <button onClick={() => handleAdvancedPrompt("type3")}>
-              Buy, Hold, Or Sell?
-            </button>
-            <button onClick={() => handleAdvancedPrompt("default")}>
-              Thorough Analysis on {ticker}
-            </button>
-          </div>
-        ) : (
-          ""
-        )}
-
         <div>
           <div id="chat_container" ref={chatContainerRef}>
             {messages.map((message, index) => (
@@ -257,6 +238,24 @@ const Chatbot = ({ ticker }) => {
       </div>
 
       <div className="chatArea">
+        {ticker ? (
+          <div style={{ color: "black" }} className="buttonContainer">
+            <button onClick={() => handleAdvancedPrompt("type1")}>
+              {ticker} Backstory {" |* "}
+            </button>
+            <button onClick={() => handleAdvancedPrompt("type2")}>
+              Risk Category{" |* "}
+            </button>
+            <button onClick={() => handleAdvancedPrompt("type3")}>
+              Buy, Hold, Or Sell?
+            </button>
+            <button onClick={() => handleAdvancedPrompt("default")}>
+              Thorough Analysis on {ticker}
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
         <form onSubmit={handleSubmit}>
           <textarea
             name="prompt"
