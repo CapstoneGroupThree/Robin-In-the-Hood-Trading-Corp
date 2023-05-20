@@ -73,9 +73,12 @@ const Navbar = () => {
             <div className="flex flex-col items-start">
               <Link
                 to="/home"
-                className={`hover:text-blue-500 flex items-center mb-3 ${
-                  isActiveLink("/home") ? "active-link edit-button" : ""
+                className={`hover:text-blue-500 flex items-center mb-3 mt-8${
+                  isActiveLink("/home")
+                    ? "active-link edit-button ml-[-10px]"
+                    : ""
                 }`}
+                style={{ width: "220px" }} // Fixed width for the link
               >
                 <i className="fa-solid fa-house-user mr-3"></i>
                 <span className="font-head text-xl">Home</span>
@@ -83,8 +86,11 @@ const Navbar = () => {
               <Link
                 to="/allStocks"
                 className={`hover:text-blue-500 flex items-center mb-3 ${
-                  isActiveLink("/allStocks") ? "active-link edit-button" : ""
+                  isActiveLink("/allStocks")
+                    ? "active-link edit-button ml-[-10px]"
+                    : ""
                 }`}
+                style={{ width: "220px" }} // Fixed width for the link
               >
                 <i className="fa-solid fa-money-bill-1-wave mr-3"></i>
                 <span className="font-head text-xl">All Stocks</span>
@@ -92,20 +98,26 @@ const Navbar = () => {
               <Link
                 to="/portfolio"
                 className={`hover:text-blue-500 flex items-center mb-3 ${
-                  isActiveLink("/portfolio") ? "active-link edit-button" : ""
+                  isActiveLink("/portfolio")
+                    ? "active-link edit-button ml-[-10px]"
+                    : ""
                 }`}
+                style={{ width: "220px" }} // Fixed width for the link
               >
-                <i className="fa-solid fa-rocket mr-3"></i>
+                <i className="fa-solid fa-rocket mr-4"></i>
                 <span className="font-head text-xl">Portfolio</span>
               </Link>
               <Link
                 to="/user/edit"
                 className={`hover:text-blue-500 flex items-center mb-3 ${
-                  isActiveLink("/user/edit") ? "active-link edit-button" : ""
+                  isActiveLink("/user/edit")
+                    ? "active-link edit-button ml-[-10px]"
+                    : ""
                 }`}
+                style={{ width: "220px" }} // Fixed width for the link
               >
                 <i className="fa-solid fa-user-pen mr-3"></i>
-                <span className="font-head text-xl">Edit User Profile</span>
+                <span className="font-head text-xl">Edit User</span>
               </Link>
             </div>
 
@@ -117,7 +129,7 @@ const Navbar = () => {
                 onClick={logoutAndRedirectHome}
               >
                 <i className="fa-solid fa-right-from-bracket mr-3"></i>
-                {"Logout"}
+                Logout
               </button>
             </div>
           </div>
