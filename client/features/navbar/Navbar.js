@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { logout } from "../../app/store";
@@ -16,6 +16,10 @@ const Navbar = () => {
     dispatch(resetPortfolio());
     navigate("/login");
   };
+
+  useEffect(() => {
+    navigate("/home");
+  }, [navigate]);
 
   const isActiveLink = (pathname) => {
     return location.pathname === pathname;
