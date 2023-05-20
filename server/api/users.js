@@ -6,6 +6,10 @@ const {
 const requireToken = require("./gatekeepingMiddleware");
 module.exports = app;
 
+app.get("/", async (req, res) => {
+  const users = await User.findAll();
+  res.send(users);
+});
 //GET a single user
 app.get("/:id", requireToken, async (req, res) => {
   try {

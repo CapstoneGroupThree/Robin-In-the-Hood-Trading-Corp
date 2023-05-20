@@ -49,14 +49,14 @@ export const fetchAllStockTickerPriceSingle = createAsyncThunk(
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/aggregates?ticker=${ticker}&from=${from}&to=${to}`
         );
-        console.log(response.data);
+        // console.log(response.data);
         return { ticker, close: response.data.results[0].c };
       } else {
         console.log("got");
         const response = await axios.get(
           `http://localhost:8080/proxy/mde/open-close?ticker=${ticker}&date=${to}`
         );
-        console.log(response.data);
+        // console.log(response.data);
         return {
           ticker,
           close: response.data.close,

@@ -10,6 +10,7 @@ import EditUserInfo from "../features/editUserInfo";
 import Chatbot from "../features/chatBot";
 import Portfolio from "../features/portfolio/portfolioView";
 import AnimationComponent from "../images/animeTest";
+import StripeConts from "../features/stripe/StripeConts";
 
 /**
  * COMPONENT
@@ -35,6 +36,7 @@ const AppRoutes = () => {
           <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/animeTest" element={<AnimationComponent />} />
+          <Route path="/checkout" element={<StripeConts />} />
         </Routes>
       ) : (
         <Routes>

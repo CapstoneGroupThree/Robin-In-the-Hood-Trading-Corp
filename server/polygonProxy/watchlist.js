@@ -32,9 +32,9 @@ app.post("/:id", async (req, res, next) => {
       },
     });
     //Set the watchlist tickers key to the value passed in to the body(array of tickers)
-    console.log("Before update:", watchlist.tickers);
+    // console.log("Before update:", watchlist.tickers);
     watchlist.tickers.push(req.body.ticker);
-    console.log("After update:", watchlist.tickers);
+    // console.log("After update:", watchlist.tickers);
     //Update(save) the new value of the watchlist
     watchlist.changed("tickers", true);
     await watchlist.save();
