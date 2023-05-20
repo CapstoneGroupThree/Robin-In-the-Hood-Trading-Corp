@@ -233,11 +233,14 @@ const Portfolio = () => {
         Hello {yourName}!
       </h1>
       {console.log("UserId:", userId)}
-      <div className="assets h-2/5 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 box-shadow">
-        <TotalBalanceChartPage userId={userId} reload={reload} />
-        <button className="refresh-button" onClick={fetchPortfolioData}>
+      <div className="assets relative h-1/3 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 p-4 rounded box-shadow">
+        <button
+          className="refresh-button absolute top-4 right-4 z-10"
+          onClick={fetchPortfolioData}
+        >
           <FontAwesomeIcon icon={faSyncAlt} /> Refresh
         </button>
+        <TotalBalanceChartPage userId={userId} reload={reload} />
       </div>
       {/* <button
         className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
@@ -258,6 +261,26 @@ const Portfolio = () => {
         Show Portfolio Assets
       </button> */}
       <div className="border-t border-gray-500 my-8"></div>
+      <div className="flex flex-row items-center justify-evenly">
+        <button
+          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {
+            setShowPurchases(true);
+            setShowPortfolio(false);
+          }}
+        >
+          Toggle Purchase History
+        </button>
+        <button
+          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => {
+            setShowPurchases(false);
+            setShowPortfolio(true);
+          }}
+        >
+          Show Portfolio Assets
+        </button>
+      </div>
       {portfolio && showPortfolio ? (
         <div>
           <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900">
@@ -370,26 +393,6 @@ const Portfolio = () => {
       ) : (
         ""
       )}
-      <div className="flex flex-row items-center justify-evenly">
-        <button
-          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => {
-            setShowPurchases(true);
-            setShowPortfolio(false);
-          }}
-        >
-          Toggle Purchase History
-        </button>
-        <button
-          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          onClick={() => {
-            setShowPurchases(false);
-            setShowPortfolio(true);
-          }}
-        >
-          Show Portfolio Assets
-        </button>
-      </div>
       {/* <div>
         {portfolio.map((port) => {
           return <div key={port.id}>{port.stockName}</div>;
