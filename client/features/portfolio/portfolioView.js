@@ -233,7 +233,7 @@ const Portfolio = () => {
         Hello {yourName}!
       </h1>
       {console.log("UserId:", userId)}
-      <div className="assets relative h-1/3 border border-slate-600 p-4 rounded w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 p-4 rounded box-shadow">
+      <div className="assets relative h-1/3 border border-slate-600 w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 p-4 rounded box-shadow">
         <button
           className="refresh-button absolute top-4 right-4 z-10"
           onClick={fetchPortfolioData}
