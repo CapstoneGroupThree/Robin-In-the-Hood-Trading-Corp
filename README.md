@@ -1,44 +1,47 @@
-# FS-App-Template
+**ROBIN IN THE HOOD TRADING CORP.**
 
-## Setup
+Our core product, Robin In The Hood is a groundbreaking virtual trading app that combines the excitement of video games with the world of finance, empowering users to practice stock and financial trading without risking their hard-earned money. Our mission is to create a captivating platform that educates users on making informed investment decisions while offering a plethora of innovative features that distinguish us from the competition. We envision capturing the attention of industry giants with our extraordinary offerings.
 
-To use this as boilerplate, you'll need to take the following steps:
+**Link to our site**: https://mono-repo-rds.onrender.com/ ***** need to change this robininthehood.online
 
-- Don't fork or clone this repo! Instead, create a new, empty
-  directory on your machine and `git init` (or create an empty repo on
-  Github and clone it to your local machine)
+**Key Features:**
 
-- Now you will have to add the fs-app-template as a remote and merge it into your own repository.
+- Sleek modern design with visually stunning graphics
+- Next-gen checkout system for seamless product purchases
+- Immersive virtual stock trading experience
+- Robust user authentication for secure login and signup
+- Comprehensive view of all stocks with efficient pagination
+- Detailed single stock view with advanced search feature
+- Watchlist functionality for easy stock tracking
+- Intuitive dashboard design for seamless navigation
+- AI-powered stock trading assistant for instant insights
+- Secure integration of Stripe API for virtual currency purchases
+- Comprehensive stock portfolio with order history and performance tracking
 
-```
-git remote add boilermaker git@github.com:FullstackAcademy/fs-app-template-v2.git
-git fetch boilermaker
-git merge boilermaker/main
-git branch -m master main
-```
+**Our Team: **
 
-## Customize
+**Tenzing Salaka** - The Backend Avenger: _DevOps Lead & Backend Engineer_
 
-Now that you've got the code, follow these steps to get acclimated:
+**Han Yu Lin** - The React Magician: _Project Manager & Co-Designer & React/Redux Lead Engineer_
 
-- Update project name and description in `package.json`
-- `npm install`
-- Create two postgres databases (`MY_APP_NAME` should match the `name`
-  parameter in `package.json`):
-- These commands will create both your **development** and **test** databases
+**Jaime Lopez** - The Future Architect: _ML & AI/Data Visualization Lead Architect_
 
-```
-createdb <YOUR APP NAME HERE FROM package.json>
-createdb <YOUR APP NAME HERE FROM package.json>-test
-```
+**Adhemar Hernandez** - The Visual Maestro: _Co-Designer & TailwindCSS Lead Engineer_
 
-- By default, running `npm test` will use your test database, while
-  regular development uses development database
+**Charlie Aloisio** - The Bug Annihilator: _Bug Tracking Lead & Backend Engineer _
 
-## Start
+**Our Stack:
+**
+- **PERN Stack:** Powerful tech stack comprising PostgreSQL, Express, React-Redux, and Node
+- **OAuth:** Seamless authentication for user accounts
+- **Polygon.io:** Cutting-edge API for comprehensive stock insights
+- **StripeAPI:** Secure integration for virtual currency shop
+- **RechartJS & Plotly:** Advanced data visualization capabilities
+- **Tailwind CSS:** Modern and stylish CSS design framework
+- **AnimeJS:** Dynamic and engaging animations
+- **AWS, Render, Hostsinger:** Next-gen deployment for robust performance
+- **Open Ai API:** AI-powered chat assistant and instant stock insights
+- **Nager Date API & Clearbit API & Font Awesome API:** Efficient date logic, logos, and icons integration
+- **Figma:** Collaborative whiteboard design platform for visualizing app layouts and UI/UX design
 
-Sync and seed your database by running `npm run seed`. Running `npm run start:dev` will make great things happen!
 
-- start:dev will both start your server and build your client side files using webpack
-- start:dev:logger is the same as start:dev, but you will see your SQL queries (can be helpful for debugging)
-- start:dev:seed will start your server and also seed your database (this is useful when you are making schema changes and you don't want to run your seed script separately)
