@@ -28,7 +28,7 @@ Our core product, Robin In The Hood is a groundbreaking virtual trading app that
 
 **Adhemar Hernandez** - The Visual Maestro: _Co-Designer & TailwindCSS Lead Engineer_
 
-**Charlie Aloisio** - The Bug Annihilator: _Bug Tracking Lead & Backend Engineer _
+**Charlie Aloisio** - The Bug Annihilator: _Bug Tracking Lead & Backend Engineer_
 
 **Our Stack:**
 
