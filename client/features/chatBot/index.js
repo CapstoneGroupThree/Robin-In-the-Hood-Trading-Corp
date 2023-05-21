@@ -1,4 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import "regenerator-runtime/runtime";
 
 import "./chatBot.css";
 
@@ -7,6 +11,17 @@ const Chatbot = ({ ticker }) => {
   const [newMessage, setNewMessage] = useState("");
   const [showChat, setShowChat] = useState(false);
   const chatContainerRef = useRef();
+  const { transcript, resetTranscript, listening } = useSpeechRecognition();
+
+  const startListening = () => {
+    SpeechRecognition.startListening({ continuous: true });
+  };
+
+  const stopListening = () => {
+    SpeechRecognition.stopListening();
+  };
+
+  const [voiceRecognitionActive, setVoiceRecognitionActive] = useState(false);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -34,7 +49,7 @@ const Chatbot = ({ ticker }) => {
     const userMessage = {
       id: generateUniqueId(),
       role: "user",
-      content: newMessage,
+      content: voiceRecognitionActive ? transcript : newMessage,
     };
     const aiMessage = {
       id: generateUniqueId(),
@@ -253,6 +268,27 @@ const Chatbot = ({ ticker }) => {
               <button onClick={() => handleAdvancedPrompt("default")}>
                 Thorough Analysis on {ticker}
               </button>
+              <button
+                onClick={() => {
+                  setVoiceRecognitionActive(!voiceRecognitionActive);
+                  if (!voiceRecognitionActive) {
+                    startListening();
+                  } else {
+                    stopListening();
+                  }
+                }}
+              >
+                {voiceRecognitionActive ? (
+                  <>
+                    Stop Listening{" "}
+                    <i className="fa-solid fa-microphone-slash"></i>
+                  </>
+                ) : (
+                  <>
+                    Start Listening <i className="fa-solid fa-microphone"></i>
+                  </>
+                )}
+              </button>
             </div>
           ) : (
             ""
@@ -262,6 +298,7 @@ const Chatbot = ({ ticker }) => {
           <button type="submit">
             <img src="/send.svg" />
           </button>
+          <div>{listening ? "Listening..." : "Not Listening"}</div>
           <textarea
             name="prompt"
             rows="1"
