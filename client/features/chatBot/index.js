@@ -12,16 +12,52 @@ const Chatbot = ({ ticker }) => {
   const [showChat, setShowChat] = useState(false);
   const chatContainerRef = useRef();
   const { transcript, resetTranscript, listening } = useSpeechRecognition();
+  const [editedTranscript, setEditedTranscript] = useState("");
+  // const [transcriptMessage, setTranscriptMessage] = useState("");
+  const [voiceRecognitionActive, setVoiceRecognitionActive] = useState(false);
+  const [micPermissionAllowed, setMicPermissionAllowed] = useState(true);
+
+  useEffect(() => {
+    const checkMicPermission = async () => {
+      try {
+        const { state } = await navigator.permissions.query({
+          name: "microphone",
+        });
+        setMicPermissionAllowed(state === "granted");
+      } catch (error) {
+        console.error("Error checking microphone permission:", error);
+        setMicPermissionAllowed(false);
+      }
+    };
+
+    checkMicPermission();
+  }, []);
 
   const startListening = () => {
-    SpeechRecognition.startListening({ continuous: true });
+    resetTranscript();
+    setEditedTranscript("");
+    setVoiceRecognitionActive(true);
+    if (micPermissionAllowed) {
+      SpeechRecognition.startListening({ continuous: true });
+    } else {
+      // Show a message to the user that microphone permission is required
+      alert("Microphone permission is required to use voice recognition.");
+    }
   };
 
   const stopListening = () => {
     SpeechRecognition.stopListening();
+    setVoiceRecognitionActive(false);
+    setNewMessage(transcript);
+    resetTranscript();
   };
 
-  const [voiceRecognitionActive, setVoiceRecognitionActive] = useState(false);
+  useEffect(() => {
+    // Update the edited transcript when the transcript changes
+    if (listening) {
+      setEditedTranscript(transcript);
+    }
+  }, [listening, transcript]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -46,10 +82,14 @@ const Chatbot = ({ ticker }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const messageContent = voiceRecognitionActive
+      ? editedTranscript
+      : newMessage;
+
     const userMessage = {
       id: generateUniqueId(),
       role: "user",
-      content: voiceRecognitionActive ? transcript : newMessage,
+      content: messageContent,
     };
     const aiMessage = {
       id: generateUniqueId(),
@@ -59,6 +99,8 @@ const Chatbot = ({ ticker }) => {
 
     setMessages((oldMessages) => [...oldMessages, userMessage, aiMessage]);
     setNewMessage("");
+    setEditedTranscript("");
+    resetTranscript();
 
     const messagesForAPI = prepareMessagesForAPI([
       ...messages,
@@ -266,26 +308,39 @@ const Chatbot = ({ ticker }) => {
                 Buy, Hold, Or Sell?
               </button>
               <button onClick={() => handleAdvancedPrompt("default")}>
-                Thorough Analysis on {ticker}
+                Deep Analysis on {ticker}
               </button>
               <button
                 onClick={() => {
-                  setVoiceRecognitionActive(!voiceRecognitionActive);
-                  if (!voiceRecognitionActive) {
-                    startListening();
+                  if (micPermissionAllowed) {
+                    setVoiceRecognitionActive(!voiceRecognitionActive);
+                    if (!voiceRecognitionActive) {
+                      startListening();
+                    } else {
+                      stopListening();
+                    }
                   } else {
-                    stopListening();
+                    // Display a message to the user about microphone permission not allowed
+                    alert(
+                      "Please turn on microphone permissions so Robin can better assist you :)"
+                    );
+                    return;
                   }
                 }}
               >
                 {voiceRecognitionActive ? (
                   <>
-                    Stop Listening{" "}
-                    <i className="fa-solid fa-microphone-slash"></i>
+                    <i
+                      className="fa-solid fa-microphone"
+                      style={{ color: "green" }}
+                    ></i>
                   </>
                 ) : (
                   <>
-                    Start Listening <i className="fa-solid fa-microphone"></i>
+                    <i
+                      className="fa-solid fa-microphone-slash"
+                      style={{ color: "red" }}
+                    ></i>
                   </>
                 )}
               </button>
@@ -298,14 +353,20 @@ const Chatbot = ({ ticker }) => {
           <button type="submit">
             <img src="/send.svg" />
           </button>
-          <div>{listening ? "Listening..." : "Not Listening"}</div>
+          {/* <div>{listening ? "Talking" : "Muted"}</div> */}
           <textarea
             name="prompt"
             rows="1"
             cols="1"
             placeholder="Ask Robin"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
+            value={voiceRecognitionActive ? editedTranscript : newMessage}
+            onChange={(e) => {
+              if (voiceRecognitionActive) {
+                setEditedTranscript(e.target.value);
+              } else {
+                setNewMessage(e.target.value);
+              }
+            }}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
