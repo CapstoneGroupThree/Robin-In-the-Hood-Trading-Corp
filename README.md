@@ -18,7 +18,7 @@ Our core product, Robin In The Hood is a groundbreaking virtual trading app that
 - Secure integration of Stripe API for virtual currency purchases
 - Comprehensive stock portfolio with order history and performance tracking
 
-**Our Team: **
+**Our Team:**
 
 **Tenzing Salaka** - The Backend Avenger: _DevOps Lead & Backend Engineer_
 
@@ -30,8 +30,8 @@ Our core product, Robin In The Hood is a groundbreaking virtual trading app that
 
 **Charlie Aloisio** - The Bug Annihilator: _Bug Tracking Lead & Backend Engineer _
 
-**Our Stack:
-**
+**Our Stack:**
+
 - **PERN Stack:** Powerful tech stack comprising PostgreSQL, Express, React-Redux, and Node
 - **OAuth:** Seamless authentication for user accounts
 - **Polygon.io:** Cutting-edge API for comprehensive stock insights
