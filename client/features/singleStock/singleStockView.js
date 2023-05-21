@@ -13,10 +13,11 @@ import { useParams } from "react-router-dom";
 import VolumeChartPage from "../JaimeTest/VolumeChartPage.js";
 import StockData from "../JaimeTest/StockData.js";
 import ClosePriceChartPage from "../JaimeTest/ClosePriceChartPage";
-import Chatbot from "../chatBot/index.js";
+// import Chatbot from "../chatBot/index.js";
 import Buy from "./buy.js";
 import Sell from "./sell.js";
 import { fetchUserPortfolio } from "./portfolioBuySellSlice.js";
+import ChatbotWrapper from "../chatBot/chatBotWrapper.js";
 
 export default function SingleStockView() {
   const username = useSelector((state) => state.auth.me.first_name);
@@ -508,7 +509,7 @@ export default function SingleStockView() {
           className="w-20 h-20"
         ></img> */}
         {console.log(ticker)}
-        <Chatbot ticker={ticker} />
+        <ChatbotWrapper ticker={ticker} />
       </div>
     </div>
   );

@@ -9,8 +9,9 @@ import {
 import { Link } from "react-router-dom";
 // import "./styles.css";
 import SearchBar from "../searchBar";
-import Chatbot from "../chatBot";
+// import Chatbot from "../chatBot";
 import anime from "animejs";
+import ChatbotWrapper from "../chatBot/chatBotWrapper";
 
 const AllStocksView = () => {
   const username = useSelector((state) => state.auth.me.first_name);
@@ -388,7 +389,7 @@ const AllStocksView = () => {
           Next
         </button>
         <div className="aibot absolute bottom-0 right-0">
-          <Chatbot />
+          <ChatbotWrapper />
         </div>
       </div>
     </div>

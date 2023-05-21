@@ -23,7 +23,8 @@ const Chatbot = ({ ticker }) => {
   const [isVoiceOn, setIsVoiceOn] = useState(false);
 
   const toggleVoice = () => {
-    setIsVoiceOn((prevState) => !prevState);
+    setIsVoiceOn(!isVoiceOn);
+    console.log(isVoiceOn);
   };
 
   useEffect(() => {
@@ -236,7 +237,16 @@ const Chatbot = ({ ticker }) => {
         throw new Error(await response.text());
       }
     } catch (err) {
-      alert(err);
+      // alert(err);
+      console.error(err);
+      setMessages((oldMessages) => [
+        ...oldMessages,
+        {
+          id: generateUniqueId(),
+          role: "assistant",
+          content: "Oops! Robin had a brain fart. Please try again later.",
+        },
+      ]);
     }
   };
 
@@ -270,49 +280,60 @@ const Chatbot = ({ ticker }) => {
         });
       });
     }, 500);
+    try {
+      const response = await fetch(
+        `http://localhost:8080/polygon/summary/${symbol}?promptType=${promptType}`
+      );
 
-    const response = await fetch(
-      `http://localhost:8080/polygon/summary/${symbol}?promptType=${promptType}`
-    );
+      clearInterval(loadingDots);
 
-    clearInterval(loadingDots);
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      const parsedData = data.assistant;
-      console.log(parsedData);
-      //! magic here
-      if (isVoiceOn) {
-        speakText(parsedData);
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+        const parsedData = data.assistant;
+        console.log(parsedData);
+        //! magic here
+        if (isVoiceOn) {
+          speakText(parsedData);
+        }
+        if (parsedData) {
+          let index = -1;
+          const interval = setInterval(() => {
+            if (index < parsedData.length - 1) {
+              setMessages((currentMessages) => {
+                const updatedMessages = currentMessages.map((message) =>
+                  message.id === aiThinkingMessage.id
+                    ? {
+                        ...message,
+                        content:
+                          index === 0
+                            ? parsedData[index]
+                            : message.content + parsedData[index],
+                      }
+                    : message
+                );
+                console.log(updatedMessages);
+                return updatedMessages;
+              });
+              // //todo added speak text optimize it
+              // speakText(parsedData[index]);
+              index++;
+            } else {
+              clearInterval(interval);
+            }
+          }, 10);
+        }
       }
-      if (parsedData) {
-        let index = -1;
-        const interval = setInterval(() => {
-          if (index < parsedData.length - 1) {
-            setMessages((currentMessages) => {
-              const updatedMessages = currentMessages.map((message) =>
-                message.id === aiThinkingMessage.id
-                  ? {
-                      ...message,
-                      content:
-                        index === 0
-                          ? parsedData[index]
-                          : message.content + parsedData[index],
-                    }
-                  : message
-              );
-              console.log(updatedMessages);
-              return updatedMessages;
-            });
-            // //todo added speak text optimize it
-            // speakText(parsedData[index]);
-            index++;
-          } else {
-            clearInterval(interval);
-          }
-        }, 10);
-      }
+    } catch (err) {
+      console.error(err);
+      setMessages((oldMessages) => [
+        ...oldMessages,
+        {
+          id: generateUniqueId(),
+          role: "assistant",
+          content: "Oops! Robin just had a brain fart. Please try again later.",
+        },
+      ]);
     }
   };
 
