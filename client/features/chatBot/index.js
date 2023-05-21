@@ -17,17 +17,21 @@ const Chatbot = ({ ticker }) => {
   const [voiceRecognitionActive, setVoiceRecognitionActive] = useState(false);
   const [micPermissionAllowed, setMicPermissionAllowed] = useState(false);
 
+  const defaultVoice = {
+    voiceURI: "Samantha",
+    name: "Samantha",
+    lang: "en-US",
+    localService: true,
+    default: true,
+  };
+
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [pitch, setPitch] = useState(1);
   const [speed, setSpeed] = useState(0.9);
   const [isVoiceOn, setIsVoiceOn] = useState(false);
 
-  const toggleVoice = () => {
-    setIsVoiceOn(!isVoiceOn);
-    console.log(isVoiceOn);
-  };
-
   useEffect(() => {
+    console.log(isVoiceOn);
     if (!isVoiceOn) {
       speechSynthesis.cancel();
     }
@@ -43,8 +47,8 @@ const Chatbot = ({ ticker }) => {
     const selectedVoice = speechSynthesis
       .getVoices()
       .find((voice) => voice.name === voiceName);
-    console.log(selectedVoice.name);
-    setSelectedVoice(selectedVoice.name);
+    console.log(selectedVoice);
+    setSelectedVoice(selectedVoice);
   };
 
   const handlePitchChange = (event) => {
@@ -63,6 +67,15 @@ const Chatbot = ({ ticker }) => {
       speechSynthesis.speak(utterance);
     }
   };
+
+  const setDefaultVoice = () => {
+    const voices = speechSynthesis.getVoices();
+    setSelectedVoice(voices[0]); // Set the default voice
+  };
+
+  useEffect(() => {
+    setDefaultVoice();
+  }, []);
 
   useEffect(() => {
     const loadVoices = () => {
@@ -222,7 +235,7 @@ const Chatbot = ({ ticker }) => {
                       }
                     : message
                 );
-                console.log(updatedMessages);
+                // console.log(updatedMessages);
                 return updatedMessages;
               });
               // //todo added speak text optimize it
@@ -247,6 +260,7 @@ const Chatbot = ({ ticker }) => {
           content: "Oops! Robin had a brain fart. Please try again later.",
         },
       ]);
+      return;
     }
   };
 
@@ -334,6 +348,7 @@ const Chatbot = ({ ticker }) => {
           content: "Oops! Robin just had a brain fart. Please try again later.",
         },
       ]);
+      return;
     }
   };
 
@@ -377,7 +392,7 @@ const Chatbot = ({ ticker }) => {
                       alt={message.role === "assistant" ? "bot" : "user"}
                     ></img>
                   </div>
-                  {console.log(message.content)}
+                  {/* {console.log(message.content)} */}
                   <div className="message">{message.content}</div>
                 </div>
               </div>
@@ -389,13 +404,15 @@ const Chatbot = ({ ticker }) => {
       <div className="chatArea">
         <div className="buttonContainer">
           {/* Voice selection */}
+
           <select
-            value={selectedVoice ? selectedVoice.name : "Select Here"}
+            value={selectedVoice ? selectedVoice.name : defaultVoice.name}
             onChange={handleVoiceChange}
             style={{ color: "black", width: "110px" }}
           >
             {speechSynthesis.getVoices().map((voice) => (
               <option key={voice.name} value={voice.name}>
+                {/* {console.log(selectedVoice, voice.name)} */}
                 {voice.name}
               </option>
             ))}
@@ -423,43 +440,27 @@ const Chatbot = ({ ticker }) => {
             style={{ width: "100px" }}
           />
           <button
-            onClick={toggleVoice}
+            // onClick={toggleVoice}
+            className="power-button"
             style={{
               width: "40px",
               height: "20px",
-              top: "2px",
-              left: "0",
-              padding: "0px",
-              margin: "0px",
+              padding: "0",
+              margin: "0",
               borderRadius: "20px",
-              gap: "0px",
             }}
           >
             {isVoiceOn ? (
               <i
+                onClick={() => setIsVoiceOn(false)}
                 className="fa-solid fa-power-off"
-                style={{
-                  top: "0",
-                  left: "0",
-                  padding: "0px",
-                  margin: "0px",
-                  borderRadius: "1px",
-                  gap: "0px",
-                  color: "green",
-                }}
+                style={{ color: "green" }}
               ></i>
             ) : (
               <i
+                onClick={() => setIsVoiceOn(true)}
                 className="fa-solid fa-power-off"
-                style={{
-                  top: "0",
-                  left: "0",
-                  padding: "0px",
-                  margin: "0px",
-                  borderRadius: "1px",
-                  gap: "0px",
-                  color: "red",
-                }}
+                style={{ color: "red" }}
               ></i>
             )}
           </button>

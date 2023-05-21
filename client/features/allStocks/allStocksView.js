@@ -256,7 +256,7 @@ const AllStocksView = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-slate-950 via-slate-800 to-slate-950">
-        <div class="lds-roller">
+        <div className="lds-roller">
           <div></div>
           <div></div>
           <div></div>
@@ -383,7 +383,7 @@ const AllStocksView = () => {
         <button
           value="next"
           onClick={handlePageChange}
-          class="AS-button"
+          className="AS-button"
           role="button"
         >
           Next
