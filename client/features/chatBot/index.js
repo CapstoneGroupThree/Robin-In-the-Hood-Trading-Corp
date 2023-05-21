@@ -15,17 +15,35 @@ const Chatbot = ({ ticker }) => {
   const [editedTranscript, setEditedTranscript] = useState("");
   // const [transcriptMessage, setTranscriptMessage] = useState("");
   const [voiceRecognitionActive, setVoiceRecognitionActive] = useState(false);
-  const [micPermissionAllowed, setMicPermissionAllowed] = useState(true);
+  const [micPermissionAllowed, setMicPermissionAllowed] = useState(false);
 
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [pitch, setPitch] = useState(1);
+  const [speed, setSpeed] = useState(0.9);
+  const [isVoiceOn, setIsVoiceOn] = useState(false);
+
+  const toggleVoice = () => {
+    setIsVoiceOn((prevState) => !prevState);
+  };
+
+  useEffect(() => {
+    if (!isVoiceOn) {
+      speechSynthesis.cancel();
+    }
+  }, [isVoiceOn]);
+
+  const handleSpeedChange = (event) => {
+    const speedValue = parseFloat(event.target.value);
+    setSpeed(speedValue);
+  };
 
   const handleVoiceChange = (event) => {
     const voiceName = event.target.value;
     const selectedVoice = speechSynthesis
       .getVoices()
       .find((voice) => voice.name === voiceName);
-    setSelectedVoice(selectedVoice);
+    console.log(selectedVoice.name);
+    setSelectedVoice(selectedVoice.name);
   };
 
   const handlePitchChange = (event) => {
@@ -35,9 +53,12 @@ const Chatbot = ({ ticker }) => {
 
   const speakText = (text) => {
     if (selectedVoice) {
-      const utterance = new SpeechSynthesisUtterance(text);
+      const utterance = new SpeechSynthesisUtterance();
       utterance.voice = selectedVoice;
       utterance.pitch = pitch;
+      utterance.rate = speed;
+      utterance.text = text;
+
       speechSynthesis.speak(utterance);
     }
   };
@@ -179,7 +200,11 @@ const Chatbot = ({ ticker }) => {
         console.log(data);
         const parsedData = data.assistant;
         console.log(parsedData);
-        speakText(parsedData);
+
+        //! magic here
+        if (isVoiceOn) {
+          speakText(parsedData);
+        }
         if (parsedData) {
           let index = -1;
           const interval = setInterval(() => {
@@ -257,7 +282,10 @@ const Chatbot = ({ ticker }) => {
       console.log(data);
       const parsedData = data.assistant;
       console.log(parsedData);
-      speakText(parsedData);
+      //! magic here
+      if (isVoiceOn) {
+        speakText(parsedData);
+      }
       if (parsedData) {
         let index = -1;
         const interval = setInterval(() => {
@@ -305,7 +333,7 @@ const Chatbot = ({ ticker }) => {
     <div>
       <div
         className={`chatBotContainer`}
-        style={ticker ? { bottom: "168px" } : { botton: "79px" }}
+        style={ticker ? { bottom: "210px" } : { bottom: "110px" }}
       >
         <div>
           <div id="chat_container" ref={chatContainerRef}>
@@ -341,8 +369,9 @@ const Chatbot = ({ ticker }) => {
         <div className="buttonContainer">
           {/* Voice selection */}
           <select
-            value={selectedVoice ? selectedVoice.name : ""}
+            value={selectedVoice ? selectedVoice.name : "Select Here"}
             onChange={handleVoiceChange}
+            style={{ color: "black", width: "110px" }}
           >
             {speechSynthesis.getVoices().map((voice) => (
               <option key={voice.name} value={voice.name}>
@@ -352,6 +381,7 @@ const Chatbot = ({ ticker }) => {
           </select>
 
           {/* Pitch adjustment */}
+          <label style={{ color: "black" }}>Pitch</label>
           <input
             type="range"
             min="0.5"
@@ -359,7 +389,59 @@ const Chatbot = ({ ticker }) => {
             step="0.1"
             value={pitch}
             onChange={handlePitchChange}
+            style={{ width: "100px" }}
           />
+          <label style={{ color: "black" }}>Speed</label>
+          <input
+            type="range"
+            min="0.5"
+            max="2"
+            step="0.1"
+            value={speed}
+            onChange={handleSpeedChange}
+            style={{ width: "100px" }}
+          />
+          <button
+            onClick={toggleVoice}
+            style={{
+              width: "40px",
+              height: "20px",
+              top: "2px",
+              left: "0",
+              padding: "0px",
+              margin: "0px",
+              borderRadius: "20px",
+              gap: "0px",
+            }}
+          >
+            {isVoiceOn ? (
+              <i
+                className="fa-solid fa-power-off"
+                style={{
+                  top: "0",
+                  left: "0",
+                  padding: "0px",
+                  margin: "0px",
+                  borderRadius: "1px",
+                  gap: "0px",
+                  color: "green",
+                }}
+              ></i>
+            ) : (
+              <i
+                className="fa-solid fa-power-off"
+                style={{
+                  top: "0",
+                  left: "0",
+                  padding: "0px",
+                  margin: "0px",
+                  borderRadius: "1px",
+                  gap: "0px",
+                  color: "red",
+                }}
+              ></i>
+            )}
+          </button>
           {ticker ? (
             <div style={{ color: "black" }}>
               <button onClick={() => handleAdvancedPrompt("type1")}>
@@ -372,7 +454,7 @@ const Chatbot = ({ ticker }) => {
                 Buy, Hold, Or Sell?
               </button>
               <button onClick={() => handleAdvancedPrompt("default")}>
-                Deep Analysis on {ticker}
+                Thorough Analysis on {ticker}
               </button>
             </div>
           ) : (
