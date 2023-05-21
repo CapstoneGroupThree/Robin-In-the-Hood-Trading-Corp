@@ -15,6 +15,7 @@ Our core product, Robin In The Hood is a groundbreaking virtual trading app that
 - Watchlist functionality for easy stock tracking
 - Intuitive dashboard design for seamless navigation
 - AI-powered stock trading assistant for instant insights
+- Futuristic Customizable Text-Speech Speech-Text chat feature for empowered accessibility 
 - Secure integration of Stripe API for virtual currency purchases
 - Comprehensive stock portfolio with order history and performance tracking
 
@@ -41,6 +42,7 @@ Our core product, Robin In The Hood is a groundbreaking virtual trading app that
 - **AnimeJS:** Dynamic and engaging animations
 - **AWS, Render, Hostsinger:** Next-gen deployment for robust performance
 - **Open Ai API:** AI-powered chat assistant and instant stock insights
+- **Web Speech Api & React Speech Recognition API** - Customizable Text-Speech Speech-Text chat for empowered accessibility 
 - **Nager Date API & Clearbit API & Font Awesome API:** Efficient date logic, logos, and icons integration
 - **Figma:** Collaborative whiteboard design platform for visualizing app layouts and UI/UX design
 
