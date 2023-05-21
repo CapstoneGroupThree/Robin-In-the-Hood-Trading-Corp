@@ -17,6 +17,42 @@ const Chatbot = ({ ticker }) => {
   const [voiceRecognitionActive, setVoiceRecognitionActive] = useState(false);
   const [micPermissionAllowed, setMicPermissionAllowed] = useState(true);
 
+  const [selectedVoice, setSelectedVoice] = useState(null);
+  const [pitch, setPitch] = useState(1);
+
+  const handleVoiceChange = (event) => {
+    const voiceName = event.target.value;
+    const selectedVoice = speechSynthesis
+      .getVoices()
+      .find((voice) => voice.name === voiceName);
+    setSelectedVoice(selectedVoice);
+  };
+
+  const handlePitchChange = (event) => {
+    const pitch = parseFloat(event.target.value);
+    setPitch(pitch);
+  };
+
+  const speakText = (text) => {
+    if (selectedVoice) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = selectedVoice;
+      utterance.pitch = pitch;
+      speechSynthesis.speak(utterance);
+    }
+  };
+
+  useEffect(() => {
+    const loadVoices = () => {
+      const voices = speechSynthesis.getVoices();
+      setSelectedVoice(voices[0]); // Set the default voice
+    };
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+  }, []);
+
   useEffect(() => {
     const checkMicPermission = async () => {
       try {
@@ -143,7 +179,7 @@ const Chatbot = ({ ticker }) => {
         console.log(data);
         const parsedData = data.assistant;
         console.log(parsedData);
-
+        speakText(parsedData);
         if (parsedData) {
           let index = -1;
           const interval = setInterval(() => {
@@ -163,6 +199,8 @@ const Chatbot = ({ ticker }) => {
                 console.log(updatedMessages);
                 return updatedMessages;
               });
+              // //todo added speak text optimize it
+              // speakText(parsedData[index]);
               index++;
             } else {
               clearInterval(interval);
@@ -219,7 +257,7 @@ const Chatbot = ({ ticker }) => {
       console.log(data);
       const parsedData = data.assistant;
       console.log(parsedData);
-
+      speakText(parsedData);
       if (parsedData) {
         let index = -1;
         const interval = setInterval(() => {
@@ -239,6 +277,8 @@ const Chatbot = ({ ticker }) => {
               console.log(updatedMessages);
               return updatedMessages;
             });
+            // //todo added speak text optimize it
+            // speakText(parsedData[index]);
             index++;
           } else {
             clearInterval(interval);
@@ -299,6 +339,27 @@ const Chatbot = ({ ticker }) => {
 
       <div className="chatArea">
         <div className="buttonContainer">
+          {/* Voice selection */}
+          <select
+            value={selectedVoice ? selectedVoice.name : ""}
+            onChange={handleVoiceChange}
+          >
+            {speechSynthesis.getVoices().map((voice) => (
+              <option key={voice.name} value={voice.name}>
+                {voice.name}
+              </option>
+            ))}
+          </select>
+
+          {/* Pitch adjustment */}
+          <input
+            type="range"
+            min="0.5"
+            max="2"
+            step="0.1"
+            value={pitch}
+            onChange={handlePitchChange}
+          />
           {ticker ? (
             <div style={{ color: "black" }}>
               <button onClick={() => handleAdvancedPrompt("type1")}>
