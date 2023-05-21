@@ -11,9 +11,9 @@ body {
 
 .chatBotContainer {
   width: 500px; /* Adjust this to your desired width */
-  height: 800px; /* Adjust this to your desired height */
+  height: 750px; /* Adjust this to your desired height */
   position: relative;
-  bottom: 79px;
+  /* bottom: 79px; */
   right: 0;
   border: 1px solid whitesmoke;
   background-color: white;

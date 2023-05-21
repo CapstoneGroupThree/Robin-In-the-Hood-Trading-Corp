@@ -263,7 +263,10 @@ const Chatbot = ({ ticker }) => {
 
   return (
     <div>
-      <div className="chatBotContainer">
+      <div
+        className={`chatBotContainer`}
+        style={ticker ? { bottom: "168px" } : { botton: "79px" }}
+      >
         <div>
           <div id="chat_container" ref={chatContainerRef}>
             {messages.map((message, index) => (
@@ -310,40 +313,6 @@ const Chatbot = ({ ticker }) => {
               <button onClick={() => handleAdvancedPrompt("default")}>
                 Deep Analysis on {ticker}
               </button>
-              <button
-                onClick={() => {
-                  if (micPermissionAllowed) {
-                    setVoiceRecognitionActive(!voiceRecognitionActive);
-                    if (!voiceRecognitionActive) {
-                      startListening();
-                    } else {
-                      stopListening();
-                    }
-                  } else {
-                    // Display a message to the user about microphone permission not allowed
-                    alert(
-                      "Please turn on microphone permissions so Robin can better assist you :)"
-                    );
-                    return;
-                  }
-                }}
-              >
-                {voiceRecognitionActive ? (
-                  <>
-                    <i
-                      className="fa-solid fa-microphone"
-                      style={{ color: "green" }}
-                    ></i>
-                  </>
-                ) : (
-                  <>
-                    <i
-                      className="fa-solid fa-microphone-slash"
-                      style={{ color: "red" }}
-                    ></i>
-                  </>
-                )}
-              </button>
             </div>
           ) : (
             ""
@@ -374,7 +343,41 @@ const Chatbot = ({ ticker }) => {
               }
             }}
           ></textarea>
-
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              if (micPermissionAllowed) {
+                setVoiceRecognitionActive(!voiceRecognitionActive);
+                if (!voiceRecognitionActive) {
+                  startListening();
+                } else {
+                  stopListening();
+                }
+              } else {
+                // Display a message to the user about microphone permission not allowed
+                alert(
+                  "Please turn on microphone permissions so Robin can better assist you :)"
+                );
+                return;
+              }
+            }}
+          >
+            {voiceRecognitionActive ? (
+              <>
+                <i
+                  className="fa-solid fa-microphone"
+                  style={{ color: "green" }}
+                ></i>
+              </>
+            ) : (
+              <>
+                <i
+                  className="fa-solid fa-microphone-slash"
+                  style={{ color: "red" }}
+                ></i>
+              </>
+            )}
+          </button>
           <img
             onClick={() => setShowChat(false)}
             src="/aiChatRB.png"
