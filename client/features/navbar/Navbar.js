@@ -76,7 +76,7 @@ const Navbar = () => {
         {isLoggedIn ? (
           <div className="flex flex-col items-center">
             {/* The navbar will show these links after you log in */}
-            <div className="flex flex-col pl-10 items-start">
+            <div className="flex flex-col ml-2 items-start">
               <Link
                 to="/home"
                 className={`hover:text-blue-500 flex items-center mb-3 mt-8${

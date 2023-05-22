@@ -1440,6 +1440,10 @@ video {
   padding-top: 1.25rem;
 }
 
+.pl-5 {
+  padding-left: 1.25rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -1575,6 +1579,11 @@ video {
   color: rgb(186 230 253 / var(--tw-text-opacity));
 }
 
+.text-sky-300 {
+  --tw-text-opacity: 1;
+  color: rgb(125 211 252 / var(--tw-text-opacity));
+}
+
 .text-sky-500 {
   --tw-text-opacity: 1;
   color: rgb(14 165 233 / var(--tw-text-opacity));
@@ -1592,11 +1601,6 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-
-.text-sky-300 {
-  --tw-text-opacity: 1;
-  color: rgb(125 211 252 / var(--tw-text-opacity));
 }
 
 .antialiased {
