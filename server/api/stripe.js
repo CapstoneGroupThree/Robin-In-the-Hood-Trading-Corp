@@ -9,11 +9,22 @@ const {
 
 app.use(express.json());
 
+const fetchPrices = async () => {
+  try {
+    const prices = await stripe.prices.list();
+    return prices.data;
+  } catch (error) {
+    console.error("Error retrieving prices from Stripe:", error);
+    return []; // Return an empty array or handle the error case as needed
+  }
+};
+
 app.post("/create-checkout-session", async (req, res) => {
-  const { price_id } = req.body;
+  const { price_id, user_id } = req.body;
+
   try {
     const session = await stripe.checkout.sessions.create({
-      success_url: `http://localhost:8080/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `http://localhost:8080/success?session_id={CHECKOUT_SESSION_ID}&user_id=${user_id}`,
       cancel_url: "http://localhost:8080/cancel",
       line_items: [
         {
@@ -31,22 +42,41 @@ app.post("/create-checkout-session", async (req, res) => {
     res.status(500).json({ error: "An error occurred" });
   }
 });
+
 app.post("/success", async (req, res) => {
-  const session_id = req.query.session_id;
-  const customerId = req.user.id;
+  const { session_id, user_id } = req.body;
+
   try {
     const session = await stripe.checkout.sessions.retrieve(session_id);
     const price_id = session.line_items[0].price.id;
-    const selectedPrice = prices.find((price) => price.price_id === price_id);
-    const priceValue = selectedPrice.value;
+
+    // Fetch the prices from Stripe
+    const prices = await fetchPrices();
+
+    // Find the selected price based on the price_id
+    const selectedPrice = prices.find((price) => price.id === price_id);
+
+    if (!selectedPrice) {
+      console.error("Selected price not found");
+      return res.status(400).json({ error: "Selected price not found" });
+    }
+
+    const priceValue = selectedPrice.metadata.unit_value;
 
     const userBalance = await TotalBalanceHistory.findOne({
-      where: { userId: customerId },
+      where: { userId: user_id },
       order: [["timestamp", "DESC"]],
     });
+
+    if (!userBalance) {
+      console.error("User balance not found");
+      return res.status(400).json({ error: "User balance not found" });
+    }
+
     const newBalance = userBalance.balance + priceValue;
+
     await TotalBalanceHistory.create({
-      userId: customerId,
+      userId: user_id,
       balance: newBalance,
       assets: userBalance.assets,
     });

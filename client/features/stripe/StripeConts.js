@@ -1,54 +1,55 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 const StripeConts = () => {
+  const userId = useSelector((state) => state.auth.me.id);
+
   const prices = [
     {
-      price_id: "price_1N9azfABe3nv4v5B976RvHJc",
+      price_id: "price_1NAaa8DwEm8QvLNJqgULlLwz",
       value: 1,
       chargeValue: "10000",
       note: "Robin Mini",
     },
-    {
-      price_id: "price_1N9aeBABe3nv4v5Bq5vNe64C",
-      value: 10,
-      chargeValue: "100000 + 8000 Bonus",
-      note: "Robin Starter",
-    },
-    {
-      price_id: "price_1N9bDbABe3nv4v5BntTvnk6d",
-      value: 20,
-      chargeValue: "200000 + 20000 Bonus",
-      note: "Robin Roller",
-    },
-    {
-      price_id: "price_1N9bEXABe3nv4v5BAUoepmNZ",
-      value: 35,
-      chargeValue: "350000 + 50000 Bonus",
-      note: "Robin Senior ",
-    },
-    {
-      price_id: "price_1N9bFsABe3nv4v5BcS8knZfn",
-      value: 50,
-      chargeValue: "500000 + 70000 Bonus",
-      note: "Robin Staff ",
-    },
-    {
-      price_id: "price_1N9bGpABe3nv4v5BbBOvnYCN",
-      value: 100,
-      chargeValue: "1000000 + 200000 Bonus",
-      note: "Robin Millionaire",
-    },
+    // {
+    //   price_id: "price_1N9aeBABe3nv4v5Bq5vNe64C",
+    //   value: 10,
+    //   chargeValue: "100000 + 8000 Bonus",
+    //   note: "Robin Starter",
+    // },
+    // {
+    //   price_id: "price_1N9bDbABe3nv4v5BntTvnk6d",
+    //   value: 20,
+    //   chargeValue: "200000 + 20000 Bonus",
+    //   note: "Robin Roller",
+    // },
+    // {
+    //   price_id: "price_1N9bEXABe3nv4v5BAUoepmNZ",
+    //   value: 35,
+    //   chargeValue: "350000 + 50000 Bonus",
+    //   note: "Robin Senior ",
+    // },
+    // {
+    //   price_id: "price_1N9bFsABe3nv4v5BcS8knZfn",
+    //   value: 50,
+    //   chargeValue: "500000 + 70000 Bonus",
+    //   note: "Robin Staff ",
+    // },
+    // {
+    //   price_id: "price_1N9bGpABe3nv4v5BbBOvnYCN",
+    //   value: 100,
+    //   chargeValue: "1000000 + 200000 Bonus",
+    //   note: "Robin Millionaire",
+    // },
   ];
 
   const handleCheckout = async (priceId) => {
     try {
-      const response = await axios.post(
-        `/api/stripe/create-checkout-session?${priceId}`,
-        {
-          price_id: priceId,
-        }
-      );
+      const response = await axios.post(`/api/stripe/create-checkout-session`, {
+        price_id: priceId,
+        user_id: userId,
+      });
       const { url } = response.data;
       window.location.href = url;
     } catch (error) {
