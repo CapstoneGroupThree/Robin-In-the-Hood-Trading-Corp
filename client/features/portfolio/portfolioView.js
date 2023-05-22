@@ -198,7 +198,7 @@ const Portfolio = () => {
 
   useEffect(() => {
     fetchPortfolioData();
-  }, [portfolio]);
+  }, []);
 
   if (loading) {
     return (
@@ -325,7 +325,7 @@ const Portfolio = () => {
                         {portfolioItem.quantity}
                       </td>
                       <td className="px-4 py-2 text-center text-white">
-                        {portfolioItem.purchasePrice}
+                        {portfolioItem.purchasePrice.toFixed(2)}
                       </td>
                       <td className="px-4 py-2 text-center text-white">
                         {new Date(portfolioItem.updatedAt).toLocaleString(

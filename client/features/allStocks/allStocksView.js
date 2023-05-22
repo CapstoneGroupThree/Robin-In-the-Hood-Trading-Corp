@@ -9,8 +9,9 @@ import {
 import { Link } from "react-router-dom";
 // import "./styles.css";
 import SearchBar from "../searchBar";
-import Chatbot from "../chatBot";
+// import Chatbot from "../chatBot";
 import anime from "animejs";
+import ChatbotWrapper from "../chatBot/chatBotWrapper";
 
 const AllStocksView = () => {
   const username = useSelector((state) => state.auth.me.first_name);
@@ -302,7 +303,7 @@ const AllStocksView = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-tr from-slate-950 via-slate-800 to-slate-950">
-        <div class="lds-roller">
+        <div className="lds-roller">
           <div></div>
           <div></div>
           <div></div>
@@ -390,7 +391,7 @@ const AllStocksView = () => {
                   <td className="px-4 py-2 text-center">
                     <Link
                       to={`/singleStock/${stock.T}`}
-                      className={`text-sky-200 hover:text-sky-400 font-numbers ${
+                      className={`text-sky-300 hover:text-sky-400 font-numbers ${
                         isLoading ? "loading" : ""
                       }`}
                     >
@@ -409,7 +410,7 @@ const AllStocksView = () => {
                         " Premarket Price Unavailable"
                       : "loading"}
                   </td>
-                  <td className="px-4 py-2 text-center font-numbers">
+                  <td className="px-4 py-2 text-center font-numbers ">
                     {changePercentageFunc(stock.o, stock.c)}%
                   </td>
                 </tr>
@@ -455,13 +456,13 @@ const AllStocksView = () => {
           ref={nextButtonRef}
           value="next"
           onClick={handlePageChange}
-          class="AS-button"
+          className="AS-button"
           role="button"
         >
           Next
         </button>
         <div className="aibot absolute bottom-0 right-0">
-          <Chatbot />
+          <ChatbotWrapper />
         </div>
       </div>
     </div>

@@ -94,13 +94,13 @@ app.post("/transaction", async (req, res) => {
     }
     //if the user can afford proceed
     if (portfolioEntry) {
-      console.log(portfolioEntry);
+      // console.log(portfolioEntry);
       //calculate average purchase price
       portfolioEntry.purchasePrice =
         (portfolioEntry.quantity * portfolioEntry.purchasePrice +
           purchasePrice * quantity) /
         (portfolioEntry.quantity + quantity);
-      console.log(portfolioEntry.purchasePrice);
+      // console.log(portfolioEntry.purchasePrice);
       portfolioEntry.quantity += quantity;
       await portfolioEntry.save();
     } else {
@@ -116,6 +116,20 @@ app.post("/transaction", async (req, res) => {
     // Update the total balance and assets value
     newTotalBalance = currentTotalBalance.balance - quantity * purchasePrice;
     newAssetsValue = currentTotalBalance.assets + quantity * purchasePrice;
+    console.log(
+      "newtotalbalance:",
+      currentTotalBalance.balance,
+      quantity,
+      purchasePrice,
+      newTotalBalance
+    );
+    console.log(
+      "newAssetsValue:",
+      currentTotalBalance.assets,
+      quantity,
+      purchasePrice,
+      newAssetsValue
+    );
   } else if (transaction_type === "sell") {
     // Handle selling stocks
     // If the user does not have enough of this stock in their portfolio, return an error, we should handle this in the front end after the get route to not allow users to even hit this point
@@ -151,6 +165,7 @@ app.post("/transaction", async (req, res) => {
     userId,
     balance: newTotalBalance,
     assets: newAssetsValue,
+    startingBalance: currentTotalBalance.startingBalance,
   });
 
   res.status(201).json({ message: "Transaction successful" });

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+
 import AuthForm from "../features/auth/AuthForm";
 import Home from "../features/home/Home";
 import AllStocksView from "../features/allStocks/allStocksView";
@@ -22,26 +22,12 @@ const AppRoutes = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const [nextLocation, setNextLocation] = useState();
   const [currentLocation, setCurrentLocation] = useState(location);
 
   useEffect(() => {
     dispatch(me());
   }, []);
-
-  useEffect(() => {
-    // If location changed
-    if (location !== currentLocation) {
-      setIsTransitioning(true); // Start the transition
-      setNextLocation(location); // Store the next location
-    }
-  }, [location, currentLocation]);
-
-  const handleExited = () => {
-    setCurrentLocation(nextLocation); // Update current location to next location when animation has finished
-    setIsTransitioning(false); // Transition is complete
-  };
 
   return (
     <div>
