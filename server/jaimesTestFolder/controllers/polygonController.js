@@ -26,7 +26,7 @@ polygonController.getStockData = async (req, res, next) => {
       `https://api.polygon.io/v3/reference/tickers/${symbol}`,
       config
     );
-    console.log(`response.data: ${JSON.stringify(response.data)}`);
+    // console.log(`response.data: ${JSON.stringify(response.data)}`);
     res.json(response.data);
   } catch (err) {
     console.log(`Error in polygonController.getStockData: ${err.message}`);
@@ -53,7 +53,7 @@ polygonController.getGroupTickers = async (req, res, next) => {
       `https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/tickers?tickers=${symbols}`,
       config
     );
-    console.log(`response.data: ${JSON.stringify(response.data)}`);
+    // console.log(`response.data: ${JSON.stringify(response.data)}`);
     res.json(response.data);
   } catch (err) {
     console.log(`Error in polygonController.getGroupTickers: ${err.message}`);
@@ -79,7 +79,7 @@ polygonController.getCandlestickData = async (req, res, next) => {
     const response = await axios.get(
       `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${multiplier}/${timespan}/${from}/${to}?unadjusted=true&sort=asc&limit=1000&apiKey=${polygonApiKey}`
     );
-    console.log(`response.data: ${JSON.stringify(response.data)}`);
+    // console.log(`response.data: ${JSON.stringify(response.data)}`);
 
     // extract and format data for chart.js
     const chartData = {
@@ -108,7 +108,7 @@ polygonController.getCandlestickData = async (req, res, next) => {
 
 polygonController.getSummary = async (req, res, next) => {
   const promptType = req.query.promptType || "default";
-  console.log(1);
+  // console.log(1);
   const now = new Date();
   const currentYear = now.getFullYear();
   const month = (now.getMonth() + 1).toString().padStart(2, "0");
@@ -122,11 +122,11 @@ polygonController.getSummary = async (req, res, next) => {
     const response = await axios.get(
       `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/1/day/${from}/${to}?unadjusted=true&sort=asc&limit=120&apiKey=${polygonApiKey}`
     );
-    console.log(`response.data: ${JSON.stringify(response.data)}`);
+    // console.log(`response.data: ${JSON.stringify(response.data)}`);
 
     // extract closing prices
     const closePrices = response.data.results.map((result) => result.c);
-    console.log(`closePrices: ${closePrices}`);
+    // console.log(`closePrices: ${closePrices}`);
 
     // generate the prompt for the openai api call
     let prompt;
@@ -164,7 +164,7 @@ polygonController.getSummary = async (req, res, next) => {
     };
 
     const aiResponse = await openaiController.getOpenaiResponse(req, res);
-    console.log("hi", aiResponse);
+    // console.log("hi", aiResponse);
     // return the summary
     // res.json({ assistant: aiResponse });
   } catch (err) {

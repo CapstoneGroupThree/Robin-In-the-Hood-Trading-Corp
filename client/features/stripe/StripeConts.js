@@ -43,11 +43,14 @@ const StripeConts = () => {
 
   const handleCheckout = async (priceId) => {
     try {
-      const response = await axios.post("/api/stripe/create-checkout-session", {
-        price_id: priceId,
-      });
-      console.log(response.data);
-      // Handle the response as needed
+      const response = await axios.post(
+        `/api/stripe/create-checkout-session?${priceId}`,
+        {
+          price_id: priceId,
+        }
+      );
+      const { url } = response.data;
+      window.location.href = url;
     } catch (error) {
       console.error("Error creating checkout session:", error);
     }
