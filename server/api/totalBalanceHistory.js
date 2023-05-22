@@ -30,6 +30,7 @@ app.get("/balance/:userId", async (req, res) => {
         assets: 0,
       },
     ]);
+    res.redirect("/home");
   }
 
   res.json(balanceHistory);
