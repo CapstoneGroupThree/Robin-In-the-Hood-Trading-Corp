@@ -201,7 +201,7 @@ const Home = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-950 via-slate-800 to-slate-950">
-        <div className="lds-roller">
+        {/* <div class="lds-roller">
           <div></div>
           <div></div>
           <div></div>
@@ -210,13 +210,12 @@ const Home = () => {
           <div></div>
           <div></div>
           <div></div>
-        </div>
+        </div>*/}
       </div>
-
-      // <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
-      //   <div className="animate-spin rounded-full h-64 w-64 border-t-8 border-b-8  border-purple-500"></div>
-      // </div>
     );
+    // <div className="flex items-center justify-center min-h-screen bg-gradient-to-t from-slate-800 to-slate-900">
+    //   <div className="animate-spin rounded-full h-64 w-64 border-t-8 border-b-8  border-purple-500"></div>
+    // </div>
   }
   // console.log(displayedName);
   //todo create a search bar feature for pages that need it

@@ -136,7 +136,9 @@ const SearchBar = (props) => {
               alt="default profile picture"
               className="w-4 h-4 rounded-full"
             ></img>
-            <span className=" text-white font-body ">{name}</span>
+            <span className=" text-white text-xl font-body lowercase">
+              {name}
+            </span>
           </span>
         </Link>
         <div>{renderDropdown()}</div>

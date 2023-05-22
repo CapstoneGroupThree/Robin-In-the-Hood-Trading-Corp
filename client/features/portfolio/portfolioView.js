@@ -222,10 +222,10 @@ const Portfolio = () => {
   }
 
   return (
-    <div className="flex flex-col portfolio-bg">
+    <div className="flex flex-col p-4 portfolio-bg">
       {console.log("portfolio", portfolio)}
       <h1
-        className="px-4 py-2 text-center text-white"
+        className="px-4 py-2 mb-4 text-center font-body text-white"
         style={{
           fontSize: "25px",
         }}
@@ -263,22 +263,26 @@ const Portfolio = () => {
       <div className="border-t border-gray-500 my-8"></div>
       <div className="flex flex-row items-center justify-evenly">
         <button
-          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className=" styled-button mb-6"
+          style={{ "--clr": "#39FF14" }}
           onClick={() => {
             setShowPurchases(true);
             setShowPortfolio(false);
           }}
         >
-          Toggle Purchase History
+          <span>Toggle Purchase History</span>
+          <i />
         </button>
         <button
-          className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className=" styled-button mb-6"
+          style={{ "--clr": "#0FF0FC" }}
           onClick={() => {
             setShowPurchases(false);
             setShowPortfolio(true);
           }}
         >
-          Show Portfolio Assets
+          <span>Show Portfolio Assets</span>
+          <i />
         </button>
       </div>
       {portfolio && showPortfolio ? (

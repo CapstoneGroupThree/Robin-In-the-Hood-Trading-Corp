@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchAllStocks,
@@ -20,6 +20,10 @@ const AllStocksView = () => {
   const [currentPageInfo, setCurrentPageInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPageNameCapInfo, setCurrentPageNameCapInfo] = useState({});
+  const loadingRefs = useRef([]);
+  const pageChangeRef = useRef(null);
+  const prevButtonRef = useRef(null);
+  const nextButtonRef = useRef(null);
 
   const allStocks = useSelector(selectAllStocks);
   const allStockDetails = useSelector((state) => state.allStocks.stockDetails);
@@ -32,6 +36,23 @@ const AllStocksView = () => {
     if (e.target.value === "next") {
       setCurrentPage(currentPage + 1);
     }
+
+    let pageChangeAnimation = anime.timeline({
+      targets: pageChangeRef.current,
+      easing: "easeInOutQuad",
+      duration: 1000, // adjust as needed
+      autoplay: false,
+    });
+
+    pageChangeAnimation
+      .add({
+        scale: 0,
+      })
+      .add({
+        scale: 1,
+      });
+
+    pageChangeAnimation.play();
   };
 
   const trimName = (name, maxLength = 30) => {
@@ -168,20 +189,46 @@ const AllStocksView = () => {
   };
 
   useEffect(() => {
-    if (!isLoading) {
-      anime({
-        targets: ".ticker",
-        translateX: ["-25%", "-1000%"],
-        duration: 600000,
-        loop: true,
-        direction: "normal",
-        easing: "linear",
-        loopComplete: function (anim) {
-          anim.reset();
-          anim.play();
-        },
-      });
+    // Start the animation
+    const loadingAnimation = anime({
+      targets: ".loading",
+      duration: 500,
+      direction: "alternate",
+      loop: true,
+      easing: "easeInOutSine",
+      autoplay: false,
+    });
+
+    const tickerAnimation = anime({
+      targets: ".ticker",
+      translateX: ["-25%", "-5000%"],
+      duration: 6000000,
+      loop: true,
+      direction: "normal",
+      easing: "linear",
+      autoplay: false,
+    });
+
+    const tableAnim = anime({
+      targets: pageChangeRef.current,
+      scale: [0, 1],
+      duration: 2000,
+      easing: "easeInOutQuad",
+    });
+
+    if (isLoading) {
+      loadingAnimation.play();
+    } else {
+      loadingAnimation.pause();
+      tickerAnimation.play();
+      tableAnim.play();
     }
+
+    return () => {
+      loadingAnimation.pause();
+      tickerAnimation.pause();
+      tableAnim.pause();
+    };
   }, [isLoading]);
 
   const getTickerPrice = async (ticker, marketOpen, from, to) => {
@@ -295,12 +342,32 @@ const AllStocksView = () => {
             ))
           )}
         </div>
+        <div className="ticker">
+          {[...Array(2)].map((_, i) =>
+            currentPageInfo.map((stock, index) => (
+              <div
+                className={`ticker__item ${
+                  changePercentageFunc(stock.o, stock.c) >= 0
+                    ? "ticker__item--positive"
+                    : "ticker__item--negative"
+                }`}
+                key={stock.T + i + index} // ensure keys are unique
+              >
+                {stock.T} {changePercentageFunc(stock.o, stock.c)}%
+              </div>
+            ))
+          )}
+        </div>
       </div>
 
       {console.log(currentPageNameCapInfo)}
       {Object.keys(allStocks).length === 0 && <div>Loading stocks...</div>}
       {Object.keys(allStocks).length > 0 && (
-        <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white">
+        <table
+          ref={pageChangeRef}
+          style={{ position: "relative" }}
+          className=" tableAnim  w-full h-2/3 table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white"
+        >
           <thead className="border-2 border-sky-950">
             <tr>
               <th className="px-4 py-2 font-numbers">Name</th>
@@ -323,7 +390,9 @@ const AllStocksView = () => {
                   <td className="px-4 py-2 text-center">
                     <Link
                       to={`/singleStock/${stock.T}`}
-                      className="text-sky-200 hover:text-sky-400 font-numbers "
+                      className={`text-sky-200 hover:text-sky-400 font-numbers ${
+                        isLoading ? "loading" : ""
+                      }`}
                     >
                       {currentPageNameCapInfo[stock.T]
                         ? trimName(currentPageNameCapInfo[stock.T].name)
@@ -368,6 +437,7 @@ const AllStocksView = () => {
         {" "}
         {currentPage > 1 ? (
           <button
+            ref={prevButtonRef}
             value="prev"
             onClick={handlePageChange}
             class="AS-button"
@@ -378,8 +448,11 @@ const AllStocksView = () => {
         ) : (
           ""
         )}
-        <span className="mr-2 text-white">Page: {currentPage}</span>
+        <span className="mx-2 text-xl text-white font-head">
+          Page: {currentPage}
+        </span>
         <button
+          ref={nextButtonRef}
           value="next"
           onClick={handlePageChange}
           class="AS-button"

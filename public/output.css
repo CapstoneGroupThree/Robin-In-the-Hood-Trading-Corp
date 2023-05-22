@@ -604,6 +604,11 @@ video {
   margin-bottom: 2rem;
 }
 
+.mx-2 {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
 .mb-2 {
   margin-bottom: 0.5rem;
 }
@@ -712,6 +717,10 @@ video {
   height: 2.5rem;
 }
 
+.h-2\/3 {
+  height: 66.666667%;
+}
+
 .h-2\/5 {
   height: 40%;
 }
@@ -794,10 +803,6 @@ video {
   width: 66.666667%;
 }
 
-.w-2\/6 {
-  width: 33.333333%;
-}
-
 .w-20 {
   width: 5rem;
 }
@@ -849,6 +854,10 @@ video {
 
 .max-w-full {
   max-width: 100%;
+}
+
+.max-w-md {
+  max-width: 28rem;
 }
 
 .max-w-sm {
@@ -919,6 +928,10 @@ video {
 
 .flex-col {
   flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
 }
 
 .place-content-end {
@@ -1443,6 +1456,10 @@ video {
   font-family: Lato, sans-serif;
 }
 
+.font-display {
+  font-family: Helvetica;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
@@ -1473,6 +1490,11 @@ video {
   line-height: 1rem;
 }
 
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
 .font-black {
   font-weight: 900;
 }
@@ -1495,6 +1517,22 @@ video {
 
 .font-thin {
   font-weight: 100;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.normal-case {
+  text-transform: none;
 }
 
 .italic {
@@ -2284,8 +2322,8 @@ form div {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  background-color: #005cd4;
-  border: 2px solid #1a1a1a;
+  background-color: #530ab3;
+  border: 2px solid #0f0f0f;
   border-radius: 15px;
   box-sizing: border-box;
   color: #e4e4e4;
@@ -2318,7 +2356,7 @@ form div {
 
 .AS-button:hover {
   color: #fff;
-  background-color: #1a1a1a;
+  background-color: #4f07d4;
   box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
   transform: translateY(-2px);
 }
@@ -2426,6 +2464,113 @@ form div {
 .refresh-button:hover {
   background-color: #2b6cb0;
 }
+
+/* Button Styling Option */
+
+.styled-button {
+  position: relative;
+  background: #444;
+  color: #fff;
+  text-decoration: none;
+  border: none;
+  letter-spacing: 0.1rem;
+  font-size: 0.8rem;
+  padding: 0.5rem 1.5rem;
+  transition: 0.2s;
+}
+
+.styled-button:hover {
+  letter-spacing: 0.2rem;
+  padding: 0.6rem 1.6rem;
+  background: var(--clr);
+  color: var(--clr);
+  /* box-shadow: 0 0 35px var(--clr); */
+  animation: box 3s infinite;
+}
+
+.styled-button::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: #272822;
+}
+
+.styled-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.styled-button i {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.styled-button i::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 1px;
+  left: 80%;
+  top: -2px;
+  border: 1px solid var(--clr);
+  background: #272822;
+  transition: 0.2s;
+}
+
+.styled-button:hover i::before {
+  width: 12px;
+  left: 20%;
+  animation: move 3s infinite;
+}
+
+.styled-button i::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 1px;
+  left: 20%;
+  bottom: -2px;
+  border: 1px solid var(--clr);
+  background: #272822;
+  transition: 0.2s;
+}
+
+.styled-button:hover i::after {
+  width: 12px;
+  left: 80%;
+  animation: move 3s infinite;
+}
+
+@keyframes move {
+  0% {
+    transform: translateX(0);
+  }
+
+  50% {
+    transform: translateX(5px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes box {
+  0% {
+    box-shadow: #27272c;
+  }
+
+  50% {
+    box-shadow: 0 0 25px var(--clr);
+  }
+
+  100% {
+    box-shadow: #27272c;
+  }
+}
+
+/* Button Styling Option end */
 
 .hover\:bg-blue-700:hover {
   --tw-bg-opacity: 1;
