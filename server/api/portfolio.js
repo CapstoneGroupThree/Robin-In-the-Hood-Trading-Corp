@@ -151,6 +151,7 @@ app.post("/transaction", async (req, res) => {
     userId,
     balance: newTotalBalance,
     assets: newAssetsValue,
+    startingBalance: currentTotalBalance.startingBalance,
   });
 
   res.status(201).json({ message: "Transaction successful" });

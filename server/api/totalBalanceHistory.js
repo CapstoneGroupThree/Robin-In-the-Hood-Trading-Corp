@@ -58,6 +58,7 @@ app.post("/balance/:userId", async (req, res) => {
     userId,
     balance: latestBalanceHistory.balance,
     assets: newAssetsValue,
+    startingBalance: latestBalanceHistory.startingBalance,
   });
 
   res.json({
