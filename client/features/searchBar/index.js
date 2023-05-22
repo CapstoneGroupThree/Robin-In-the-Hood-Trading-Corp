@@ -106,6 +106,21 @@ const SearchBar = (props) => {
         onSubmit={handleSubmit}
         ref={searchRef}
       >
+        <Link to={`/user/edit`}>
+          <span className="profilePic&Name flex items-center space-x-2">
+            {/* <img
+              src="/defaultPFP.avif"
+              alt="default profile picture"
+              className="w-4 h-4 rounded-full"
+            ></img> */}
+            <i
+              className="fa-regular fa-circle-user fa-2xl"
+              style={{ color: "whitesmoke" }}
+            ></i>
+
+            <span className=" text-white text-xl font-body">{name}</span>
+          </span>
+        </Link>
         <input
           type="search"
           placeholder="Search Ticker"
@@ -129,18 +144,7 @@ const SearchBar = (props) => {
             className="w-4 h-4"
           ></img>
         </span> */}
-        <Link to={`/user/edit`}>
-          <span className="profilePic&Name flex items-center space-x-2">
-            <img
-              src="/defaultPFP.avif"
-              alt="default profile picture"
-              className="w-4 h-4 rounded-full"
-            ></img>
-            <span className=" text-white text-xl font-body lowercase">
-              {name}
-            </span>
-          </span>
-        </Link>
+
         <div>{renderDropdown()}</div>
       </form>
     </div>
