@@ -30,6 +30,7 @@ app.get("/balance/:userId", async (req, res) => {
         assets: 0,
       },
     ]);
+    res.redirect("/home");
   }
 
   res.json(balanceHistory);
@@ -58,6 +59,7 @@ app.post("/balance/:userId", async (req, res) => {
     userId,
     balance: latestBalanceHistory.balance,
     assets: newAssetsValue,
+    startingBalance: latestBalanceHistory.startingBalance,
   });
 
   res.json({

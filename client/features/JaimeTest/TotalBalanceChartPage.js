@@ -110,7 +110,9 @@ const TotalBalanceChartPage = (props) => {
         <div style={{ marginTop: "-10px" }}>
           <p className="font-numbers">
             {/* Stock Assets: {"$" + (lastAssets?.toFixed(2) || "0.00")} */}
-            Cash Balance: {"$" + (lastBalanceOnly?.toFixed(2) || "0.00")}
+            Cash | Stocks: {"$" +
+              (lastBalanceOnly?.toFixed(2) || "0.00")} |{" "}
+            {"$" + (lastAssets?.toFixed(2) || "0.00")}
           </p>
         </div>
       )}

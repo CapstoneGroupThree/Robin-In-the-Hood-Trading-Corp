@@ -26,7 +26,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchPortfolioData();
-  }, [portfolio]);
+  }, []);
 
   useEffect(() => {
     async function getPortfolioAndTransactions() {
