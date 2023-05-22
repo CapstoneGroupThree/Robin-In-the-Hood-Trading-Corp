@@ -6,6 +6,7 @@ import {
   buyStockForPortfolio,
   fetchUserPortfolio,
 } from "./portfolioBuySellSlice";
+import { fetchSinglePortfolio } from "../portfolio/portfolioSlice";
 
 const Buy = (props) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -19,6 +20,7 @@ const Buy = (props) => {
   const [userBalance, setUserBalance] = useState(0);
   const [reload, setReload] = useState(0);
   const [marketOpen, setMarketOpen] = useState(false);
+  const id = userId;
 
   const fetchHolidays = async () => {
     try {
@@ -58,7 +60,7 @@ const Buy = (props) => {
 
     const holidays = await fetchHolidays();
     //! UNCHANGE THIS BEFORE MAKING PULL REQUEST
-    const estOffset = -4 * 60; // Eastern Time is UTC-5
+    const estOffset = -8 * 60; // Eastern Time is UTC-5
     //! UNCHANGE THE ABOVE OFFSET
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
@@ -205,6 +207,7 @@ const Buy = (props) => {
         purchasePrice: tickerPriceInfo,
       })
     );
+    await dispatch(fetchSinglePortfolio(id));
     console.log(response);
     setQuantity(0);
     setShowPopup(false);
