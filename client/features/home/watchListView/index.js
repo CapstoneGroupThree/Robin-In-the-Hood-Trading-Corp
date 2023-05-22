@@ -264,8 +264,8 @@ const WatchListView = () => {
           <div className={overlayClasses} onClick={handleOverlayClick}></div>
           <div className={popupClasses}>
             {lengthOfWatchlist > 0 ? (
-              <div className="watchlist-table-container max-h-600px w-full overflow-y-auto shadow-lg shadow-black rounded-md border-6 border-x-sky-800">
-                <table className="w-full table-auto border-collapse border  border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white">
+              <div className="watchlist-table-container max-h-600px w-full overflow-y-auto shadow-lg shadow-black rounded-md ">
+                <table className="w-full table-auto border-collapse   rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white">
                   <thead className="border-b-2 border-sky-950">
                     <tr>
                       <th className="px-4 py-2 font-semibold">Name</th>
@@ -286,7 +286,12 @@ const WatchListView = () => {
                             } hover:bg-slate-700 transition-colors duration-200 ease-in-out`}
                           >
                             <td className="px-4 py-2">
-                              <Link to={`/singleStock/${ticker}`}>
+                              <Link
+                                className={`text-sky-300 hover:text-sky-400 font-numbers ${
+                                  isLoading ? "loading" : ""
+                                }`}
+                                to={`/singleStock/${ticker}`}
+                              >
                                 {trimmedName}
                               </Link>
                             </td>

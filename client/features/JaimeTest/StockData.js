@@ -77,9 +77,9 @@ const StockData = ({ ticker }) => {
     <div>
       {stockData ? (
         <>
-          <button onClick={toggleSMA}>
+          {/* <button onClick={toggleSMA}>
             {showSMA ? "Hide SMA (14)" : "Show SMA (14)"}
-          </button>
+          </button> */}
           <Plot data={getChartData()} layout={chartLayout} />
         </>
       ) : (

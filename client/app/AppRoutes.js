@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
+
 import AuthForm from "../features/auth/AuthForm";
 import Home from "../features/home/Home";
 import AllStocksView from "../features/allStocks/allStocksView";
@@ -19,6 +20,10 @@ import StripeConts from "../features/stripe/StripeConts";
 const AppRoutes = () => {
   const isLoggedIn = useSelector((state) => !!state.auth.me.id);
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  const [nextLocation, setNextLocation] = useState();
+  const [currentLocation, setCurrentLocation] = useState(location);
 
   useEffect(() => {
     dispatch(me());

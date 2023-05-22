@@ -96,31 +96,31 @@ const EditUserInfo = () => {
     return (
       <div className=" bg flex justify-center items-center h-screen">
         <div className=" card  max-w-sm mx-auto bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 rounded-xl box-shadow flex items-center space-x-4">
-          <div className="  text-center text-white font-body font-thin w-full gap-4">
+          <div className="  text-center text-white  w-full gap-4">
             <div className="mb-6 text-4xl font-body font-thin text-sky-500 text-shadow-lg">
               User Info
             </div>
-            <div className="mb-4 flex justify-between font-thin text-shadow-lg">
-              <span className="text-xl "> Email Address:</span>
-              <span className="text-xl"> {me.email}</span>
+            <div className="mb-4 flex justify-between text-shadow-lg">
+              <span className="text-xl font-body"> Email Address:</span>
+              <span className="text-xl font-body"> {me.email}</span>
             </div>
-            <div className="mb-4 flex justify-between font-thin text-shadow-lg">
-              <span className="text-xl ">First Name:</span>
-              <span className="text-xl">{me.first_name}</span>
+            <div className="mb-4 flex justify-between text-shadow-lg">
+              <span className="text-xl font-body">First Name:</span>
+              <span className="text-xl font-body">{me.first_name}</span>
             </div>
-            <div className="mb-4 flex justify-between font-thin text-shadow-lg">
-              <span className="text-xl ">Last Name:</span>
-              <span className="text-xl">{me.last_name}</span>
+            <div className="mb-4 flex justify-between text-shadow-lg">
+              <span className="text-xl font-body">Last Name:</span>
+              <span className="text-xl font-body">{me.last_name}</span>
             </div>
-            <div className="mb-4 flex justify-between font-thin text-shadow-lg">
-              <span className="text-xl ">Password:</span>
-              <span className="text-xl ">********</span>
+            <div className="mb-4 flex justify-between text-shadow-lg">
+              <span className="text-xl font-body">Password:</span>
+              <span className="text-xl font-body">********</span>
             </div>
             <button
-              className=" edit-button mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className=" edit-button mb-4 text-white py-2 px-4 rounded"
               onClick={handleEditModeToggle}
             >
-              Edit Profile Information
+              <span className=" font-head">Edit Profile Information</span>
             </button>
           </div>
         </div>
@@ -130,9 +130,9 @@ const EditUserInfo = () => {
 
   return (
     <div className="  bg flex justify-center items-center min-h-screen ">
-      <div className=" card p-6 max-w-sm mx-auto bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 rounded-xl box-shadow flex justify-around items-center space-x-4 ">
-        <div className="  text-center  font-body items-thin ">
-          <div className="text-4xl font-body border-b-2 text-sky-500">
+      <div className=" card p-6 max-w-md w-full flex-wrap mx-auto bg-gradient-to-b from-slate-800 via-slate-700 to-slate-800 rounded-xl box-shadow flex justify-around items-center space-x-4 ">
+        <div className="  text-center flex-row h-full font-body items-thin ">
+          <div className="text-4xl font-body font-thin  text-sky-500">
             Edit User Info
           </div>
           <form
@@ -182,7 +182,7 @@ const EditUserInfo = () => {
               }}
             />
             <button
-              className=" button mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className=" edit-button mt-4  text-white font-bold py-2 px-4 rounded"
               type="submit"
             >
               Submit
@@ -190,14 +190,14 @@ const EditUserInfo = () => {
           </form>
           <div className="mt-4">
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="edit-button  text-white font-bold py-2 px-4 rounded"
               onClick={handleEditPasswordToggle}
             >
               Change Password
             </button>
           </div>
           {editPasswordMode ? (
-            <div className="">
+            <div className=" ">
               <form
                 className="space-y-4 text-gray-600 flex-col w-full bg-inherit"
                 onSubmit={handlePasswordSubmit}
@@ -248,7 +248,7 @@ const EditUserInfo = () => {
                   }}
                 />
                 <button
-                  className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  className="mt-4 edit-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                   type="submit"
                 >
                   Submit Password Change
