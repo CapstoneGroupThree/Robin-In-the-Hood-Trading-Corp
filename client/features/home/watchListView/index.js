@@ -250,13 +250,13 @@ const WatchListView = () => {
         <span className="absolute -bottom-4 right-0 text-xs text-gray-400">
           Click Above to View Watch List
         </span>
-        <style jsx>{`
+        {/* <style jsx>{`
           h2:hover span {
             background-clip: text;
             -webkit-background-clip: text;
             background-image: linear-gradient(to right, #5ca9fb, #7e57c2);
           }
-        `}</style>
+        `}</style> */}
       </h2>
 
       {popupVisible && (
@@ -320,44 +320,6 @@ const WatchListView = () => {
       <div>
         {lengthOfWatchlist > 0 ? (
           <div className="watchlist-table-container shadow-lg shadow-black rounded-md border-6 border-x-sky-800">
-            {/* <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900 text-white  ">
-              <thead className="border-2  border-sky-950">
-                <tr>
-                  <th className="px-4 py-2 font-semibold">Name</th>
-                  <th className="px-4 py-2 font-semibold">Symbol</th>
-                  <th className="px-4 py-2 font-semibold">Price</th>
-                </tr>
-              </thead>
-              <tbody className=" ">
-                {/* {Object.entries(watchlist) */}
-            {/* .filter(([key]) => key !== "list") */}
-            {/* .map(([ticker, stockInfo], index) => { */}
-            {/* const trimmedName = trimName(stockInfo.name);
-                    return (
-                      <tr
-                        key={ticker}
-                        className={`${
-                          index % 2 === 0 ? "bg-slate-800" : ""
-                        } hover:bg-slate-700 transition-colors duration-200 ease-in-out`}
-                      >
-                        <td className="px-4 py-2">
-                          <Link
-                            to={`/singleStock/${ticker}`}
-                            className="text-sky-200 hover:text-sky-400 "
-                          >
-                            {trimmedName}
-                          </Link>
-                        </td>
-                        <td className="px-4 py-2">{ticker}</td>
-                        <td className="px-4 py-2">
-                          {stockInfo.close.toFixed(2) ||
-                            stockInfo.preMarket.toFixed(2)}
-                        </td>
-                      </tr>
-                    );
-                  })}
-              </tbody>
-            </table> */}
             <div
               className="slider-container"
               style={{ width: "750px", height: "40vh", overflow: "hidden" }}

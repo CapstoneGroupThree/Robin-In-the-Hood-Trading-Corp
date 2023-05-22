@@ -11,9 +11,9 @@ body {
 
 .chatBotContainer {
   width: 500px; /* Adjust this to your desired width */
-  height: 800px; /* Adjust this to your desired height */
+  height: 705px; /* Adjust this to your desired height */
   position: relative;
-  bottom: 79px;
+  /* bottom: 79px; */
   right: 0;
   border: 1px solid whitesmoke;
   background-color: white;
@@ -176,4 +176,46 @@ form img {
 
 .buttonContainer button:focus {
   box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #5bc0de;
+}
+
+.power-button {
+  width: 40px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  border-radius: 20px;
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.power-button:focus {
+  outline: none;
+}
+
+.power-button i {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonContainer button:before {
+  content: none; /* Remove the ::before pseudo-element content */
+}
+
+.buttonContainer button:hover {
+  background-color: #5bc0de; /* Set the background color for hover state */
+}
+
+.buttonContainer button:active {
+  background-color: #5bc0de; /* Set the background color for active state */
+}
+
+.buttonContainer button:focus {
+  box-shadow: none; /* Remove the box shadow for focus state */
 }

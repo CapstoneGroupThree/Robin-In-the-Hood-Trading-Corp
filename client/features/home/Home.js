@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import SearchBar from "../searchBar";
 import WatchListView from "./watchListView";
 import PopularStocksHomeView from "./popularStockView";
-import Chatbot from "../chatBot";
+// import Chatbot from "../chatBot";
 import TotalBalanceChartPage from "../JaimeTest/TotalBalanceChartPage";
 import {
   selectSinglePortfolio,
@@ -13,6 +13,7 @@ import {
 import { fetchSingleStockTickerPriceInfo } from "../singleStock/singleStockViewSlice.js";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
+import ChatbotWrapper from "../chatBot/chatBotWrapper";
 
 const Home = () => {
   const username = useSelector((state) => state.auth.me.first_name);
@@ -263,7 +264,7 @@ const Home = () => {
           </div>
         </div>
         <div className="aibot absolute bottom-2 right-2">
-          <Chatbot />
+          <ChatbotWrapper />
         </div>
       </div>
     </div>
