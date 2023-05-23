@@ -222,10 +222,10 @@ const Portfolio = () => {
   }
 
   return (
-    <div className="flex flex-col p-4 portfolio-bg">
+    <div className="flex flex-col h-full p-4 portfolio-bg">
       {console.log("portfolio", portfolio)}
       <h1
-        className="px-4 py-2 mb-4 text-center font-body text-white"
+        className="px-4  mb-4 text-center font-body text-white"
         style={{
           fontSize: "25px",
         }}
@@ -233,7 +233,7 @@ const Portfolio = () => {
         Hello {yourName}!
       </h1>
       {console.log("UserId:", userId)}
-      <div className="assets relative h-1/3 border border-slate-600 w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 p-4 rounded box-shadow">
+      <div className="assets relative h-2/5 border border-slate-600 w-full text-white bg-gradient-to-t from-slate-900 via-slate-700 to-slate-900 p-4 rounded box-shadow">
         <button
           className="refresh-button absolute top-4 right-4 z-10"
           onClick={fetchPortfolioData}
@@ -260,11 +260,11 @@ const Portfolio = () => {
       >
         Show Portfolio Assets
       </button> */}
-      <div className="border-t border-gray-500 my-8"></div>
+      <div className="border-t border-gray-500 mt-8 mb-8"></div>
       <div className="flex flex-row items-center justify-evenly">
         <button
           className=" styled-button mb-6"
-          style={{ "--clr": "#39FF14" }}
+          style={{ "--clr": " #0FF0FC" }}
           onClick={() => {
             setShowPurchases(true);
             setShowPortfolio(false);
@@ -275,7 +275,7 @@ const Portfolio = () => {
         </button>
         <button
           className=" styled-button mb-6"
-          style={{ "--clr": "#0FF0FC" }}
+          style={{ "--clr": "#39FF14" }}
           onClick={() => {
             setShowPurchases(false);
             setShowPortfolio(true);
@@ -286,9 +286,9 @@ const Portfolio = () => {
         </button>
       </div>
       {portfolio && showPortfolio ? (
-        <div>
-          <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900">
-            <thead className="border-2 border-sky-950">
+        <div className=" max-h-90 overflow-y-auto scroll-style">
+          <table className="w-full h-1/3 table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900">
+            <thead className="border-2 border-green-500">
               <tr>
                 <th className="px-4 py-2 font-numbers text-white">Ticker</th>
                 <th className="px-4 py-2 font-numbers text-white">Company</th>
@@ -311,23 +311,26 @@ const Portfolio = () => {
                         index % 2 === 0 ? "bg-slate-800" : ""
                       } hover:bg-slate-700 transition-colors duration-200 ease-in-out`}
                     >
-                      <td className="px-4 py-2 text-center text-white">
+                      <td className="px-4 py-2 text-center font-body text-white">
                         {portfolioItem.stockTicker}
                       </td>
-                      <td className="px-4 py-2 text-center text-sky-200 hover:text-sky-400 font-numbers">
-                        <Link to={`/singleStock/${portfolioItem.stockTicker}`}>
+                      <td className="px-4 py-2 text-center text-sky-200 hover:text-sky-400">
+                        <Link
+                          className="font-body"
+                          to={`/singleStock/${portfolioItem.stockTicker}`}
+                        >
                           {portfolioItem.stockName.length > 30
                             ? portfolioItem.stockName.slice(0, 30) + "..."
                             : portfolioItem.stockName}
                         </Link>
                       </td>
-                      <td className="px-4 py-2 text-center text-white">
+                      <td className="px-4 py-2 font-body text-center text-white">
                         {portfolioItem.quantity}
                       </td>
-                      <td className="px-4 py-2 text-center text-white">
+                      <td className="px-4 py-2 font-body text-center text-white">
                         {portfolioItem.purchasePrice.toFixed(2)}
                       </td>
-                      <td className="px-4 py-2 text-center text-white">
+                      <td className="px-4 py-2 font-body text-center text-white">
                         {new Date(portfolioItem.updatedAt).toLocaleString(
                           "en-US",
                           {
@@ -347,9 +350,9 @@ const Portfolio = () => {
       )}
 
       {transactions && showPurchases ? (
-        <div>
-          <table className="w-full table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900">
-            <thead className="border-b-2 border-purple-500">
+        <div className=" max-h-90 overflow-y-auto scroll-style">
+          <table className="w-full h-1/3  table-auto border-collapse border-6 border-sky-800 rounded-lg bg-gradient-to-t from-slate-800 to-slate-900">
+            <thead className="border-2 border-cyan-500">
               <tr>
                 <th className="px-4 py-2 text-white">Ticker</th>
                 <th className="px-4 py-2 text-white">Transaction Type</th>
@@ -368,21 +371,21 @@ const Portfolio = () => {
                         index % 2 === 0 ? "bg-slate-800" : ""
                       } hover:bg-slate-700 transition-colors duration-200 ease-in-out`}
                     >
-                      <td className="px-4 py-2 text-center text-white">
+                      <td className="px-4 py-2 text-center font-body text-white">
                         <Link
                           to={`/singleStock/${t.stockTicker}`}
-                          className=" text-sky-200 hover:text-sky-400 font-numbers "
+                          className=" text-sky-200 hover:text-sky-400 font-body "
                         >
                           {t.stockTicker}
                         </Link>
                       </td>
-                      <td className="px-4 py-2 text-center text-white">
+                      <td className="px-4 py-2 text-center font-body text-white">
                         Quantity: {t.quantity} | Type: {t.transaction_type}
                       </td>
-                      <td className="px-4 py-2 text-center text-white">
+                      <td className="px-4 py-2 text-center font-body text-white">
                         ${t.price}
                       </td>
-                      <td className="px-4 py-2 text-center text-white">
+                      <td className="px-4 py-2 text-center font-body text-white">
                         {new Date(t.transaction_time).toLocaleString("en-US", {
                           dateStyle: "short",
                           timeStyle: "short",
