@@ -9,8 +9,6 @@ import { fetchTransactions, selectTransactions } from "./transactionSlice";
 import { Link } from "react-router-dom";
 import TotalBalanceChartPage from "../JaimeTest/TotalBalanceChartPage";
 import { fetchSingleStockTickerPriceInfo } from "../singleStock/singleStockViewSlice.js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 
 const Portfolio = () => {
   const me = useSelector((state) => state.auth.me);
@@ -241,7 +239,7 @@ const Portfolio = () => {
           className="refresh-button absolute top-4 right-4 z-10"
           onClick={fetchPortfolioData}
         >
-          <FontAwesomeIcon icon={faSyncAlt} /> Refresh
+          <i className="fa-solid fa-arrows-rotate"></i> Refresh
         </button>
         <TotalBalanceChartPage userId={userId} reload={reload} />
       </div>
