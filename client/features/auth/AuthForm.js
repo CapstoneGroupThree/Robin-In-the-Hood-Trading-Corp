@@ -97,7 +97,7 @@ const AuthForm = ({ name, displayName }) => {
           }}
         >
           <img src="/RITHLogo.png" alt="logo" className="w-10 h-10"></img>
-          Robin In the Hood
+          RITH TRADING
         </h1>
         {error && <div className="alert alert-danger">{error}</div>}
         <form

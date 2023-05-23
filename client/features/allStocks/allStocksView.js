@@ -21,13 +21,11 @@ const AllStocksView = () => {
   const [currentPageInfo, setCurrentPageInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPageNameCapInfo, setCurrentPageNameCapInfo] = useState({});
-  const loadingRefs = useRef([]);
   const pageChangeRef = useRef(null);
   const prevButtonRef = useRef(null);
   const nextButtonRef = useRef(null);
 
   const allStocks = useSelector(selectAllStocks);
-  const allStockDetails = useSelector((state) => state.allStocks.stockDetails);
 
   const handlePageChange = (e) => {
     e.preventDefault();
@@ -41,7 +39,7 @@ const AllStocksView = () => {
     let pageChangeAnimation = anime.timeline({
       targets: pageChangeRef.current,
       easing: "easeInOutQuad",
-      duration: 1000, // adjust as needed
+      duration: 1000, // page change anim duration
       autoplay: false,
     });
 
@@ -213,7 +211,7 @@ const AllStocksView = () => {
     const tableAnim = anime({
       targets: pageChangeRef.current,
       scale: [0, 1],
-      duration: 2000,
+      duration: 1000,
       easing: "easeInOutQuad",
     });
 

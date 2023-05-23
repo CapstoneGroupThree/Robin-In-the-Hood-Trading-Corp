@@ -57,7 +57,7 @@ const TotalBalanceChart = ({ balanceData }) => {
     <div
       style={{
         width: "100%",
-        height: "24vh",
+        height: "22.8vh",
         backgroundColor: "#15202B",
         color: "#FFFFFF",
       }}

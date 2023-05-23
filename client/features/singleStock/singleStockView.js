@@ -467,7 +467,7 @@ export default function SingleStockView() {
         >
           Sell
         </button> */}
-        <div>
+        <div className=" mr-2  py-2">
           <Buy
             ticker={ticker}
             name={tickerInfo.name}
@@ -475,7 +475,7 @@ export default function SingleStockView() {
             transactionStatus={transactionStatus}
           />
         </div>
-        <div>
+        <div className=" mr-2  py-2 ">
           <Sell
             ticker={ticker}
             name={tickerInfo.name}

@@ -34,7 +34,7 @@ const Navbar = () => {
         <h1
           style={{
             fontFamily: "Futura, 'Trebuchet MS', Arial, sans-serif",
-            fontSize: "21px",
+            fontSize: "25px",
             fontStyle: "normal",
             fontVariant: "normal",
             fontWeight: 400,
@@ -42,7 +42,7 @@ const Navbar = () => {
             textAlign: "center",
           }}
         >
-          Robin In the Hood
+          RITH TRADING
         </h1>
       </div>
       {/* <h1
