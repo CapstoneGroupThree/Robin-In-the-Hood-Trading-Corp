@@ -60,7 +60,7 @@ const Buy = (props) => {
 
     const holidays = await fetchHolidays();
     //! UNCHANGE THIS BEFORE MAKING PULL REQUEST
-    const estOffset = -4 * 60; // Eastern Time is UTC-5
+    const estOffset = -12 * 60; // Eastern Time is UTC-5
     //! UNCHANGE THE ABOVE OFFSET
     const utcOffset = -now.getTimezoneOffset();
     now.setMinutes(now.getMinutes() + estOffset - utcOffset);
