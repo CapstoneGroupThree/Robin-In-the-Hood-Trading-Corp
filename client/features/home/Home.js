@@ -11,8 +11,6 @@ import {
   fetchSinglePortfolio,
 } from "../portfolio/portfolioSlice";
 import { fetchSingleStockTickerPriceInfo } from "../singleStock/singleStockViewSlice.js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSyncAlt } from "@fortawesome/free-solid-svg-icons";
 import ChatbotWrapper from "../chatBot/chatBotWrapper";
 
 const Home = () => {
@@ -238,7 +236,7 @@ const Home = () => {
               className="refresh-button absolute top-4 right-4 z-10"
               onClick={fetchPortfolioData}
             >
-              <FontAwesomeIcon icon={faSyncAlt} /> Refresh
+              <i className="fa-solid fa-arrows-rotate"></i> Refresh
             </button>
             <TotalBalanceChartPage userId={userId} reload={reload} />
           </div>
