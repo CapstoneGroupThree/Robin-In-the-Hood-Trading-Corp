@@ -34,7 +34,6 @@ Our core product, Robin In The Hood is a groundbreaking virtual trading app that
 **Our Stack:**
 
 - **PERN Stack:** Powerful tech stack comprising PostgreSQL, Express, React-Redux, and Node
-- **OAuth:** Seamless authentication for user accounts
 - **Polygon.io:** Cutting-edge API for comprehensive stock insights
 - **StripeAPI:** Secure integration for virtual currency shop
 - **RechartJS & Plotly:** Advanced data visualization capabilities
