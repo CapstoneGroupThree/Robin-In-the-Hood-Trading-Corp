@@ -32,6 +32,7 @@ app.put("/:id", requireToken, async (req, res) => {
         id: req.params.id,
       },
     });
+
     await user.update(req.body);
     res.send(user);
   } catch (error) {
